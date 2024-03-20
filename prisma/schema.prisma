@@ -1,0 +1,68 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model Pekerjaan {
+  id            String   @id @default(cuid())
+  pekerjaan     String
+  alokasi       Int
+  tanggal_masuk DateTime
+  status        String
+  Orang         Orang[]
+}
+
+model Orang {
+  id            String    @id @default(cuid())
+  id_pekerjaan  String
+  Pekerjaan     Pekerjaan @relation(fields: [pekerjaanId], references: [id])
+  nama          String
+  jurusan       String
+  jenis_kelamin Boolean
+  Baju          Baju[]
+  pekerjaanId   String
+  Celana        Celana[]
+}
+
+model Baju {
+  id         String  @id @default(cuid())
+  id_orang   String
+  Orang      Orang   @relation(fields: [orangId], references: [id])
+  panjang    Int     @default(0)
+  bahu       Int     @default(0)
+  tangan_pjg Int     @default(0)
+  tangan_pdk Int     @default(0)
+  l_tgn_pdk  Int     @default(0)
+  l_dada     Int     @default(0)
+  l_pinggang Int     @default(0)
+  l_pinggul  Int     @default(0)
+  leher      Int     @default(0)
+  jumlah     Int     @default(1)
+  catatan    String?
+  printed    String?
+  orangId    String
+}
+
+model Celana {
+  id       String  @id @default(cuid())
+  id_orang String
+  Orang    Orang   @relation(fields: [orangId], references: [id])
+  panjang  Int     @default(0)
+  pinggang Int     @default(0)
+  pesak    Int     @default(0)
+  paha     Int     @default(0)
+  lutut    Int     @default(0)
+  l_bawah  Int     @default(0)
+  pinggul  Int     @default(0)
+  jumlah   Int     @default(1)
+  catatan  String?
+  printed  String?
+  orangId  String
+}
