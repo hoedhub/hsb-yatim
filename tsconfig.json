@@ -4,6 +4,9 @@
 		// "baseUrl": ".",
 		// "paths": {
 		// 		"$lib/*": ["src/lib/*"]},
+        "lib": [
+			"esnext", "es2020", "dom", "dom.iterable"
+			],
 		"allowJs": true,
 		"checkJs": true,
 		"esModuleInterop": true,

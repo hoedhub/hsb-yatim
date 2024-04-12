@@ -16,6 +16,7 @@
 		"@sveltejs/adapter-static": "^3.0.1",
 		"@sveltejs/kit": "^2.0.0",
 		"@sveltejs/vite-plugin-svelte": "^3.0.0",
+		"@tauri-apps/api": "^1.5.3",
 		"@tauri-apps/cli": "^1.5.11",
 		"@types/eslint": "^8.56.0",
 		"@typescript-eslint/eslint-plugin": "^7.0.0",
@@ -42,9 +43,14 @@
 	"dependencies": {
 		"bits-ui": "^0.19.5",
 		"clsx": "^2.1.0",
+		"d3": "^7.9.0",
 		"date-and-time": "^3.1.1",
 		"dexie": "4.0.1-beta.14",
+		"dialog": "link:@tauriapps/api/dialog",
 		"lucide-svelte": "^0.354.0",
+		"mode-watcher": "^0.3.0",
+		"paneforge": "^0.0.2",
+		"svelte-sonner": "^0.3.19",
 		"tailwind-merge": "^2.2.1",
 		"tailwind-variants": "^0.2.0"
 	}

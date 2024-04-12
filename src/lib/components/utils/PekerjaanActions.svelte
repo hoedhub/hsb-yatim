@@ -1,5 +1,6 @@
 <script lang="ts">
 	import * as DropdownMenu from '$lib/components/ui/dropdown-menu/';
+	import * as HoverCard from '$lib/components/ui/hover-card';
 	import { Button } from '$lib/components/ui/button';
 
 	export let id: string;

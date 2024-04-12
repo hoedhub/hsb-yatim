@@ -36,3 +36,20 @@ export function scrollIntoViewIfNeeded(elementId: HTMLElement | string) {
     }
   })
 }
+
+export const highlight = (key: string, word: string, marker = 'highlight') => {
+  if (!key || !word) return word;
+
+  // Ensure key is an array even if it's a single string
+  const substrArray = Array.isArray(key) ? key : [key];
+
+  // Create a regular expression pattern by joining substrArray with '|'
+  const regexPattern = substrArray
+    .map((sub) => sub.replace(/[-/\\^$*+?.()|[\]{}]/g, '\\$&'))
+    .join('|');
+  const regex = new RegExp(regexPattern, 'gi');
+
+  return String(word).replace(regex, (match) => {
+    return `<span class="${marker}">${match}</span>`;
+  });
+};

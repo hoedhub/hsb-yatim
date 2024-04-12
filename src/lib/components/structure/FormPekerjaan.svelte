@@ -3,14 +3,16 @@
 	import * as Card from '$lib/components/ui/card/index.js';
 	import { Input } from '$lib/components/ui/input/index.js';
 	import { Label } from '$lib/components/ui/label/index.js';
-	import { modified } from '$lib/stores';
-	import { addSeparator } from '$lib/utils/functions';
-	import { onMount } from 'svelte';
+	import { editPekerjaan, modified } from '$lib/stores';
+	import { onDestroy, onMount } from 'svelte';
 	import { db } from '$lib/utils/db';
+	import { confirm } from '@tauri-apps/api/dialog';
+	import { toast } from 'svelte-sonner';
 
 	export let namaPekerjaan = '';
+	export let row: Record<string, any> = {};
 	export let onCancel = () => null;
-	let formFields = { pekerjaan: namaPekerjaan, alokasi: '0' };
+	let formFields = { pekerjaan: namaPekerjaan, alokasi: row.alokasi ? row.alokasi : '0' };
 	let feedback = { pekerjaan: '', alokasi: '' };
 	let focused = { pekerjaan: false, alokasi: false };
 	$: if (focused.alokasi) {
@@ -33,15 +35,32 @@
 		mounted = true;
 	});
 
+	onDestroy(() => {
+		if (row && $editPekerjaan.includes(row.id))
+			$editPekerjaan = $editPekerjaan.filter((id) => id !== row.id);
+	});
+
 	$: if (mounted) {
-		if (defaultFields !== JSON.stringify(formFields)) {
-			if (!focused.alokasi) $modified = { ...$modified, [namaPekerjaan]: true };
-		} else $modified = { ...$modified, [namaPekerjaan]: false };
+		const defaultObj = JSON.parse(defaultFields);
+		const isModified = Object.keys(defaultObj).some((key) => {
+			return (
+				defaultObj[key as keyof typeof formFields] !== (formFields as Record<string, string>)[key]
+			);
+		});
+		if ($modified[namaPekerjaan] !== isModified)
+			$modified = {
+				...$modified,
+				[namaPekerjaan]: isModified
+			};
 	}
-	const onReset = () => {
-		if ($modified[namaPekerjaan] && confirm('Yakin reset form?'))
-			formFields = { ...JSON.parse(defaultFields) };
+
+	const onReset = async () => {
+		if ($modified[namaPekerjaan]) {
+			const doReset = await confirm('Yakin reset form?', 'HSB Yatim');
+			if (doReset) formFields = { ...JSON.parse(defaultFields) };
+		}
 	};
+
 	async function simpanPekerjaan() {
 		let status = '';
 		try {
@@ -54,6 +73,7 @@
 			});
 
 			status = `Pekerjaan ${formFields.pekerjaan} berhasil disimpan dengan id ${id}`;
+			toast.success(status);
 
 			// Reset form:
 			formFields = JSON.parse(defaultFields);
@@ -67,7 +87,7 @@
 <Card.Root class="w-full">
 	<Card.Header>
 		<Card.Title>Tambah Pekerjaan</Card.Title>
-		<!-- <Card.Description>Deploy your new project in one-click.</Card.Description> -->
+		<Card.Description>Deploy your new project in oneclick.</Card.Description>
 	</Card.Header>
 	<Card.Content>
 		<form>
@@ -80,7 +100,7 @@
 					<Label for="name">Alokasi Dana</Label>
 					<Input
 						id="name"
-						placeholder="Rp xx.xxxx.xxx,-"
+						placeholder="Rp xx.xxxx.xxx,"
 						pattern="\d*"
 						title="Ketik angka saja"
 						bind:value={formFields.alokasi}
@@ -102,7 +122,7 @@
 			<Button
 				type="button"
 				variant="outline"
-				class="text-red-800 ring-1 ring-red-500"
+				class="tex-tred-800 ring-1 ring-red-500"
 				on:click={onCancel}
 			>
 				Batal
