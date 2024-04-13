@@ -63,7 +63,7 @@ export class MySubClassedDexie extends Dexie {
     super('hsbyatim');
     this.version(1).stores({
       pekerjaan: '++id, pekerjaan, tanggal_masuk', // Primary key and indexed props
-      orang: '++id, nama, jurusan', // Primary key and indexed props
+      orang: '++id, pekerjaanId, nama, jurusan', // Primary key and indexed props
       baju: '++id, orangId', // Primary key and indexed props
       celana: '++id, orangId' // Primary key and indexed props,
     });

@@ -3,8 +3,6 @@
 	import { Toaster } from '$lib/components/ui/sonner';
 	import { dev } from '$app/environment';
 	import Dexie from 'dexie';
-	export const prerender = true;
-	export const ssr = false;
 	const deleteDB = () => {
 		Dexie.delete('hsbyatim')
 			.then(() => {

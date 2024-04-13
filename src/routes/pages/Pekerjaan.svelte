@@ -1,16 +1,19 @@
 <script lang="ts">
-	import Pekerjaan from '$lib/components/structure/TablePekerjaan.svelte';
-	import * as Tabs from '$lib/components/ui/tabs';
+	import { toast } from 'svelte-sonner';
+	import { db } from '$lib/utils/db';
+	import { liveQuery, type IndexableType } from 'dexie';
+
+	import { confirm } from '@tauri-apps/api/dialog';
+
+	import { scrollIntoViewIfNeeded } from '$lib/utils/functions';
+
+	import { modified, checkedPekerjaan, editPekerjaan } from '$lib/stores';
+
+	import Separator from '$lib/components/ui/separator/separator.svelte';
 	import Button from '$lib/components/ui/button/button.svelte';
 	import FormPekerjaan from '$lib/components/structure/FormPekerjaan.svelte';
-	import Separator from '$lib/components/ui/separator/separator.svelte';
-	import { scrollIntoViewIfNeeded } from '$lib/utils/functions';
-	import { modified } from '$lib/stores';
-	import { confirm } from '@tauri-apps/api/dialog';
-	import { checkedPekerjaan, editPekerjaan } from '$lib/stores';
-	import { liveQuery, type Observable } from 'dexie';
-	import { db } from '$lib/utils/db';
-	import { toast } from 'svelte-sonner';
+	import Pekerjaan from '$lib/components/structure/TablePekerjaan.svelte';
+	import * as Tabs from '$lib/components/ui/tabs';
 
 	let tabs: { val: string; mode?: string; pg: any; row?: any; el?: any }[] = [
 		{ val: 'Tabel', pg: Pekerjaan }
@@ -107,29 +110,52 @@
 			.map((id) => Number(id));
 		if (deleteIds.length === 0) {
 			toast.error(
-				'Belum ada pekerjaan yang dipilih untuk dihapus. \n(Pekerjaan yang sedang diedit tidak akan dihapus)'
+				`Belum ada pekerjaan yang dipilih untuk dihapus.${$editPekerjaan.length > 0 ? '\n(Pekerjaan yang sedang diedit tidak akan dihapus)' : ''}`
 			);
 			return;
 		}
 		confirm(
-			`Hapus ${deleteIds.length} pekerjaan? \n(Pekerjaan yang sedang diedit tidak akan dihapus)`,
+			`Hapus ${deleteIds.length} pekerjaan dan semua ukuran-ukurannya?${$editPekerjaan.length > 0 ? '\n(Pekerjaan yang sedang diedit tidak akan dihapus)' : ''}`,
 			'HSB Yatim'
-		).then((res) => {
-			if (!res) return;
-			db.pekerjaan
-				.bulkDelete(deleteIds)
-				.then(() => {
-					$checkedPekerjaan = {};
-					toast.success('Pekerjaan berhasil dihapus');
-				})
-				.catch((err) => {
-					console.error(err);
+		)
+			.then(async (res) => {
+				if (!res) return;
+				//get orangId by pekerjaanId
+				const orangIds = (await db.orang.where('pekerjaanId').anyOf(deleteIds).toArray())
+					.map((row) => row.id)
+					.filter((id) => id !== undefined); //remove undefined
+				if (orangIds && orangIds.length > 0) {
+					await Promise.all([
+						db.baju
+							.where('orangId')
+							.anyOf(orangIds as IndexableType[])
+							.delete(),
+						db.celana
+							.where('orangId')
+							.anyOf(orangIds as IndexableType[])
+							.delete()
+					]);
+					//delete orang
+					await db.orang.bulkDelete(orangIds);
+				}
+				//delete pekerjaan
+				await db.pekerjaan.bulkDelete(deleteIds);
+				deleteIds.forEach((id) => {
+					delete $checkedPekerjaan[id];
 				});
-		});
+				toast.warning(
+					`${deleteIds.length} pekerjaan beserta ${orangIds.length} ukurannya berhasil dihapus`
+				);
+				//update dataKerjaan
+				// dataKerjaan = dataKerjaan.filter((row) => !deleteIds.includes(row.id));
+			})
+			.catch((err) => {
+				console.error(err);
+			});
 	};
 </script>
 
-<div class="my-4 flex h-5 items-center space-x-1 text-sm">
+<div class="mt-4 flex h-5 items-center space-x-1 text-sm" class:mb-4={tabs.length > 1}>
 	<Button variant="ghost" class="px-2" on:click={pekerjaanBaru}>
 		<svg
 			xmlns="http://www.w3.org/2000/svg"
@@ -151,7 +177,7 @@
 		</svg>
 	</Button>
 	<Separator orientation="vertical" />
-	<Button variant="ghost" class="px-2" on:click={pekerjaanEdit}>
+	<Button variant="ghost" class="px-2" on:click={pekerjaanEdit} disabled={tabValue !== 'Tabel'}>
 		<svg
 			xmlns="http://www.w3.org/2000/svg"
 			width="1em"
@@ -166,7 +192,7 @@
 		</svg>
 	</Button>
 	<Separator orientation="vertical" />
-	<Button variant="ghost" class="px-2" on:click={pekerjaanHapus}>
+	<Button variant="ghost" class="px-2" on:click={pekerjaanHapus} disabled={tabValue !== 'Tabel'}>
 		<svg
 			xmlns="http://www.w3.org/2000/svg"
 			width="1em"
