@@ -300,7 +300,8 @@
 			{#if tab.val === 'Tabel'}
 				<svelte:component this={tab.pg} bind:data />
 			{:else}
-				<FormPekerjaan
+				<svelte:component
+					this={tab.pg}
 					namaPekerjaan={tab.val}
 					row={tab.row}
 					onCancel={() => {

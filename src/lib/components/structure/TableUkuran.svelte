@@ -1,25 +1,22 @@
 <script lang="ts">
 	import date from 'date-and-time';
 	import * as DropdownMenu from '$lib/components/ui/dropdown-menu/';
-	import { createTable, Render, Subscribe, createRender } from 'svelte-headless-table';
+	import { createTable, Render, Subscribe } from 'svelte-headless-table';
+	import { addPagination, addHiddenColumns } from 'svelte-headless-table/plugins';
 	import { readable } from 'svelte/store';
 
-	import type { DataPekerjaan } from '$lib/types';
+	import type { DataUkuran } from '$lib/types';
 
-	import { addPagination, addHiddenColumns } from 'svelte-headless-table/plugins';
-	import Pagination from '$lib/components/ui/Pagination.svelte';
 	import PekerjaanActions from '$lib/components/utils/PekerjaanActions.svelte';
 
 	import * as Table from '$lib/components/ui/table';
+	import Pagination from '$lib/components/ui/Pagination.svelte';
 	import { Input } from '$lib/components/ui/input';
 	import { Checkbox } from '$lib/components/ui/checkbox';
 	import { Button } from '$lib/components/ui/button';
 	import { fade } from 'svelte/transition';
 	import { onMount } from 'svelte';
-
-	import { liveQuery } from 'dexie';
-	import { db } from '$lib/utils/db';
-	import { checkedPekerjaan } from '$lib/stores';
+	import { checkedUkuran } from '$lib/stores';
 
 	export let data;
 	let filterInput = false;
@@ -72,51 +69,50 @@
 		dataPekerjaan = [...$data];
 		loadData();
 	}
-	let table = createTable(readable(dataPekerjaan as DataPekerjaan[]), {
+	let table = createTable(readable(dataPekerjaan as DataUkuran[]), {
 		page: addPagination(),
 		hide: addHiddenColumns()
 	});
 
-	let columns = table.createColumns([
-		table.column({
-			accessor: 'id',
-			header: 'ID'
-		}),
-		table.column({
-			accessor: 'pekerjaan',
-			header: 'Pekerjaan'
-		}),
-
-		table.column({
-			accessor: 'alokasi',
-			header: 'Alokasi',
-			cell: ({ value }) => {
-				const formatted = new Intl.NumberFormat('id-ID', {
-					style: 'currency',
-					currency: 'IDR',
-					minimumFractionDigits: 0,
-					maximumFractionDigits: 0
-				}).format(value);
-				return formatted;
-			}
-		}),
-		table.column({
-			accessor: 'tanggal_masuk',
-			header: 'Tanggal Masuk',
-			cell: ({ value }) => {
-				const formatted = date.format(value, 'YYYY-MM-DD HH:mm:ss');
-				return formatted;
-			}
-		}),
-		table.column({
-			accessor: 'status',
-			header: 'Status'
-		})
-		// table.column({
-		// 	accessor: ({ id }) => id,
-		// 	header: ''
-		// })
-	]);
+	const hidableCols = [
+		'id',
+		'nama',
+		'jurusan',
+		'jenis_kelamin',
+		'panjang_baju',
+		'bahu',
+		'tangan_pjg',
+		'tangan_pdk',
+		'l_tgn_pdk',
+		'l_dada',
+		'l_pinggang',
+		'l_pinggul',
+		'leher',
+		'jumlah_baju',
+		'catatan_baju',
+		'printed_baju',
+		'panjang_celana',
+		'pinggang',
+		'pesak',
+		'paha',
+		'lutut',
+		'l_bawah',
+		'pinggul',
+		'jumlah_celana',
+		'catatan_celana',
+		'printed_celana'
+	];
+	let columns = table.createColumns(
+		hidableCols.map((col) =>
+			table.column({
+				accessor: col as keyof DataUkuran,
+				//make col title case and replace '_' with space
+				header: col.replace(/_/g, ' ').replace(/^([a-z])|\s+([a-z])/g, function ($1) {
+					return $1.toUpperCase();
+				})
+			})
+		)
+	);
 
 	let { headerRows, pageRows, tableAttrs, tableBodyAttrs, pluginStates, flatColumns } =
 		table.createViewModel(columns);
@@ -126,11 +122,6 @@
 
 	let ids = flatColumns.map((col) => col.id);
 	let hideForId = Object.fromEntries(ids.map((id) => [id, true]));
-
-	// $: $hiddenColumnIds = Object.entries(hideForId)
-	// 	.filter(([, hide]) => !hide)
-	// 	.map(([id]) => id);
-	const hidableCols = ['id', 'pekerjaan', 'alokasi', 'tanggal_masuk', 'status'];
 
 	let checkedAll = false;
 
@@ -150,7 +141,7 @@
 				return 0;
 			});
 
-		table = createTable(readable(dataPekerjaan as DataPekerjaan[]), {
+		table = createTable(readable(dataPekerjaan as DataUkuran[]), {
 			page: addPagination({ initialPageSize: $pageSize, initialPageIndex: $pageIndex }),
 			hide: addHiddenColumns()
 		});
@@ -166,23 +157,23 @@
 
 		$pageRows.forEach((row) => {
 			const id = row.cells[0].render().toString();
-			$checkedPekerjaan[id] = $checkedPekerjaan.hasOwnProperty(id) ? $checkedPekerjaan[id] : false;
+			$checkedUkuran[id] = $checkedUkuran.hasOwnProperty(id) ? $checkedUkuran[id] : false;
 		});
 	};
 	let checkedCount: number;
 	$: if (document.querySelector('#masterCB')) {
 		const masterCB = document.querySelector('#masterCB') as HTMLInputElement;
 		checkedCount = Object.values($pageRows).filter(
-			(row) => $checkedPekerjaan[row.cells[0].render().toString()]
+			(row) => $checkedUkuran[row.cells[0].render().toString()]
 		).length;
 		masterCB.indeterminate = checkedCount > 0 && checkedCount !== $pageRows.length;
 		masterCB.checked = checkedCount > 0 && checkedCount === $pageRows.length;
 	}
 	let onlySelected: boolean = false;
 	const showSelected = () => {
-		// if (!Object.values($checkedPekerjaan).some((checked) => checked)) return;
+		// if (!Object.values($checkedUkuran).some((checked) => checked)) return;
 		setTimeout(() => {
-			dataPekerjaan = $data.filter((row: any) => (onlySelected ? $checkedPekerjaan[row.id] : true));
+			dataPekerjaan = $data.filter((row: any) => (onlySelected ? $checkedUkuran[row.id] : true));
 			loadData();
 		});
 	};
@@ -288,7 +279,7 @@
 								on:click={() =>
 									$pageRows.forEach((row) =>
 										setTimeout(
-											() => ($checkedPekerjaan[row.cells[0].render().toString()] = checkedAll)
+											() => ($checkedUkuran[row.cells[0].render().toString()] = checkedAll)
 										)
 									)}
 							/>
@@ -309,7 +300,7 @@
 									<DropdownMenu.Item
 										on:click={() => {
 											$pageRows.forEach(
-												(row) => ($checkedPekerjaan[row.cells[0].render().toString()] = true)
+												(row) => ($checkedUkuran[row.cells[0].render().toString()] = true)
 											);
 										}}
 										>Select all
@@ -317,7 +308,7 @@
 									<DropdownMenu.Item
 										on:click={() => {
 											$pageRows.forEach(
-												(row) => ($checkedPekerjaan[row.cells[0].render().toString()] = false)
+												(row) => ($checkedUkuran[row.cells[0].render().toString()] = false)
 											);
 											if (onlySelected) showSelected();
 										}}
@@ -327,13 +318,13 @@
 										on:click={() => {
 											$pageRows.forEach(
 												(row) =>
-													($checkedPekerjaan[row.cells[0].render().toString()] =
-														!$checkedPekerjaan[row.cells[0].render().toString()])
+													($checkedUkuran[row.cells[0].render().toString()] =
+														!$checkedUkuran[row.cells[0].render().toString()])
 											);
 											if (onlySelected) showSelected();
 										}}>Invert selection</DropdownMenu.Item
 									>
-									{#if onlySelected || (Object.values($checkedPekerjaan).some((checked) => checked) && Object.values($checkedPekerjaan).some((checked) => !checked))}
+									{#if onlySelected || (Object.values($checkedUkuran).some((checked) => checked) && Object.values($checkedUkuran).some((checked) => !checked))}
 										<DropdownMenu.Separator />
 										<DropdownMenu.CheckboxItem bind:checked={onlySelected} on:click={showSelected}
 											>Show only selected</DropdownMenu.CheckboxItem
@@ -403,15 +394,15 @@
 							<Table.Row {...rowAttrs} class="group">
 								<Table.Cell class="sticky left-0">
 									<Checkbox
-										bind:checked={$checkedPekerjaan[row.cells[0].render().toString()]}
+										bind:checked={$checkedUkuran[row.cells[0].render().toString()]}
 										on:click={() =>
 											setTimeout(
 												() =>
-													(checkedAll = Object.keys($checkedPekerjaan)
+													(checkedAll = Object.keys($checkedUkuran)
 														.filter((key) =>
 															$pageRows.some((row) => row.cells[0].render().toString() === key)
 														)
-														.every((key) => $checkedPekerjaan[key]))
+														.every((key) => $checkedUkuran[key]))
 											)}
 									/>
 								</Table.Cell>
@@ -440,7 +431,7 @@
 					{/each}
 				{:else}
 					<Table.Row>
-						<Table.Cell>No Data</Table.Cell>
+						<Table.Cell colspan={hidableCols.length}>No Data</Table.Cell>
 					</Table.Row>
 				{/if}
 			</Table.Body>
@@ -450,7 +441,7 @@
 
 <div class="flex items-center justify-end space-x-0 py-4">
 	<div class="flex-1 text-sm text-muted-foreground">
-		{Object.values($checkedPekerjaan).filter((row) => row).length} of{' '}
+		{Object.values($checkedUkuran).filter((row) => row).length} of{' '}
 		{$pageRows.length} row(s) selected.
 	</div>
 	<Pagination

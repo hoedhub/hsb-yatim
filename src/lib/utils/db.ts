@@ -13,7 +13,7 @@ export interface Baju {
   leher: number;
   jumlah: number
   catatan: string;
-  printed: string;
+  printed: boolean;
   orangId: number;
 }
 
@@ -28,7 +28,7 @@ export interface Celana {
   pinggul: number;
   jumlah: number;
   catatan: string;
-  printed: string;
+  printed: boolean;
   orangId: number;
 }
 
@@ -37,9 +37,9 @@ export interface Orang {
   id?: number;
   nama: string;
   jurusan: string;
-  jenis_kelamin: boolean;
+  jenis_kelamin: string;
   baju?: Baju[];
-  pekerjaanId: string;
+  pekerjaanId: number;
   celana?: Celana[];
 }
 

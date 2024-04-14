@@ -16,7 +16,7 @@
 		const data = await db.pekerjaan.toArray();
 		return data;
 	});
-	let cbKerjaan: Record<number, boolean> = {};
+	export let cbKerjaan: Record<number, boolean> = {};
 	// const tags = Array.from({ length: 550 }).map((_, i, a) => `v1.2.0-beta.${a.length - i}`);
 	$: if ($dataKerjaan) {
 		kerjaan = $dataKerjaan.filter((row) =>
@@ -146,22 +146,25 @@
 			<Separator class="my-2" />
 			{#each kerjaan as row}
 				<div
-					class="text-mut flex items-center p-1"
+					class="p-1 pl-0"
 					class:text-muted={cbKerjaan[row.id]}
 					class:bg-muted-foreground={cbKerjaan[row.id]}
 				>
-					<label class="w-full cursor-pointer select-none text-sm" for={`cb-${row.id}`}>
+					<label
+						class="flex w-full cursor-pointer select-none items-center text-sm"
+						for={`cb-${row.id}`}
+					>
 						<input
 							id={`cb-${row.id}`}
 							type="checkbox"
-							class="cursor-pointer"
+							class="mr-1 cursor-pointer"
 							on:click={(e) => onKerjaanCheck(e, row.id)}
 						/>
 						{row.pekerjaan}
 						<!-- {row} -->
 					</label>
 				</div>
-				<Separator class="my-0.5" />
+				<!-- <Separator class="my-0.5" /> -->
 			{/each}
 		</div>
 	</ScrollArea>

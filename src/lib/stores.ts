@@ -5,3 +5,5 @@ export const modified = writable<Record<string, boolean>>({});//writable<{ form:
 export const reload = writable<object>({})
 export const checkedPekerjaan = writable<Record<string, boolean>>({})
 export const editPekerjaan = writable<number[]>([]);
+export const checkedUkuran = writable<Record<string, boolean>>({})
+export const editUkuran = writable<number[]>([]);

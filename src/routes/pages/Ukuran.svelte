@@ -1,27 +1,95 @@
 <script lang="ts">
-	import { Separator } from '$lib/components/ui/separator/index.js';
+	import { confirm } from '@tauri-apps/api/dialog';
 	import { db, type Pekerjaan } from '$lib/utils/db';
-	import { liveQuery, type Observable } from 'dexie';
+	import { liveQuery, type IndexableType, type Observable } from 'dexie';
 	import Button from '$lib/components/ui/button/button.svelte';
 
 	import { onMount, onDestroy } from 'svelte';
-	import FormPekerjaan from '$lib/components/structure/FormPekerjaan.svelte';
+	import FormUkuran from '$lib/components/structure/FormUkuran.svelte';
 	import PekerjaanSelector from '$lib/components/structure/PekerjaanSelector.svelte';
+	import * as Tabs from '$lib/components/ui/tabs';
+	import { Separator } from '$lib/components/ui/separator/index.js';
+	import { modified } from '$lib/stores';
+	import TableUkuran from '$lib/components/structure/TableUkuran.svelte';
+	import { scrollIntoViewIfNeeded } from '$lib/utils/functions';
 
 	let expanded: boolean = true;
-	let tabValue: string = 'Tabel';
+	let cbKerjaan: Record<number, boolean> = {};
+
+	$: data = liveQuery(async () => {
+		const idKerjaan = Object.keys(cbKerjaan).filter((key: any) => {
+			cbKerjaan[key];
+		});
+		const idOrang = (await db.orang.where('pekerjaanId').anyOf(idKerjaan).toArray())
+			.map((row) => row.id)
+			.filter((id) => id !== undefined); //remove undefined;
+		// if (!idOrang || idOrang.length <= 0) return;
+		const baju = await db.baju
+			.where('orangId')
+			.anyOf(idOrang as IndexableType[])
+			.toArray();
+		const celana = await db.celana
+			.where('orangId')
+			.anyOf(idOrang as IndexableType[])
+			.toArray();
+		const data = [...baju, ...celana];
+		return data;
+	});
+
 	let tabs: { val: string; mode?: string; pg: any; row?: any; el?: any }[] = [
-		{ val: 'Tabel', pg: '' }
+		{ val: 'Tabel', pg: TableUkuran }
 	];
-	const pekerjaanBaru = () => {};
+	let tabValue = 'Tabel';
+
+	const closeTab = (value: string) => {
+		if (tabValue === value) {
+			const openId = tabs.findIndex((tab: any) => tab.val === value);
+			if (tabs[tabs.length - 1].val !== tabs[openId].val) tabValue = tabs[openId + 1].val;
+			else tabValue = tabs[openId - 1].val;
+		}
+		tabs = tabs.filter((tab) => tab.val !== value);
+	};
+
+	const pekerjaanBaru = () => {
+		const newVal = `Ukuran Baru${
+			tabs.find((tab) => tab.val.includes('Ukuran Baru'))
+				? ` ${
+						Number(
+							[...tabs]
+								.reverse()
+								.find((tab) => tab.val.includes('Ukuran Baru'))
+								?.val.replace(/\D/g, '')
+						) + 1
+					}`
+				: ''
+		}`;
+		tabs = [
+			...tabs,
+			{
+				val: newVal,
+				mode: 'new',
+				pg: FormUkuran
+			}
+		];
+		tabValue = newVal;
+		setTimeout(() => scrollIntoViewIfNeeded(tabs.find((tab) => tab.val === tabValue)?.el));
+	};
+
 	const pekerjaanEdit = () => {};
 	const pekerjaanHapus = () => {};
+
+	onMount(() => {
+		setTimeout(() => Object.keys(cbKerjaan).forEach((key: any) => (cbKerjaan[key] = true)));
+	});
 </script>
 
-<PekerjaanSelector bind:expanded />
+<div class:hidden={tabValue !== 'Tabel'}>
+	<PekerjaanSelector bind:expanded bind:cbKerjaan />
+</div>
 <div
-	class="fixed bottom-2 top-0 mt-12 min-h-0 w-full transition-all duration-300"
-	class:ml-56={expanded}
+	class="fixed bottom-2 right-2 top-0 mt-12 min-h-0 transition-all duration-300"
+	class:left-[19rem]={expanded && tabValue === 'Tabel'}
+	class:left-16={!expanded || tabValue !== 'Tabel'}
 >
 	<div class="mt-4 flex h-5 items-center space-x-1 text-sm" class:mb-4={tabs.length > 1}>
 		<Button variant="ghost" class="px-2" on:click={pekerjaanBaru}>
@@ -78,4 +146,112 @@
 			</svg>
 		</Button>
 	</div>
+	<Tabs.Root bind:value={tabValue} class="flex flex-col">
+		{#if tabs.length > 1}
+			<Tabs.List>
+				{#each tabs as tab (tab.val)}
+					<Tabs.Trigger
+						value={tab.val}
+						class="flex items-center"
+						on:click={() => (tabValue = tab.val)}
+					>
+						{#if tab.mode === 'new'}
+							<svg
+								xmlns="http://www.w3.org/2000/svg"
+								width="1em"
+								height="1em"
+								viewBox="0 0 24 24"
+								class="mx-1"
+							>
+								<g fill="currentColor">
+									<path
+										d="M12 6a1 1 0 0 1 1 1v4h4a1 1 0 1 1 0 2h-4v4a1 1 0 1 1-2 0v-4H7a1 1 0 1 1 0-2h4V7a1 1 0 0 1 1-1"
+									/>
+									<path
+										fill-rule="evenodd"
+										d="M5 22a3 3 0 0 1-3-3V5a3 3 0 0 1 3-3h14a3 3 0 0 1 3 3v14a3 3 0 0 1-3 3zm-1-3a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1V5a1 1 0 0 0-1-1H5a1 1 0 0 0-1 1z"
+										clip-rule="evenodd"
+									/>
+								</g>
+							</svg>
+						{:else if tab.mode === 'edit'}
+							<svg
+								xmlns="http://www.w3.org/2000/svg"
+								width="1em"
+								height="1em"
+								viewBox="0 0 24 24"
+								class="mx-1"
+							>
+								<path
+									fill="currentColor"
+									d="M21 12a1 1 0 0 0-1 1v6a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V5a1 1 0 0 1 1-1h6a1 1 0 0 0 0-2H5a3 3 0 0 0-3 3v14a3 3 0 0 0 3 3h14a3 3 0 0 0 3-3v-6a1 1 0 0 0-1-1m-15 .76V17a1 1 0 0 0 1 1h4.24a1 1 0 0 0 .71-.29l6.92-6.93L21.71 8a1 1 0 0 0 0-1.42l-4.24-4.29a1 1 0 0 0-1.42 0l-2.82 2.83l-6.94 6.93a1 1 0 0 0-.29.71m10.76-8.35l2.83 2.83l-1.42 1.42l-2.83-2.83ZM8 13.17l5.93-5.93l2.83 2.83L10.83 16H8Z"
+								/>
+							</svg>
+						{:else}
+							<svg
+								xmlns="http://www.w3.org/2000/svg"
+								width="1em"
+								height="1em"
+								viewBox="0 0 256 256"
+								class="mx-1"
+							>
+								<path
+									fill="currentColor"
+									d="M224 48H32a8 8 0 0 0-8 8v136a16 16 0 0 0 16 16h176a16 16 0 0 0 16-16V56a8 8 0 0 0-8-8M40 112h40v32H40Zm56 0h120v32H96Zm-56 48h40v32H40Zm176 32H96v-32h120z"
+								/>
+							</svg>
+						{/if}
+						<div bind:this={tab.el} id={tab.val.replace(/\s/g, '_')} class="flex justify-between">
+							{tab.val}
+							{#if $modified[tab.val]}
+								<svg
+									xmlns="http://www.w3.org/2000/svg"
+									width="1em"
+									height="1em"
+									viewBox="0 0 256 256"
+									><path
+										fill="currentColor"
+										d="M128 80a48 48 0 1 0 48 48a48 48 0 0 0-48-48m0 60a12 12 0 1 1 12-12a12 12 0 0 1-12 12"
+										class="h-1 w-1 text-orange-500"
+									/>
+								</svg>
+							{/if}
+						</div>
+						{#if tab.val !== 'Tabel'}
+							<Button
+								class="ml-1 mr-0 h-4 w-4 p-1 pr-0 hover:text-red-500"
+								variant="ghost"
+								on:click={async () => {
+									let doClose = false;
+									if ($modified[tab.val])
+										doClose = await confirm('Batalkan perubahan form?', 'HSB Yatim');
+									if (!$modified[tab.val] || doClose) closeTab(tab.val);
+								}}
+							>
+								&Cross;
+							</Button>
+						{/if}
+					</Tabs.Trigger>
+				{/each}
+			</Tabs.List>
+		{/if}
+		{#each tabs as tab (tab.val)}
+			<Tabs.Content value={tab.val}>
+				{#if tab.val === 'Tabel'}
+					<svelte:component this={tab.pg} bind:data />
+				{:else}
+					<svelte:component
+						this={tab.pg}
+						pekerjaanId={Number(Object.keys(cbKerjaan).find((key) => cbKerjaan[Number(key)]))}
+						namaOrang={tab.val}
+						row={tab.row}
+						onCancel={() => {
+							closeTab(tab.val);
+							return null;
+						}}
+					/>
+				{/if}
+			</Tabs.Content>
+		{/each}
+	</Tabs.Root>
 </div>
