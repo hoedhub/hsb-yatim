@@ -71,6 +71,7 @@
 		if (row && $editUkuran.includes(row.id))
 			$editUkuran = $editUkuran.filter((id) => id !== row.id);
 	});
+
 	$: if (mounted) {
 		if (pekerjaanId && pekerjaanId.value && pekerjaanId?.value !== formFields.pekerjaanId)
 			formFields.pekerjaanId = pekerjaanId.value;
@@ -126,18 +127,19 @@
 		}
 		return true;
 	};
-
+	let saving: boolean;
 	async function simpanPekerjaan() {
+		if (saving) return;
+		saving = true;
 		if (!validateForm()) return;
 		try {
 			const { nama, jurusan, jenis_kelamin, pekerjaanId } = formFields;
-			const idOrang = await db.orang.add({
+			const rowOrang = {
 				nama,
 				jurusan,
-				jenis_kelamin: jenis_kelamin.value,
-				pekerjaanId: pekerjaanId.value
-			});
-
+				jenis_kelamin,
+				pekerjaanId
+			};
 			const ukuranBaju = {
 				panjang: formFields.panjang_baju,
 				bahu: formFields.bahu,
@@ -150,10 +152,8 @@
 				leher: formFields.leher,
 				jumlah: formFields.jumlah_baju,
 				catatan: formFields.catatan_baju,
-				printed: formFields.printed_baju,
-				orangId: idOrang
+				printed: formFields.printed_baju
 			};
-
 			const ukuranCelana = {
 				panjang: formFields.panjang_celana,
 				pinggang: formFields.pinggang,
@@ -164,20 +164,35 @@
 				pinggul: formFields.pinggul,
 				jumlah: formFields.jumlah_celana,
 				catatan: formFields.catatan_celana,
-				printed: formFields.printed_celana,
-				orangId: idOrang
+				printed: formFields.printed_celana
 			};
+			let idOrang, idBaju, idCelana;
+			if (row) {
+				idOrang = row.id;
+				await db.orang.update(idOrang, rowOrang);
+				const rowBaju = await db.baju.where('orangId').equals(idOrang).toArray();
+				idBaju = rowBaju[0].id;
+				await db.baju.update(idBaju, ukuranBaju);
+				const rowCelana = await db.celana.where('orangId').equals(idOrang).toArray();
+				idCelana = rowCelana[0].id;
+				await db.baju.update(idCelana, ukuranCelana);
+			} else idOrang = await db.orang.add(rowOrang);
 
-			await Promise.all([db.baju.add(ukuranBaju), db.celana.add(ukuranCelana)]);
+			await Promise.all([
+				db.baju.add({ ...ukuranBaju, orangId: idOrang }),
+				db.celana.add({ ...ukuranCelana, orangId: idOrang })
+			]);
 
-			const status = `Berhasil menambah uukuran baru untuk ${formFields.pekerjaan}`;
+			const status = `Berhasil menambah uukuran baru untuk ${pekerjaanId.label}`;
 			formFields = JSON.parse(defaultFields);
 			onCancel();
 			toast.success(status);
 		} catch (error) {
-			const status = `Gagal menyimpan pekerjaan ${formFields.pekerjaan}: ${error}`;
+			const status = `Gagal menyimpan ukuran ${formFields.nama} untuk pekerjaan ${pekerjaanId.label}: ${error}`;
 			console.error(status);
 			toast.error(status);
+		} finally {
+			saving = false;
 		}
 	}
 </script>

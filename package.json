@@ -41,6 +41,7 @@
 	},
 	"type": "module",
 	"dependencies": {
+		"@types/pdfmake": "^0.2.9",
 		"bits-ui": "^0.19.5",
 		"clsx": "^2.1.0",
 		"d3": "^7.9.0",
@@ -50,6 +51,7 @@
 		"lucide-svelte": "^0.354.0",
 		"mode-watcher": "^0.3.0",
 		"paneforge": "^0.0.2",
+		"pdfmake": "^0.2.10",
 		"svelte-sonner": "^0.3.19",
 		"tailwind-merge": "^2.2.1",
 		"tailwind-variants": "^0.2.0"

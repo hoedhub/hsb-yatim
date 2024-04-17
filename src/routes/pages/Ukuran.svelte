@@ -22,9 +22,11 @@
 		const idKerjaan = Object.keys(cbKerjaan)
 			.filter((key: any) => cbKerjaan[key])
 			.map((id) => Number(id));
+		console.log('idKerjaan', idKerjaan);
 		const orang = await db.orang.where('pekerjaanId').anyOf(idKerjaan).toArray();
+		console.log('orang', orang);
 		const idOrang = orang.map((row) => row.id).filter((id) => id !== undefined); //remove undefined;
-		// if (!idOrang || idOrang.length <= 0) return;
+		console.log('idOrang', idOrang);
 		const baju = await db.baju
 			.where('orangId')
 			.anyOf(idOrang as IndexableType[])
@@ -48,7 +50,7 @@
 		}));
 		return data;
 	});
-	// $: console.log('data', $dataUkuran);
+	$: console.log('data', $data);
 
 	let dataUkuran: Record<any, any>[] = [];
 	$: if ($data) {
@@ -124,7 +126,53 @@
 			// console.log('pkjid', pekerjaanIds);
 		}
 	};
-	const pekerjaanHapus = () => {};
+
+	let deleting = false;
+	const pekerjaanHapus = () => {
+		if (deleting) return;
+		const deleteIds = Object.keys($checkedUkuran)
+			.filter((key) => $checkedUkuran[key] && !$editUkuran.includes(Number(key)))
+			.map((id) => Number(id));
+		if (deleteIds.length === 0) {
+			toast.error(
+				`Belum ada ukuran yang dipilih untuk dihapus.${$editUkuran.length > 0 ? '\n(Ukuran yang sedang diedit tidak akan dihapus)' : ''}`
+			);
+			return;
+		}
+		try {
+			deleting = true;
+			confirm(
+				`Hapus ${deleteIds.length} ukuran?${$editUkuran.length > 0 ? '\n(Ukuran yang sedang diedit tidak akan dihapus)' : ''}`,
+				'HSB Yatim'
+			)
+				.then(async (res) => {
+					if (!res) return;
+					await Promise.all([
+						db.baju
+							.where('orangId')
+							.anyOf(deleteIds as IndexableType[])
+							.delete(),
+						db.celana
+							.where('orangId')
+							.anyOf(deleteIds as IndexableType[])
+							.delete()
+					]);
+					//delete orang
+					await db.orang.bulkDelete(deleteIds);
+					deleteIds.forEach((id) => {
+						delete $checkedUkuran[id];
+					});
+					toast.warning(`${deleteIds.length} ukuran berhasil dihapus`);
+				})
+				.catch((err) => {
+					console.error(err);
+				});
+		} catch (err) {
+			console.error(err);
+		} finally {
+			deleting = false;
+		}
+	};
 
 	onMount(() => {
 		setTimeout(() => Object.keys(cbKerjaan).forEach((key: any) => (cbKerjaan[key] = true)));

@@ -61,18 +61,16 @@
 			if (doReset) formFields = { ...JSON.parse(defaultFields) };
 		}
 	};
-
+	let saving: boolean;
 	async function simpanPekerjaan() {
+		if (saving) return;
+		saving = true;
 		let status = '';
 		try {
 			// Add the new friend!
 			let id;
 			if (row) {
 				id = row.id;
-				// console.log('row', row);
-				// console.log('date', row.tanggal_masuk);
-				// console.log('new Date', new Date(row.tanggal_masuk));
-				// return;
 				await db.pekerjaan.update(id, {
 					pekerjaan: formFields.pekerjaan,
 					alokasi: Number(formFields.alokasi.replace(/\D/g, '')),
@@ -97,6 +95,8 @@
 			status = `Gagal menyimpan pekerjaan ${formFields.pekerjaan}: ${error}`;
 			toast.error(status);
 			console.error(status);
+		} finally {
+			saving = false;
 		}
 	}
 </script>

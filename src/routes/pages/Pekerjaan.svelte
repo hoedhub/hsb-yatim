@@ -104,7 +104,9 @@
 			// console.log('pkjid', pekerjaanIds);
 		}
 	};
+	let deleting = false;
 	const pekerjaanHapus = () => {
+		if (deleting) return;
 		const deleteIds = Object.keys($checkedPekerjaan)
 			.filter((key) => $checkedPekerjaan[key] && !$editPekerjaan.includes(Number(key)))
 			.map((id) => Number(id));
@@ -114,44 +116,51 @@
 			);
 			return;
 		}
-		confirm(
-			`Hapus ${deleteIds.length} pekerjaan dan semua ukuran-ukurannya?${$editPekerjaan.length > 0 ? '\n(Pekerjaan yang sedang diedit tidak akan dihapus)' : ''}`,
-			'HSB Yatim'
-		)
-			.then(async (res) => {
-				if (!res) return;
-				//get orangId by pekerjaanId
-				const orangIds = (await db.orang.where('pekerjaanId').anyOf(deleteIds).toArray())
-					.map((row) => row.id)
-					.filter((id) => id !== undefined); //remove undefined
-				if (orangIds && orangIds.length > 0) {
-					await Promise.all([
-						db.baju
-							.where('orangId')
-							.anyOf(orangIds as IndexableType[])
-							.delete(),
-						db.celana
-							.where('orangId')
-							.anyOf(orangIds as IndexableType[])
-							.delete()
-					]);
-					//delete orang
-					await db.orang.bulkDelete(orangIds);
-				}
-				//delete pekerjaan
-				await db.pekerjaan.bulkDelete(deleteIds);
-				deleteIds.forEach((id) => {
-					delete $checkedPekerjaan[id];
+		try {
+			deleting = true;
+			confirm(
+				`Hapus ${deleteIds.length} pekerjaan dan semua ukuran-ukurannya?${$editPekerjaan.length > 0 ? '\n(Pekerjaan yang sedang diedit tidak akan dihapus)' : ''}`,
+				'HSB Yatim'
+			)
+				.then(async (res) => {
+					if (!res) return;
+					//get orangId by pekerjaanId
+					const orangIds = (await db.orang.where('pekerjaanId').anyOf(deleteIds).toArray())
+						.map((row) => row.id)
+						.filter((id) => id !== undefined); //remove undefined
+					if (orangIds && orangIds.length > 0) {
+						await Promise.all([
+							db.baju
+								.where('orangId')
+								.anyOf(orangIds as IndexableType[])
+								.delete(),
+							db.celana
+								.where('orangId')
+								.anyOf(orangIds as IndexableType[])
+								.delete()
+						]);
+						//delete orang
+						await db.orang.bulkDelete(orangIds);
+					}
+					//delete pekerjaan
+					await db.pekerjaan.bulkDelete(deleteIds);
+					deleteIds.forEach((id) => {
+						delete $checkedPekerjaan[id];
+					});
+					toast.warning(
+						`${deleteIds.length} pekerjaan beserta ${orangIds.length} ukurannya berhasil dihapus`
+					);
+					//update dataKerjaan
+					// dataKerjaan = dataKerjaan.filter((row) => !deleteIds.includes(row.id));
+				})
+				.catch((err) => {
+					console.error(err);
 				});
-				toast.warning(
-					`${deleteIds.length} pekerjaan beserta ${orangIds.length} ukurannya berhasil dihapus`
-				);
-				//update dataKerjaan
-				// dataKerjaan = dataKerjaan.filter((row) => !deleteIds.includes(row.id));
-			})
-			.catch((err) => {
-				console.error(err);
-			});
+		} catch (err) {
+			console.error(err);
+		} finally {
+			deleting = false;
+		}
 	};
 </script>
 
