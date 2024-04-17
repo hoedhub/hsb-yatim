@@ -55,6 +55,7 @@
 	}
 
 	const onReset = async () => {
+		console.log('row', row);
 		if ($modified[namaPekerjaan]) {
 			const doReset = await confirm('Yakin reset form?', 'HSB Yatim');
 			if (doReset) formFields = { ...JSON.parse(defaultFields) };
@@ -65,14 +66,28 @@
 		let status = '';
 		try {
 			// Add the new friend!
-			const id = await db.pekerjaan.add({
-				pekerjaan: formFields.pekerjaan,
-				alokasi: Number(formFields.alokasi.replace(/\D/g, '')),
-				tanggal_masuk: new Date(),
-				status: 'baru'
-			});
+			let id;
+			if (row) {
+				id = row.id;
+				// console.log('row', row);
+				// console.log('date', row.tanggal_masuk);
+				// console.log('new Date', new Date(row.tanggal_masuk));
+				// return;
+				await db.pekerjaan.update(id, {
+					pekerjaan: formFields.pekerjaan,
+					alokasi: Number(formFields.alokasi.replace(/\D/g, '')),
+					tanggal_masuk: row.tanggal_masuk,
+					status: row.status
+				});
+			} else
+				id = await db.pekerjaan.add({
+					pekerjaan: formFields.pekerjaan,
+					alokasi: Number(formFields.alokasi.replace(/\D/g, '')),
+					tanggal_masuk: new Date(),
+					status: 'baru'
+				});
 
-			status = `Pekerjaan ${formFields.pekerjaan} berhasil disimpan dengan id ${id}`;
+			status = `Pekerjaan ${formFields.pekerjaan} berhasil disimpan${row ? '' : ` dengan id ${id}`}`;
 			toast.success(status);
 
 			// Reset form:
@@ -80,6 +95,8 @@
 			onCancel();
 		} catch (error) {
 			status = `Gagal menyimpan pekerjaan ${formFields.pekerjaan}: ${error}`;
+			toast.error(status);
+			console.error(status);
 		}
 	}
 </script>

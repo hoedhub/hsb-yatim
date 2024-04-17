@@ -12,17 +12,18 @@
 	import { modified } from '$lib/stores';
 	import TableUkuran from '$lib/components/structure/TableUkuran.svelte';
 	import { scrollIntoViewIfNeeded } from '$lib/utils/functions';
+	import { checkedUkuran, editUkuran } from '$lib/stores';
+	import { toast } from 'svelte-sonner';
 
 	let expanded: boolean = true;
 	let cbKerjaan: Record<number, boolean> = {};
 
 	$: data = liveQuery(async () => {
-		const idKerjaan = Object.keys(cbKerjaan).filter((key: any) => {
-			cbKerjaan[key];
-		});
-		const idOrang = (await db.orang.where('pekerjaanId').anyOf(idKerjaan).toArray())
-			.map((row) => row.id)
-			.filter((id) => id !== undefined); //remove undefined;
+		const idKerjaan = Object.keys(cbKerjaan)
+			.filter((key: any) => cbKerjaan[key])
+			.map((id) => Number(id));
+		const orang = await db.orang.where('pekerjaanId').anyOf(idKerjaan).toArray();
+		const idOrang = orang.map((row) => row.id).filter((id) => id !== undefined); //remove undefined;
 		// if (!idOrang || idOrang.length <= 0) return;
 		const baju = await db.baju
 			.where('orangId')
@@ -32,9 +33,27 @@
 			.where('orangId')
 			.anyOf(idOrang as IndexableType[])
 			.toArray();
-		const data = [...baju, ...celana];
+		const data = orang.map((row, id) => ({
+			...row,
+			...baju[id],
+			panjang_baju: baju[id].panjang,
+			jumlah_baju: baju[id].jumlah,
+			catatan_baju: baju[id].catatan,
+			printed_baju: baju[id].printed,
+			...celana[id],
+			panjang_celana: celana[id].panjang,
+			jumlah_celana: celana[id].jumlah,
+			catatan_celana: celana[id].catatan,
+			printed_celana: celana[id].printed
+		}));
 		return data;
 	});
+	// $: console.log('data', $dataUkuran);
+
+	let dataUkuran: Record<any, any>[] = [];
+	$: if ($data) {
+		dataUkuran = [...$data];
+	}
 
 	let tabs: { val: string; mode?: string; pg: any; row?: any; el?: any }[] = [
 		{ val: 'Tabel', pg: TableUkuran }
@@ -75,7 +94,36 @@
 		setTimeout(() => scrollIntoViewIfNeeded(tabs.find((tab) => tab.val === tabValue)?.el));
 	};
 
-	const pekerjaanEdit = () => {};
+	const pekerjaanEdit = () => {
+		if (!Object.values($checkedUkuran).some((val) => val)) {
+			toast.error('Belum ada pekerjaan yang dipilih untuk diedit');
+			return;
+		}
+		const orangIds = Object.keys($checkedUkuran)
+			.filter((key) => $checkedUkuran[key])
+			.map((id) => Number(id));
+		if (dataUkuran) {
+			// if (!pekerjaanIds.some((id) => $editPekerjaan.includes(id)))
+			dataUkuran
+				.filter((row) => orangIds.includes(Number(row.id)) && !$editUkuran.includes(Number(row.id)))
+				.forEach((row) => {
+					tabs = [
+						...tabs,
+						{
+							val: row.nama,
+							mode: 'edit',
+							row,
+							pg: FormUkuran
+						}
+					];
+					$editUkuran = [...$editUkuran, Number(row.id)];
+				});
+			tabValue = tabs[tabs.length - 1].val;
+			setTimeout(() => scrollIntoViewIfNeeded(tabs.find((tab) => tab.val === tabValue)?.el));
+			// console.log('tab', tabValue);
+			// console.log('pkjid', pekerjaanIds);
+		}
+	};
 	const pekerjaanHapus = () => {};
 
 	onMount(() => {
@@ -242,7 +290,6 @@
 				{:else}
 					<svelte:component
 						this={tab.pg}
-						pekerjaanId={Number(Object.keys(cbKerjaan).find((key) => cbKerjaan[Number(key)]))}
 						namaOrang={tab.val}
 						row={tab.row}
 						onCancel={() => {

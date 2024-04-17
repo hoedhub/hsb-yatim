@@ -38,9 +38,7 @@ export interface Orang {
   nama: string;
   jurusan: string;
   jenis_kelamin: string;
-  baju?: Baju[];
   pekerjaanId: number;
-  celana?: Celana[];
 }
 
 export interface Pekerjaan {
@@ -49,7 +47,6 @@ export interface Pekerjaan {
   alokasi: number;
   tanggal_masuk: Date;
   status: string
-  Orang?: Orang[]
 }
 
 export class MySubClassedDexie extends Dexie {
