@@ -41,7 +41,9 @@
 	},
 	"type": "module",
 	"dependencies": {
+		"@internationalized/date": "^3.5.2",
 		"@types/pdfmake": "^0.2.9",
+		"air-datepicker": "^3.5.0",
 		"bits-ui": "^0.19.5",
 		"clsx": "^2.1.0",
 		"d3": "^7.9.0",

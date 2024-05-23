@@ -32,7 +32,7 @@ export type DataUkuran = {
   leher: number;
   jumlah_baju: number
   catatan_baju: string;
-  printed_baju: boolean;
+  printed_baju: string;
   panjang_celana: number;
   pinggang: number;
   pesak: number;
@@ -42,5 +42,5 @@ export type DataUkuran = {
   pinggul: number;
   jumlah_celana: number;
   catatan_celana: string;
-  printed_celana: boolean;
+  printed_celana: string;
 }

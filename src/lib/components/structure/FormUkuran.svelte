@@ -11,6 +11,7 @@
 	import * as Select from '../ui/select';
 	import Checkbox from '../ui/checkbox/checkbox.svelte';
 	import { liveQuery } from 'dexie';
+	import PrintedTime from '../ui/PrintedTime.svelte';
 
 	export let namaOrang = '';
 	export let row: Record<string, any> = {};
@@ -19,7 +20,7 @@
 		const data = await db.pekerjaan.toArray();
 		return data;
 	});
-
+	$: console.log('row', row);
 	let formFields: Record<string, any> = {
 		pekerjaanId: row?.pekerjaanId ? row.pekerjaanId : null,
 		nama: namaOrang,
@@ -36,7 +37,7 @@
 		leher: row?.leher ? row.leher : 0,
 		jumlah_baju: row?.jumlah_baju ? row.jumlah_baju : 0,
 		catatan_baju: row?.catatan_baju ? row.catatan_baju : '',
-		printed_baju: row?.printed_baju ? row.printed_baju : false,
+		printed_baju: row?.printed_baju ? row.printed_baju : '',
 		panjang_celana: row?.panjang_celana ? row.panjang_celana : 0,
 		pinggang: row?.pinggang ? row.pinggang : 0,
 		pesak: row?.pesak ? row.pesak : 0,
@@ -46,7 +47,7 @@
 		pinggul: row?.pinggul ? row.pinggul : 0,
 		jumlah_celana: row?.jumlah_celana ? row.jumlah_celana : 0,
 		catatan_celana: row?.catatan_celana ? row.catatan_celana : '',
-		printed_celana: row?.printed_celana ? row.printed_celana : false
+		printed_celana: row?.printed_celana ? row.printed_celana : ''
 	};
 	let feedback = Object.fromEntries(
 		Object.entries(formFields).map(([key, value]) => [key, ''])
@@ -132,6 +133,7 @@
 		if (saving) return;
 		saving = true;
 		if (!validateForm()) return;
+
 		try {
 			const { nama, jurusan, jenis_kelamin, pekerjaanId } = formFields;
 			const rowOrang = {
@@ -141,49 +143,53 @@
 				pekerjaanId
 			};
 			const ukuranBaju = {
-				panjang: formFields.panjang_baju,
-				bahu: formFields.bahu,
-				tangan_pjg: formFields.tangan_pjg,
-				tangan_pdk: formFields.tangan_pdk,
-				l_tgn_pdk: formFields.l_tgn_pdk,
-				l_dada: formFields.l_dada,
-				l_pinggang: formFields.l_pinggang,
-				l_pinggul: formFields.l_pinggul,
-				leher: formFields.leher,
-				jumlah: formFields.jumlah_baju,
+				panjang: Number(formFields.panjang_baju),
+				bahu: Number(formFields.bahu),
+				tangan_pjg: Number(formFields.tangan_pjg),
+				tangan_pdk: Number(formFields.tangan_pdk),
+				l_tgn_pdk: Number(formFields.l_tgn_pdk),
+				l_dada: Number(formFields.l_dada),
+				l_pinggang: Number(formFields.l_pinggang),
+				l_pinggul: Number(formFields.l_pinggul),
+				leher: Number(formFields.leher),
+				jumlah: Number(formFields.jumlah_baju),
 				catatan: formFields.catatan_baju,
 				printed: formFields.printed_baju
 			};
 			const ukuranCelana = {
-				panjang: formFields.panjang_celana,
-				pinggang: formFields.pinggang,
-				pesak: formFields.pesak,
-				paha: formFields.paha,
-				lutut: formFields.lutut,
-				l_bawah: formFields.l_bawah,
-				pinggul: formFields.pinggul,
-				jumlah: formFields.jumlah_celana,
+				panjang: Number(formFields.panjang_celana),
+				pinggang: Number(formFields.pinggang),
+				pesak: Number(formFields.pesak),
+				paha: Number(formFields.paha),
+				lutut: Number(formFields.lutut),
+				l_bawah: Number(formFields.l_bawah),
+				pinggul: Number(formFields.pinggul),
+				jumlah: Number(formFields.jumlah_celana),
 				catatan: formFields.catatan_celana,
 				printed: formFields.printed_celana
 			};
-			let idOrang, idBaju, idCelana;
+			let idOrang, idBaju, idCelana, status;
 			if (row) {
 				idOrang = row.id;
 				await db.orang.update(idOrang, rowOrang);
 				const rowBaju = await db.baju.where('orangId').equals(idOrang).toArray();
+				console.log('rowBaju', rowBaju, '\n', ukuranBaju);
 				idBaju = rowBaju[0].id;
 				await db.baju.update(idBaju, ukuranBaju);
 				const rowCelana = await db.celana.where('orangId').equals(idOrang).toArray();
 				idCelana = rowCelana[0].id;
-				await db.baju.update(idCelana, ukuranCelana);
-			} else idOrang = await db.orang.add(rowOrang);
+				await db.celana.update(idCelana, ukuranCelana);
+				status = `Berhasil mengedit uukuran untuk ${pekerjaanId.label}`;
+			} else {
+				idOrang = await db.orang.add(rowOrang);
+				status = `Berhasil menambah uukuran baru untuk ${pekerjaanId.label}`;
 
-			await Promise.all([
-				db.baju.add({ ...ukuranBaju, orangId: idOrang }),
-				db.celana.add({ ...ukuranCelana, orangId: idOrang })
-			]);
+				await Promise.all([
+					db.baju.add({ ...ukuranBaju, orangId: idOrang }),
+					db.celana.add({ ...ukuranCelana, orangId: idOrang })
+				]);
+			}
 
-			const status = `Berhasil menambah uukuran baru untuk ${pekerjaanId.label}`;
 			formFields = JSON.parse(defaultFields);
 			onCancel();
 			toast.success(status);
@@ -195,6 +201,7 @@
 			saving = false;
 		}
 	}
+	$: console.log('printed', formFields.printed_baju, '\n', formFields.printed_celana);
 </script>
 
 <Card.Root class="fixed bottom-2 left-16 right-2 top-40 overflow-auto">
@@ -295,13 +302,9 @@
 								bind:value={formFields.catatan_baju}
 							/>
 						</div>
-						<div class="my-3 flex items-center space-x-2">
-							Status:&nbsp;
-							<Checkbox id="printed_baju" class="mx-1" bind:checked={formFields.printed_baju} />
-							<Label for="printed_baju">
-								{formFields.printed_baju ? 'Sudah' : 'Belum'} Cetak</Label
-							>
-						</div>
+						<p class="text-sm">
+							<PrintedTime bind:timesString={formFields.printed_baju} />
+						</p>
 					</Card.Content>
 				</Card.Root>
 				<Card.Root>
@@ -338,13 +341,9 @@
 								bind:value={formFields.catatan_celana}
 							/>
 						</div>
-						<div class="my-3 flex items-center space-x-2">
-							Status:&nbsp;
-							<Checkbox id="printed_celana" class="mx-1" bind:checked={formFields.printed_celana} />
-							<Label for="printed_celana">
-								{formFields.printed_baju ? 'Sudah' : 'Belum'} Cetak</Label
-							>
-						</div>
+						<p class="text-sm">
+							<PrintedTime bind:timesString={formFields.printed_celana} />
+						</p>
 					</Card.Content>
 				</Card.Root>
 			</div>

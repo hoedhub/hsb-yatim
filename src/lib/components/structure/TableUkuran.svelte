@@ -1,5 +1,5 @@
 <script lang="ts">
-	import date from 'date-and-time';
+	import * as Tooltip from '$lib/components/ui/tooltip';
 	import * as DropdownMenu from '$lib/components/ui/dropdown-menu/';
 	import { createTable, Render, Subscribe } from 'svelte-headless-table';
 	import { addPagination, addHiddenColumns } from 'svelte-headless-table/plugins';
@@ -17,15 +17,16 @@
 	import { fade } from 'svelte/transition';
 	import { onMount } from 'svelte';
 	import { checkedUkuran } from '$lib/stores';
+	import { Value } from '../ui/select';
 
 	export let data;
 	let filterInput = false;
 	let filter: { column: string; keyword: string }[] = []; // Use an array type instead of Record<any, any>
-	let filterTimeout: number;
 	let keyword: string;
+	let filterTimeoutId: ReturnType<typeof setTimeout> | null;
 	const filterAll = () => {
-		clearTimeout(filterTimeout);
-		filterTimeout = setTimeout(
+		if (filterTimeoutId) clearTimeout(filterTimeoutId);
+		filterTimeoutId = setTimeout(
 			() => {
 				// filter = [...filter, { column: 'all', keyword }]
 				if (keyword) {
@@ -103,13 +104,24 @@
 		'printed_celana'
 	];
 	let columns = table.createColumns(
-		hidableCols.map((col) =>
+		hidableCols.map(
+			(col) =>
+				table.column({
+					accessor: col as keyof DataUkuran,
+					//make col title case and replace '_' with space
+					header: col.replace(/_/g, ' ').replace(/^([a-z])|\s+([a-z])/g, function ($1) {
+						return $1.toUpperCase();
+					}),
+					cell: ({ value }) => {
+						let formatted = value;
+						if (col.includes('printed_'))
+							formatted = `${value && typeof value === 'string' ? value.split('\n').length : '0'}`;
+						return formatted;
+					}
+				}),
 			table.column({
-				accessor: col as keyof DataUkuran,
-				//make col title case and replace '_' with space
-				header: col.replace(/_/g, ' ').replace(/^([a-z])|\s+([a-z])/g, function ($1) {
-					return $1.toUpperCase();
-				})
+				accessor: 'printed_baju',
+				header: 'Printed Baju'
 			})
 		)
 	);
@@ -410,13 +422,30 @@
 									{#if hideForId[cell.id]}
 										<Subscribe attrs={cell.attrs()} let:attrs>
 											<Table.Cell class="tcell" {...attrs}>
-												{#if cell.id === 'alokasi'}
-													<div class="text-right">
+												<div
+													class="flex w-full"
+													class:justify-end={!isNaN(dataPekerjaan[Number(row.id)][cell.id]) ||
+														cell.id.includes('printed_')}
+												>
+													{#if cell.id.includes('printed_')}
+														<Tooltip.Root>
+															<Tooltip.Trigger class="w-full">
+																<Render of={cell.render()} />&Cross;
+															</Tooltip.Trigger>
+															{#if dataPekerjaan[Number(row.id)][cell.id]}
+																<Tooltip.Content>
+																	{#each dataPekerjaan[Number(row.id)][cell.id]
+																		.split('\n')
+																		.sort() as line (line)}
+																		<div>{line}</div>
+																	{/each}
+																</Tooltip.Content>
+															{/if}
+														</Tooltip.Root>
+													{:else}
 														<Render of={cell.render()} />
-													</div>
-												{:else}
-													<Render of={cell.render()} />
-												{/if}
+													{/if}
+												</div>
 											</Table.Cell>
 										</Subscribe>
 									{/if}

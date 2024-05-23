@@ -5,9 +5,15 @@ settings:
   excludeLinksFromLockfile: false
 
 dependencies:
+  '@internationalized/date':
+    specifier: ^3.5.2
+    version: 3.5.2
   '@types/pdfmake':
     specifier: ^0.2.9
     version: 0.2.9
+  air-datepicker:
+    specifier: ^3.5.0
+    version: 3.5.0
   bits-ui:
     specifier: ^0.19.5
     version: 0.19.5(svelte@4.2.12)
@@ -1078,6 +1084,10 @@ packages:
     resolution: {integrity: sha512-Y9rRfJG5jcKOE0CLisYbojUjIrIEE7AGMzA/Sm4BslANhbS+cDMpgBdcPT91oJ7OuJ9hYJBx59RjbhxVnrF8Xg==}
     engines: {node: '>=0.4.0'}
     hasBin: true
+
+  /air-datepicker@3.5.0:
+    resolution: {integrity: sha512-WOpn1MaSl5drcXSwkXg5Gh/jXX/VFfamNnIb8E43AY4UKuW/bNEW06e3GGsiWLDBQLabD22L6b6cP7KHnAy54w==}
+    dev: false
 
   /ajv@6.12.6:
     resolution: {integrity: sha512-j3fVLgvTo527anyYyJOGTYJbG+vnnQYvE0m5mmkc1TK+nxAppkCLMIL0aZ4dblVCNoGShhm+kzE4ZUykBoMg4g==}

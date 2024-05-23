@@ -22,11 +22,8 @@
 		const idKerjaan = Object.keys(cbKerjaan)
 			.filter((key: any) => cbKerjaan[key])
 			.map((id) => Number(id));
-		console.log('idKerjaan', idKerjaan);
 		const orang = await db.orang.where('pekerjaanId').anyOf(idKerjaan).toArray();
-		console.log('orang', orang);
 		const idOrang = orang.map((row) => row.id).filter((id) => id !== undefined); //remove undefined;
-		console.log('idOrang', idOrang);
 		const baju = await db.baju
 			.where('orangId')
 			.anyOf(idOrang as IndexableType[])
@@ -50,7 +47,6 @@
 		}));
 		return data;
 	});
-	$: console.log('data', $data);
 
 	let dataUkuran: Record<any, any>[] = [];
 	$: if ($data) {
@@ -173,6 +169,36 @@
 			deleting = false;
 		}
 	};
+	const pekerjaanPrint = () => {
+		if (!Object.values($checkedUkuran).some((val) => val)) {
+			toast.error('Belum ada pekerjaan yang dipilih untuk dicetak');
+			return;
+		}
+		const orangIds = Object.keys($checkedUkuran)
+			.filter((key) => $checkedUkuran[key])
+			.map((id) => Number(id));
+		if (dataUkuran) {
+			// if (!pekerjaanIds.some((id) => $editPekerjaan.includes(id)))
+			dataUkuran
+				.filter((row) => orangIds.includes(Number(row.id)) && !$editUkuran.includes(Number(row.id)))
+				.forEach((row) => {
+					tabs = [
+						...tabs,
+						{
+							val: row.nama,
+							mode: 'edit',
+							row,
+							pg: FormUkuran
+						}
+					];
+					$editUkuran = [...$editUkuran, Number(row.id)];
+				});
+			tabValue = tabs[tabs.length - 1].val;
+			setTimeout(() => scrollIntoViewIfNeeded(tabs.find((tab) => tab.val === tabValue)?.el));
+			// console.log('tab', tabValue);
+			// console.log('pkjid', pekerjaanIds);
+		}
+	};
 
 	onMount(() => {
 		setTimeout(() => Object.keys(cbKerjaan).forEach((key: any) => (cbKerjaan[key] = true)));
@@ -240,6 +266,66 @@
 					/>
 				</g>
 			</svg>
+		</Button>
+		<Separator orientation="vertical" />
+		<Button
+			variant="ghost"
+			class="relative px-2"
+			on:click={pekerjaanPrint}
+			disabled={tabValue !== 'Tabel'}
+		>
+			<svg
+				xmlns="http://www.w3.org/2000/svg"
+				width="1em"
+				height="1em"
+				viewBox="0 0 16 16"
+				class="h-7 w-7"
+				><path
+					fill="currentColor"
+					d="M4 3.5A1.5 1.5 0 0 1 5.5 2h5A1.5 1.5 0 0 1 12 3.5V4h1a2 2 0 0 1 2 2v4.5a1.5 1.5 0 0 1-1.5 1.5H12v.5a1.5 1.5 0 0 1-1.5 1.5h-5A1.5 1.5 0 0 1 4 12.5V12H2.5A1.5 1.5 0 0 1 1 10.5V6a2 2 0 0 1 2-2h1zM4 11v-.5A1.5 1.5 0 0 1 5.5 9h5a1.5 1.5 0 0 1 1.5 1.5v.5h1.5a.5.5 0 0 0 .5-.5V6a1 1 0 0 0-1-1H3a1 1 0 0 0-1 1v4.5a.5.5 0 0 0 .5.5zm1-7h6v-.5a.5.5 0 0 0-.5-.5h-5a.5.5 0 0 0-.5.5zm0 6.5v2a.5.5 0 0 0 .5.5h5a.5.5 0 0 0 .5-.5v-2a.5.5 0 0 0-.5-.5h-5a.5.5 0 0 0-.5.5"
+				/></svg
+			>
+			<svg
+				xmlns="http://www.w3.org/2000/svg"
+				width="1.25em"
+				height="1em"
+				viewBox="0 0 640 512"
+				class="absolute right-0 top-1 h-4 w-4"
+				><path
+					fill="currentColor"
+					d="M211.8 0c7.8 0 14.3 5.7 16.7 13.2C240.8 51.9 277.1 80 320 80s79.2-28.1 91.5-66.8C413.9 5.7 420.4 0 428.2 0h12.6c22.5 0 44.2 7.9 61.5 22.3l126.2 105.1c6.6 5.5 10.7 13.5 11.4 22.1s-2.1 17.1-7.8 23.6l-56 64c-11.4 13.1-31.2 14.6-44.6 3.5L480 197.7V448c0 35.3-28.7 64-64 64H224c-35.3 0-64-28.7-64-64V197.7l-51.5 42.9c-13.3 11.1-33.1 9.6-44.6-3.5l-56-64c-5.7-6.5-8.5-15-7.8-23.6s4.8-16.6 11.4-22.1L137.7 22.3C155 7.9 176.7 0 199.2 0z"
+				/></svg
+			>
+		</Button>
+		<Separator orientation="vertical" />
+		<Button
+			variant="ghost"
+			class="relative px-2"
+			on:click={pekerjaanPrint}
+			disabled={tabValue !== 'Tabel'}
+		>
+			<svg
+				xmlns="http://www.w3.org/2000/svg"
+				width="1em"
+				height="1em"
+				viewBox="0 0 16 16"
+				class="h-7 w-7"
+				><path
+					fill="currentColor"
+					d="M4 3.5A1.5 1.5 0 0 1 5.5 2h5A1.5 1.5 0 0 1 12 3.5V4h1a2 2 0 0 1 2 2v4.5a1.5 1.5 0 0 1-1.5 1.5H12v.5a1.5 1.5 0 0 1-1.5 1.5h-5A1.5 1.5 0 0 1 4 12.5V12H2.5A1.5 1.5 0 0 1 1 10.5V6a2 2 0 0 1 2-2h1zM4 11v-.5A1.5 1.5 0 0 1 5.5 9h5a1.5 1.5 0 0 1 1.5 1.5v.5h1.5a.5.5 0 0 0 .5-.5V6a1 1 0 0 0-1-1H3a1 1 0 0 0-1 1v4.5a.5.5 0 0 0 .5.5zm1-7h6v-.5a.5.5 0 0 0-.5-.5h-5a.5.5 0 0 0-.5.5zm0 6.5v2a.5.5 0 0 0 .5.5h5a.5.5 0 0 0 .5-.5v-2a.5.5 0 0 0-.5-.5h-5a.5.5 0 0 0-.5.5"
+				/></svg
+			>
+			<svg
+				xmlns="http://www.w3.org/2000/svg"
+				width="1em"
+				height="1em"
+				viewBox="0 0 512 512"
+				class="absolute right-0 top-1 h-4 w-4"
+				><path
+					fill="currentColor"
+					d="M250.45 19.767c-44.556.187-87.24 7.376-118.562 21c-16.176 147.458-32.792 298.827-46.72 425.75l123.344 24.814l34.157-262.844h20.63l34.25 263.75h.218l129.063-26.28c-15.71-141.714-31.023-283.473-46.724-425.19c-38.697-14.307-85.098-21.17-129.655-21z"
+				/></svg
+			>
 		</Button>
 	</div>
 	<Tabs.Root bind:value={tabValue} class="flex flex-col">

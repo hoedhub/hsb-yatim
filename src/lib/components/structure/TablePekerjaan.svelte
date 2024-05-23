@@ -24,11 +24,11 @@
 	export let data;
 	let filterInput = false;
 	let filter: { column: string; keyword: string }[] = []; // Use an array type instead of Record<any, any>
-	let filterTimeout: number;
 	let keyword: string;
+	let filterTimeoutId: ReturnType<typeof setTimeout> | null;
 	const filterAll = () => {
-		clearTimeout(filterTimeout);
-		filterTimeout = setTimeout(
+		if (filterTimeoutId) clearTimeout(filterTimeoutId);
+		filterTimeoutId = setTimeout(
 			() => {
 				// filter = [...filter, { column: 'all', keyword }]
 				if (keyword) {
