@@ -1,22 +1,22 @@
 # ✅ Detailed Development Todo List: Aplikasi Tiket Jahit
 
-Current Phase: __
-Current Day: Day __
-Last Completed Task: __
-Next Priority: __
+Current Phase: Phase 1: Foundation Setup
+Current Day: Day 2
+Last Completed Task: 1.2.2 Install dev dependencies
+Next Priority: 1.3 shadcn-svelte Setup
 
 ## 🚀 Phase 1: Foundation Setup
 **Timeline: Week 1 (Days 1-7)**
 
 ### Day 1: Project Initialization
-- [ ] **1.1.1** Run `pnpm create sveltekit@latest tiket-jahit`
-- [ ] **1.1.2** Choose skeleton project, TypeScript: Yes, ESLint: Yes, Prettier: Yes
-- [ ] **1.1.3** `cd tiket-jahit && pnpm install`
-- [ ] **1.1.4** Test dev server runs: `pnpm run dev`
-- [ ] **1.1.5** Initialize git repository: `git init && git add . && git commit -m "Initial commit"`
+- [x] **1.1.1** Run `pnpm create sveltekit@latest tiket-jahit`
+- [x] **1.1.2** Choose skeleton project, TypeScript: Yes, ESLint: Yes, Prettier: Yes
+- [x] **1.1.3** `cd tiket-jahit && pnpm install`
+- [x] **1.1.4** Test dev server runs: `pnpm run dev`
+- [x] **1.1.5** Initialize git repository: `git init && git add . && git commit -m "Initial commit"`
 
 ### Day 1-2: Dependencies Installation
-- [ ] **1.2.1** Install core dependencies:
+- [x] **1.2.1** Install core dependencies:
   ```bash
   pnpm install @auth/sveltekit @auth/drizzle-adapter
   pnpm install drizzle-orm @libsql/client
@@ -24,13 +24,13 @@ Next Priority: __
   pnpm install @lucide/svelte
   pnpm install bcryptjs qrcode uuid
   ```
-- [ ] **1.2.2** Install dev dependencies:
+- [x] **1.2.2** Install dev dependencies:
   ```bash
-  pnpm install -D tailwindcss autoprefixer
+  # pnpm install -D tailwindcss autoprefixer
   pnpm install -D drizzle-kit
   pnpm install -D @types/node @types/bcryptjs @types/qrcode @types/uuid
   ```
-- [ ] **1.2.3** Initialize TailwindCSS: `pnpm dlx tailwindcss init -p`
+<!--- [ ] **1.2.3** Initialize TailwindCSS: `pnpm dlx tailwindcss init -p`
 - [ ] **1.2.4** Configure `tailwind.config.js`:
   ```js
   content: ['./src/**/*.{html,js,svelte,ts}']
@@ -40,7 +40,7 @@ Next Priority: __
   @tailwind base;
   @tailwind components;
   @tailwind utilities;
-  ```
+  ```-->
 
 ### Day 2: shadcn-svelte Setup
 - [ ] **1.3.1** Run `pnpm dlx shadcn-svelte@latest init`
