@@ -31,8 +31,44 @@ Output format (always)
 - Then: **Working Context** — 3–6 bullets with `Memory: <name>` and a 1-line snippet.
 - Then: any follow-up actions (e.g., “Save to memory?” or “I need to run onboarding to refresh memories.”)
 
+- <!-- .ai/context.md -->
+# 🤖 AI Development Context - Aplikasi Tiket Jahit
+
+## Project Overview
+This is a SvelteKit full-stack application for tailoring order management.
+
+## Key Documentation Files (ALWAYS REFERENCE)
+1. `README.md` - Entry point, setup, architecture
+2. `ROADMAP.md` - Business goals, phases, milestones
+3. `TODO.md` - Specific tasks, current state tracking
+4. `CONTRIBUTING.md` - Code standards, workflow, review process
+5. `TROUBLESHOOTING.md` - Common issues, solutions, debugging
+6. `/.github/pull_request_template.md` - Quality requirements, testing checklist
+
+## AI Instructions
+- ALWAYS check current phase in TODO before suggesting tasks
+- FOLLOW coding standards from CONTRIBUTING.md
+- REFERENCE architecture decisions from README.md
+- CHECK troubleshooting guide before suggesting fixes
+- ENSURE PR requirements are met for any substantial changes
+
+Current development context:
+- Framework: SvelteKit + Svelte 5
+- Database: Turso (libSQL) + Drizzle ORM
+- UI: TailwindCSS + shadcn-svelte + lucide-svelte
+- Auth: Auth.js
+
+When providing code suggestions:
+- Follow TypeScript strict mode
+- Use established project structure from README
+- Reference current phase tasks from TODO checklist
+- Ensure code quality matches CONTRIBUTING standards
+- Kebab-case for files, PascalCase for components
+- Import order: framework → types → libs → components → styles
+
 - Never commit changes without user's permission
 - Always refer to the online official documentation of the related tech stack
+
 - New in SvelteKit 5:
   # Runes
     ## Reactivity
