@@ -120,7 +120,7 @@ pnpm dev
 | **Database** | Turso (libSQL) | Distributed SQLite |
 | **ORM** | Drizzle ORM | Type-safe database queries |
 | **Auth** | Auth.js | Authentication & sessions |
-| **UI** | TailwindCSS + shadcn-svelte | Styling & components |
+| **UI** | TailwindCSS + HyperUI | Styling & components |
 | **Forms** | Superforms + Zod | Form handling & validation |
 | **Deployment** | Vercel | Edge deployment |
 
@@ -143,7 +143,7 @@ graph TD
 src/
 ├── lib/
 │   ├── components/
-│   │   ├── ui/              # shadcn-svelte components
+│   │   ├── ui/              # UI components (e.g., from HyperUI)
 │   │   ├── forms/           # Form components
 │   │   ├── layout/          # Layout components  
 │   │   └── print/           # Print-specific components
@@ -327,14 +327,9 @@ CREATE INDEX order_number_idx ON order(order_number);
 
 ## 🎨 UI Components
 
-### shadcn-svelte Components
+### HyperUI Components
 
-Pre-installed components yang ready to use:
-
-- `Button`, `Input`, `Textarea`
-- `Table`, `Card`, `Badge`
-- `Dialog`, `Form`, `Select`
-- `Checkbox`, `Switch`, `Toast`
+Komponen UI diadopsi dari [HyperUI](https://hyperui.dev/), sebuah koleksi komponen gratis berbasis Tailwind CSS. Komponen-komponen ini bersifat copy-paste dan dapat langsung digunakan atau dimodifikasi sesuai kebutuhan.
 
 ### Custom Components
 
@@ -539,7 +534,7 @@ turso db dump tiket-jahit-prod > backup.sql
 - [SvelteKit Docs](https://kit.svelte.dev/docs) - Framework documentation
 - [Drizzle ORM](https://orm.drizzle.team/) - Database ORM
 - [Turso Docs](https://docs.turso.tech/) - Database provider
-- [shadcn-svelte](https://www.shadcn-svelte.com/) - UI components
+- [HyperUI](https://hyperui.dev/) - UI components
 - [Auth.js](https://authjs.dev/) - Authentication
 
 ### Tutorials & Guides

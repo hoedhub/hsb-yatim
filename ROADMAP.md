@@ -13,7 +13,7 @@ Full-stack web application untuk mengelola order pakaian dengan fitur ukur, poto
 - **Frontend & Backend**: SvelteKit (Svelte 5)
 - **Database**: Turso (libSQL) + Drizzle ORM
 - **Authentication**: Auth.js
-- **UI**: TailwindCSS + shadcn-svelte
+- **UI**: TailwindCSS + HyperUI
 - **Deployment**: Vercel
 
 ## 📅 Development Phases (7 Weeks)

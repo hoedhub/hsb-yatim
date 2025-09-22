@@ -3,7 +3,7 @@
 Current Phase: Phase 1: Foundation Setup
 Current Day: Day 2
 Last Completed Task: 1.2.2 Install dev dependencies
-Next Priority: 1.3 shadcn-svelte Setup
+Next Priority: 1.3 UI Component Integration
 
 ## 🚀 Phase 1: Foundation Setup
 **Timeline: Week 1 (Days 1-7)**
@@ -30,28 +30,11 @@ Next Priority: 1.3 shadcn-svelte Setup
   pnpm install -D drizzle-kit
   pnpm install -D @types/node @types/bcryptjs @types/qrcode @types/uuid
   ```
-<!--- [ ] **1.2.3** Initialize TailwindCSS: `pnpm dlx tailwindcss init -p`
-- [ ] **1.2.4** Configure `tailwind.config.js`:
-  ```js
-  content: ['./src/**/*.{html,js,svelte,ts}']
-  ```
-- [ ] **1.2.5** Add Tailwind to `app.css`:
-  ```css
-  @tailwind base;
-  @tailwind components;
-  @tailwind utilities;
-  ```-->
 
-### Day 2: shadcn-svelte Setup
-- [ ] **1.3.1** Run `pnpm dlx shadcn-svelte@latest init`
-- [ ] **1.3.2** Install required components:
-  ```bash
-  pnpm dlx shadcn-svelte@latest add button input table dialog
-  pnpm dlx shadcn-svelte@latest add form select checkbox card
-  pnpm dlx shadcn-svelte@latest add badge toast textarea switch
-  ```
-- [ ] **1.3.3** Test import shadcn components dalam `+page.svelte`
-- [ ] **1.3.4** Verify styling works correctly
+### Day 2: UI Component Integration
+- [ ] **1.3.1** Identify and copy first set of components from HyperUI (e.g., Button, Card, Input).
+- [ ] **1.3.2** Create wrapper Svelte components in `src/lib/components/ui` if needed for reusability.
+- [ ] **1.3.3** Test component integration in a sample page.
 
 ### Day 2-3: Project Structure
 - [ ] **1.4.1** Create folder structure:

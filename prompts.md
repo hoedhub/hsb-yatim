@@ -17,7 +17,7 @@ Context: I'm working on [SPECIFIC_TASK]"
 
 ## FEATURE_DEVELOPMENT_PROMPT
 "I want to implement [FEATURE]. Please:
-1. Confirm this aligns with roadmap in HIGH_LEVEL_ROADMAP.md
+1. Confirm this aligns with roadmap in ROADMAP.md
 2. Check current phase tasks in TODO.md
 3. Follow architecture from README.md
 4. Ensure code quality matches CONTRIBUTING.md"
@@ -25,5 +25,5 @@ Context: I'm working on [SPECIFIC_TASK]"
 ## CODE_REVIEW_PROMPT
 "Please review this code against our standards:
 1. Check coding standards from CONTRIBUTING.md
-2. Ensure PR requirements from PR_TEMPLATE.md are met
+2. Ensure PR requirements from pull_request_template.md are met
 3. Verify alignment with architecture in README.md"
