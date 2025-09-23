@@ -40,7 +40,7 @@ Next Priority: 1.3 UI Component Integration
 - [ ] **1.4.1** Create folder structure:
   ```
   src/lib/
-  ├── components/ui/ (shadcn)
+  ├── components/ui/ (HyperUI)
   ├── components/forms/
   ├── components/layout/
   ├── components/print/
@@ -222,12 +222,12 @@ Next Priority: 1.3 UI Component Integration
   - Navigation sidebar
   - Header dengan user info dan logout
   - Main content area
-- [ ] **3.3.3** Style navigation menggunakan shadcn components
+- [ ] **3.3.3** Style navigation menggunakan HyperUI components
 - [ ] **3.3.4** Add responsive navigation (mobile hamburger menu)
 
 ### Day 9-10: Login Page
 - [ ] **3.4.1** Create `src/routes/auth/signin/+page.svelte`
-- [ ] **3.4.2** Create login form menggunakan Superforms + shadcn
+- [ ] **3.4.2** Create login form menggunakan Superforms + HyperUI
 - [ ] **3.4.3** Implement form validation dengan Zod schema
 - [ ] **3.4.4** Add login form submission logic
 - [ ] **3.4.5** Style login page (centered form, responsive)
