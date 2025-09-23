@@ -170,7 +170,7 @@
                 <li>
                     <a
                         class="text-gray-700 transition hover:text-gray-700/75 dark:text-white dark:hover:text-white/75"
-                        href="#"
+                        href="/"
                     >
                         Tentang
                     </a>
@@ -179,7 +179,7 @@
                 <li>
                     <a
                         class="text-gray-700 transition hover:text-gray-700/75 dark:text-white dark:hover:text-white/75"
-                        href="#"
+                        href="/"
                     >
                         Fitur
                     </a>
@@ -188,7 +188,7 @@
                 <li>
                     <a
                         class="text-gray-700 transition hover:text-gray-700/75 dark:text-white dark:hover:text-white/75"
-                        href="#"
+                        href="/"
                     >
                         Kontak
                     </a>

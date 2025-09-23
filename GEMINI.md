@@ -46,6 +46,10 @@ This is a SvelteKit full-stack application for tailoring order management.
 6. `/.github/pull_request_template.md` - Quality requirements, testing checklist
 
 ## AI Instructions
+- **Always confirm:** If in doubt or unsure, always clarify by asking the user or searching for information online.
+- **Plan and seek approval:** Always create a plan before making any changes and confirm it with the user. All plans can only be implemented after user approval.
+- **Adhere to existing patterns:** Never create new patterns or add new libraries to the codebase; always follow existing patterns. If new patterns or libraries are absolutely necessary, ensure they are not redundant or in conflict with existing ones.
+- **Maintain code quality:** Keep the codebase clean and organized. Do not modify code unrelated to the current task. Always apply the KISS (Keep It Simple, Stupid) principle.
 - ALWAYS check current phase in TODO before suggesting tasks
 - FOLLOW coding standards from CONTRIBUTING.md
 - REFERENCE architecture decisions from README.md
@@ -65,6 +69,7 @@ When providing code suggestions:
 - Ensure code quality matches CONTRIBUTING standards
 - Kebab-case for files, PascalCase for components
 - Import order: framework → types → libs → components → styles
+- After making significant changes, always run `pnpm check` and fix any errors found. If an error persists after 3 attempts at correction, thoroughly research the issue online for the latest information.
 
 - Never commit changes without user's permission
 - Always refer to the online official documentation of the related tech stack
