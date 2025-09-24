@@ -59,7 +59,7 @@ This is a SvelteKit full-stack application for tailoring order management.
 Current development context:
 - Framework: SvelteKit + Svelte 5
 - Database: Turso (libSQL) + Drizzle ORM
-- UI: TailwindCSS + HyperUI + lucide-svelte
+- UI: TailwindCSS + daisyUI + lucide-svelte
 - Auth: Auth.js
 
 When providing code suggestions:

@@ -10,6 +10,6 @@ This is a full-stack web application for managing tailoring orders, including me
 *   **Database**: Turso (libSQL)
 *   **ORM**: Drizzle ORM
 *   **Auth**: Auth.js
-*   **UI**: TailwindCSS + HyperUI
+*   **UI**: TailwindCSS + daisyUI
 *   **Forms**: Superforms + Zod
 *   **Deployment**: Vercel

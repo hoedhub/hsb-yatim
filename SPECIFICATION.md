@@ -17,9 +17,9 @@ Menyediakan aplikasi web full-stack untuk admin dalam mengelola order pakaian (u
 *   **Framework Inti:** **SvelteKit (Svelte 5)**
     *   Menangani frontend (UI reaktif) dan backend (logika server, API) dalam satu codebase terpadu.
 
-*   **UI & Styling:** **TailwindCSS** + **HyperUI**
+*   **UI & Styling:** **TailwindCSS** + **daisyUI**
     *   Styling modern dan cepat menggunakan utility-first classes dari TailwindCSS.
-    *   Menggunakan `HyperUI` untuk koleksi komponen UI gratis siap pakai (copy-paste).
+    *   Menggunakan `daisyUI` untuk koleksi komponen UI gratis siap pakai (copy-paste).
     *   Menggunakan `@lucide/svelte` untuk ikon yang konsisten dan mudah digunakan.
 *   **Manajemen Form:** **Superforms**
     *   Menangani validasi form yang andal dan progresif, baik di sisi klien maupun server, untuk pengalaman pengguna yang mulus.

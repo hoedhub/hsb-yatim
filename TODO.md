@@ -32,7 +32,7 @@ Next Priority: 1.4 Project Structure
   ```
 
 ### Day 2: UI Component Integration
-- [x] **1.3.1** Identify and copy first set of components from HyperUI [https://www.hyperui.dev/] (e.g., Button, Card, Input).
+- [x] **1.3.1** Identify and copy first set of components from daisyUI [https://daisyui.com/components/] (e.g., Button, Card, Input).
 - [x] **1.3.2** Create wrapper Svelte components in `src/lib/components/ui` if needed for reusability.
 - [x] **1.3.3** Test component integration in a sample page.
 
@@ -40,7 +40,7 @@ Next Priority: 1.4 Project Structure
 - [ ] **1.4.1** Create folder structure:
   ```
   src/lib/
-  ├── components/ui/ (HyperUI)
+  ├── components/ui/ (daisyUI)
   ├── components/forms/
   ├── components/layout/
   ├── components/print/
@@ -222,12 +222,12 @@ Next Priority: 1.4 Project Structure
   - Navigation sidebar
   - Header dengan user info dan logout
   - Main content area
-- [ ] **3.3.3** Style navigation menggunakan HyperUI components
+- [ ] **3.3.3** Style navigation menggunakan daisyUI components
 - [ ] **3.3.4** Add responsive navigation (mobile hamburger menu)
 
 ### Day 9-10: Login Page
 - [ ] **3.4.1** Create `src/routes/auth/signin/+page.svelte`
-- [ ] **3.4.2** Create login form menggunakan Superforms + HyperUI
+- [ ] **3.4.2** Create login form menggunakan Superforms + daisyUI
 - [ ] **3.4.3** Implement form validation dengan Zod schema
 - [ ] **3.4.4** Add login form submission logic
 - [ ] **3.4.5** Style login page (centered form, responsive)

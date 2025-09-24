@@ -71,7 +71,7 @@ pnpm dev
 - Protected routes
 - Password change functionality
 
-### 👥 Customer Management  
+### 👥 Customer Management
 - Customer registration (Individual & Institution)
 - Customer search & filtering
 - Order history per customer
@@ -120,7 +120,7 @@ pnpm dev
 | **Database** | Turso (libSQL) | Distributed SQLite |
 | **ORM** | Drizzle ORM | Type-safe database queries |
 | **Auth** | Auth.js | Authentication & sessions |
-| **UI** | TailwindCSS + HyperUI | Styling & components |
+| **UI** | TailwindCSS + daisyUI | Styling & components |
 | **Forms** | Superforms + Zod | Form handling & validation |
 | **Deployment** | Vercel | Edge deployment |
 
@@ -143,9 +143,9 @@ graph TD
 src/
 ├── lib/
 │   ├── components/
-│   │   ├── ui/              # UI components (e.g., from HyperUI)
+│   │   ├── ui/              # UI components (e.g., from daisyUI)
 │   │   ├── forms/           # Form components
-│   │   ├── layout/          # Layout components  
+│   │   ├── layout/          # Layout components
 │   │   └── print/           # Print-specific components
 │   ├── server/
 │   │   ├── db/
@@ -229,9 +229,9 @@ pnpm test:watch         # Run tests dalam watch mode
   - Variables: `camelCase`
   - Constants: `UPPER_SNAKE_CASE`
   - Database: `snake_case`
-- **Import Order**: 
+- **Import Order**:
   1. Node modules
-  2. `$lib` imports  
+  2. `$lib` imports
   3. Relative imports
 
 ## 🔧 Configuration
@@ -293,7 +293,7 @@ Aplikasi menggunakan database-driven configuration yang dapat diubah via UI:
 -- Customer management
 customer (id, name, type, institution_name, phone, address, created_at)
 
--- Measurement system  
+-- Measurement system
 measurement_label (id, name, default_unit, is_active, created_at)
 measurement_template (id, name, description, is_active, created_at)
 measurement_template_label (id, template_id, label_id, order_index, is_required)
@@ -320,16 +320,16 @@ settings (id, key, value, description, category, data_type, updated_at)
 ```sql
 -- Performance indexes
 CREATE INDEX customer_name_idx ON customer(name);
-CREATE INDEX order_status_idx ON order(status);  
+CREATE INDEX order_status_idx ON order(status);
 CREATE INDEX order_created_idx ON order(created_at);
 CREATE INDEX order_number_idx ON order(order_number);
 ```
 
 ## 🎨 UI Components
 
-### HyperUI Components
+### daisyUI Components
 
-Komponen UI diadopsi dari [HyperUI](https://hyperui.dev/), sebuah koleksi komponen gratis berbasis Tailwind CSS. Komponen-komponen ini bersifat copy-paste dan dapat langsung digunakan atau dimodifikasi sesuai kebutuhan.
+Komponen UI diadopsi dari [daisyUI](https://daisyui.com/components/), sebuah koleksi komponen gratis berbasis Tailwind CSS. Komponen-komponen ini bersifat copy-paste dan dapat langsung digunakan atau dimodifikasi sesuai kebutuhan.
 
 ### Custom Components
 
@@ -345,15 +345,15 @@ Komponen UI diadopsi dari [HyperUI](https://hyperui.dev/), sebuah koleksi kompon
 
 ```svelte
 <!-- Data Table -->
-<DataTable 
-  data={customers} 
+<DataTable
+  data={customers}
   columns={customerColumns}
   searchable={true}
   sortable={true}
 />
 
 <!-- Form Dialog -->
-<FormDialog 
+<FormDialog
   title="Add Customer"
   {form}
   on:submit={handleSubmit}
@@ -373,7 +373,7 @@ Komponen UI diadopsi dari [HyperUI](https://hyperui.dev/), sebuah koleksi kompon
 POST /auth/signin
 Body: { username: string, password: string }
 
-// Logout  
+// Logout
 POST /auth/signout
 ```
 
@@ -397,7 +397,7 @@ PUT    /api/orders/[id]/progress   // Update progress
 
 // Templates
 GET    /api/templates              // List templates
-POST   /api/templates              // Create template  
+POST   /api/templates              // Create template
 POST   /api/templates/[id]/clone   // Clone template
 
 // Settings
@@ -461,7 +461,7 @@ test('renders status badge correctly', () => {
   expect(screen.getByText('New')).toBeInTheDocument();
 });
 
-// E2E test example  
+// E2E test example
 test('complete order creation flow', async ({ page }) => {
   await page.goto('/orders/new');
   await page.fill('[name="customer"]', 'John Doe');
@@ -502,7 +502,7 @@ INITIAL_ADMIN_PASSWORD="production-secure-password"
 ### Post-Deployment Checklist
 
 - [ ] Database migration completed
-- [ ] Seed data inserted  
+- [ ] Seed data inserted
 - [ ] Admin account accessible
 - [ ] Print functionality working
 - [ ] SSL certificate active
@@ -534,13 +534,13 @@ turso db dump tiket-jahit-prod > backup.sql
 - [SvelteKit Docs](https://kit.svelte.dev/docs) - Framework documentation
 - [Drizzle ORM](https://orm.drizzle.team/) - Database ORM
 - [Turso Docs](https://docs.turso.tech/) - Database provider
-- [HyperUI](https://hyperui.dev/) - UI components
+- [daisyUI](https://daisyui.com/components/) - UI components
 - [Auth.js](https://authjs.dev/) - Authentication
 
 ### Tutorials & Guides
 
 - [First Time Setup](./docs/setup-guide.md)
-- [Creating Your First Order](./docs/user-guide.md)  
+- [Creating Your First Order](./docs/user-guide.md)
 - [Customizing Print Templates](./docs/print-guide.md)
 - [Troubleshooting Guide](./docs/troubleshooting.md)
 

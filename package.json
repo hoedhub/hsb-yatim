@@ -25,6 +25,7 @@
 		"@types/node": "^22",
 		"@types/qrcode": "^1.5.5",
 		"@types/uuid": "^11.0.0",
+		"daisyui": "^5.1.14",
 		"drizzle-kit": "^0.30.2",
 		"drizzle-orm": "^0.40.0",
 		"svelte": "^5.0.0",
