@@ -1,5 +1,14 @@
 <script lang="ts">
-    import { Button } from "$lib/components/ui";
+    import { Button, Input, Select } from "$lib/components/ui";
+
+    let inputValue = $state("");
+    let selectValue = $state("");
+
+    let selectOptions = [
+        { value: "option1", label: "Option 1" },
+        { value: "option2", label: "Option 2" },
+        { value: "option3", label: "Option 3" },
+    ];
 
     function handleClick() {
         alert("Button clicked!");
@@ -9,32 +18,29 @@
 <div class="p-4 space-y-4">
     <h1 class="text-2xl font-bold">UI Component Test Page</h1>
 
-    <div class="space-x-2">
-        <button class="btn btn-primary">One</button>
-        <button class="btn btn-secondary">Two</button>
-        <button class="btn btn-accent btn-outline">Three</button>
-        <Button onclick={handleClick}>Primary Button</Button>
-        <Button variant="secondary" onclick={handleClick}
-            >Secondary Button</Button
-        >
-        <Button variant="danger" onclick={handleClick}>Delete Item</Button>
-        <Button variant="outline" onclick={handleClick}>Learn More</Button>
-        <Button disabled>Disabled Button</Button>
-        <Button variant="primary" onclick={handleClick}>
-            <span>With Icon</span>
-            <svg
-                class="h-5 w-5 ml-2"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-                xmlns="http://www.w3.org/2000/svg"
-                ><path
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    stroke-width="2"
-                    d="M14 5l7 7m0 0l-7 7m7-7H3"
-                ></path></svg
-            >
-        </Button>
+    <div class="space-y-4">
+        <h2 class="text-xl font-semibold">Buttons</h2>
+        <div class="flex flex-wrap gap-2">
+            <Button onclick={handleClick}>Primary</Button>
+            <Button variant="secondary" onclick={handleClick}>Secondary</Button>
+        </div>
+    </div>
+
+    <div class="space-y-4">
+        <h2 class="text-xl font-semibold">Inputs</h2>
+        <div class="flex flex-wrap gap-4">
+            <Input placeholder="Default input" bind:value={inputValue} />
+        </div>
+    </div>
+
+    <div class="space-y-4">
+        <h2 class="text-xl font-semibold">Selects</h2>
+        <div class="flex flex-wrap gap-4">
+            <Select
+                placeholder="Default select"
+                options={selectOptions}
+                bind:value={selectValue}
+            />
+        </div>
     </div>
 </div>

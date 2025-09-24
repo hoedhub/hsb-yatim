@@ -2,8 +2,8 @@
 
 Current Phase: Phase 1: Foundation Setup
 Current Day: Day 2
-Last Completed Task: 1.3.3 Test component integration in a sample page.
-Next Priority: 1.4 Project Structure
+Last Completed Task: 1.2.2 Install dev dependencies.
+Next Priority: 1.3 UI Component Integration
 
 ## 🚀 Phase 1: Foundation Setup
 **Timeline: Week 1 (Days 1-7)**
@@ -32,9 +32,9 @@ Next Priority: 1.4 Project Structure
   ```
 
 ### Day 2: UI Component Integration
-- [x] **1.3.1** Identify and copy first set of components from daisyUI [https://daisyui.com/components/] (e.g., Button, Card, Input).
-- [x] **1.3.2** Create wrapper Svelte components in `src/lib/components/ui` if needed for reusability.
-- [x] **1.3.3** Test component integration in a sample page.
+- [ ] **1.3.1** Identify and copy first set of components from daisyUI [https://daisyui.com/components/] (e.g., Button, Card, Input [see src/lib/components/ui subfolders]).
+- [ ] **1.3.2** Create wrapper Svelte components in `src/lib/components/ui` if needed for reusability.
+- [ ] **1.3.3** Test component integration in a sample page.
 
 ### Day 2-3: Project Structure
 - [ ] **1.4.1** Create folder structure:
