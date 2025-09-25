@@ -14,9 +14,9 @@
         Switch,
         DataTable,
         Textarea,
-        Toast,
         SearchInput,
     } from "$lib/components/ui";
+    import { showToast } from "$lib/stores/toast";
 
     const schema = z.object({
         name: z.string().min(2),
@@ -34,7 +34,8 @@
             zod: schema,
         },
         onSubmit: async (data) => {
-            alert(`Submitted: ${JSON.stringify(data)}`);
+            showToast(`Submitted: ${JSON.stringify(data)}`, { variant: "success" });
+            closeDialog();
         },
     });
 
@@ -46,25 +47,6 @@
     let dialogOpen = $state(false);
     let searchValue = $state("");
     let toastPosition = $state("bottom-right");
-
-    // Toast state
-    let toasts = $state<
-        Array<{
-            id: string;
-            message: string;
-            variant?:
-                | "default"
-                | "primary"
-                | "secondary"
-                | "accent"
-                | "info"
-                | "success"
-                | "warning"
-                | "error";
-            duration?: number;
-            position?: string;
-        }>
-    >([]);
 
     let selectOptions = [
         { value: "option1", label: "Option 1" },
@@ -122,36 +104,6 @@
 
     function closeDialog() {
         dialogOpen = false;
-    }
-
-    // Toast functions
-    function showToast(
-        message: string,
-        variant:
-            | "default"
-            | "primary"
-            | "secondary"
-            | "accent"
-            | "info"
-            | "success"
-            | "warning"
-            | "error" = "default",
-        position: string = toastPosition,
-    ) {
-        const id = Date.now().toString();
-        toasts = [...toasts, { id, message, variant, duration: 3000, position }];
-    }
-
-    function showSuccessToast() {
-        showToast("This is a success message!", "success", toastPosition);
-    }
-
-    function showErrorToast() {
-        showToast("This is an error message!", "error", toastPosition);
-    }
-
-    function showInfoToast() {
-        showToast("This is an info message!", "info", toastPosition);
     }
 
     function handleSearch(value: string) {
@@ -447,9 +399,27 @@
             </div>
             <h3 class="text-lg font-medium">Variants</h3>
             <div class="flex flex-wrap gap-2">
-                <Button onclick={showSuccessToast}>Show Success Toast</Button>
-                <Button onclick={showErrorToast}>Show Error Toast</Button>
-                <Button onclick={showInfoToast}>Show Info Toast</Button>
+                <Button
+                    onclick={() =>
+                        showToast("This is a success message!", {
+                            variant: "success",
+                            position: toastPosition,
+                        })}
+                >
+                    Show Success Toast
+                </Button>
+                <Button
+                    onclick={() =>
+                        showToast("This is an error message!", { variant: "error", position: toastPosition })}
+                >
+                    Show Error Toast
+                </Button>
+                <Button
+                    onclick={() =>
+                        showToast("This is an info message!", { variant: "info", position: toastPosition })}
+                >
+                    Show Info Toast
+                </Button>
             </div>
         </div>
     </div>
@@ -467,6 +437,4 @@
             <p>Current search value: {searchValue}</p>
         </div>
     </div>
-
-    <Toast {toasts} position={toastPosition} />
 </div>

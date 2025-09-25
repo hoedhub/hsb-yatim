@@ -20,7 +20,7 @@ Next Priority: 1.3 UI Component Integration
   ```bash
   pnpm install @auth/sveltekit @auth/drizzle-adapter
   pnpm install drizzle-orm @libsql/client
-  pnpm install superforms zod
+  pnpm install svelte-simple-forms zod
   pnpm install @lucide/svelte
   pnpm install bcryptjs qrcode uuid
   ```
@@ -227,7 +227,7 @@ Next Priority: 1.3 UI Component Integration
 
 ### Day 9-10: Login Page
 - [ ] **3.4.1** Create `src/routes/auth/signin/+page.svelte`
-- [ ] **3.4.2** Create login form menggunakan Superforms + daisyUI
+- [ ] **3.4.2** Create login form menggunakan Svelte Simple Forms + daisyUI
 - [ ] **3.4.3** Implement form validation dengan Zod schema
 - [ ] **3.4.4** Add login form submission logic
 - [ ] **3.4.5** Style login page (centered form, responsive)
@@ -270,7 +270,7 @@ Next Priority: 1.3 UI Component Integration
   - Empty states
 - [ ] **4.2.2** Create `src/lib/components/ui/FormDialog.svelte`:
   - Generic modal form wrapper
-  - Integration dengan Superforms
+  - Integration dengan Svelte Simple Forms
   - Error handling
   - Loading states
 - [ ] **4.2.3** Create `src/lib/components/ui/StatusBadge.svelte`:
@@ -302,7 +302,7 @@ Next Priority: 1.3 UI Component Integration
 
 ### Day 14-15: Form Components
 - [ ] **4.4.1** Create `src/lib/components/forms/CustomerForm.svelte`:
-  - Superforms integration
+  - Svelte Simple Forms integration
   - Type selection (individual/institution)
   - Conditional institution name field
   - Real-time validation

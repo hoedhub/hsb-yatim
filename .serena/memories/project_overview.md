@@ -11,5 +11,5 @@ This is a full-stack web application for managing tailoring orders, including me
 *   **ORM**: Drizzle ORM
 *   **Auth**: Auth.js
 *   **UI**: TailwindCSS + daisyUI
-*   **Forms**: Superforms + Zod
+*   **Forms**: Svelte Simple Forms + Zod
 *   **Deployment**: Vercel

@@ -85,9 +85,10 @@
     let squareClass = $derived(square ? "btn-square" : "");
     let circleClass = $derived(circle ? "btn-circle" : "");
     let wideClass = $derived(wide ? "btn-wide" : "");
+    let disabledClass = $derived(disabled ? "cursor-not-allowed" : "");
 
     let classes = $derived(
-        `${baseClasses} ${variantClasses} ${sizeClasses} ${blockClass} ${squareClass} ${circleClass} ${wideClass}`,
+        `${baseClasses} ${variantClasses} ${sizeClasses} ${blockClass} ${squareClass} ${circleClass} ${wideClass} ${disabledClass}`,
     );
 </script>
 

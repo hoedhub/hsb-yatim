@@ -1,12 +1,11 @@
 <script lang="ts">
-	import '../app.css';
-	import favicon from '$lib/assets/favicon.svg';
-	
-	let { children } = $props();
+    import "../app.css";
+    import { Toast } from "$lib/components/ui";
+    import { toasts, removeToast } from "$lib/stores/toast";
 </script>
 
-<svelte:head>
-	<link rel="icon" href={favicon} />
-</svelte:head>
+<div class="font-sans">
+    <slot />
+</div>
 
-{@render children?.()}
+<Toast toasts={$toasts} onDismiss={removeToast} />

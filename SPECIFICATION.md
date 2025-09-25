@@ -21,7 +21,7 @@ Menyediakan aplikasi web full-stack untuk admin dalam mengelola order pakaian (u
     *   Styling modern dan cepat menggunakan utility-first classes dari TailwindCSS.
     *   Menggunakan `daisyUI` untuk koleksi komponen UI gratis siap pakai (copy-paste).
     *   Menggunakan `@lucide/svelte` untuk ikon yang konsisten dan mudah digunakan.
-*   **Manajemen Form:** **Superforms**
+*   **Manajemen Form:** **Svelte Simple Forms**
     *   Menangani validasi form yang andal dan progresif, baik di sisi klien maupun server, untuk pengalaman pengguna yang mulus.
 
 *   **Database:** **Turso (via libSQL)** dengan **Drizzle ORM**

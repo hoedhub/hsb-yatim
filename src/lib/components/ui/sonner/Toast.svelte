@@ -27,8 +27,15 @@
         onDismiss?: () => void;
     };
 
-    let { toasts = [] as Toast[], position = "bottom-right" as ToastPosition } =
-        $props();
+    let {
+        toasts = [] as Toast[],
+        position = "bottom-right" as ToastPosition,
+        onDismiss = (id: string) => {},
+    } = $props<{
+        toasts: Toast[];
+        position?: ToastPosition;
+        onDismiss?: (id: string) => void;
+    }>();
 
     let baseClasses = "toast";
 
@@ -48,10 +55,6 @@
 
     let classes = $derived(`${baseClasses} ${positionClasses}`);
 
-    function dismissToast(id: string) {
-        toasts = toasts.filter((toast) => toast.id !== id);
-    }
-
     function getToastClasses(variant: ToastVariant | undefined) {
         return variant === "primary"
             ? "alert alert-primary"
@@ -69,24 +72,6 @@
                         ? "alert alert-error"
                         : "alert";
     }
-
-    // Auto-dismiss toasts after their duration
-    $effect(() => {
-        const timers = toasts.map((toast) => {
-            if (toast.duration) {
-                return setTimeout(() => {
-                    dismissToast(toast.id);
-                    toast.onDismiss?.();
-                }, toast.duration);
-            }
-        });
-
-        return () => {
-            timers.forEach((timer) => {
-                if (timer) clearTimeout(timer);
-            });
-        };
-    });
 </script>
 
 <div class={classes}>
@@ -98,16 +83,11 @@
                 {@render toast.message()}
             {/if}
             {#if toast.dismissible !== false}
-                <button
-                    class="btn btn-sm btn-ghost"
-                    onclick={() => {
-                        dismissToast(toast.id);
-                        toast.onDismiss?.();
-                    }}
-                >
+                <button class="btn btn-sm btn-ghost ml-auto" onclick={() => onDismiss(toast.id)}>
                     ✕
                 </button>
             {/if}
         </div>
     {/each}
 </div>
+

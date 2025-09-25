@@ -121,7 +121,7 @@ pnpm dev
 | **ORM** | Drizzle ORM | Type-safe database queries |
 | **Auth** | Auth.js | Authentication & sessions |
 | **UI** | TailwindCSS + daisyUI | Styling & components |
-| **Forms** | Superforms + Zod | Form handling & validation |
+| **Forms** | Svelte Simple Forms + Zod | Form handling & validation |
 | **Deployment** | Vercel | Edge deployment |
 
 ### Application Flow
