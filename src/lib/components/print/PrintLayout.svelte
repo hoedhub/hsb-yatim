@@ -54,7 +54,7 @@
         }
 
         /* Hide everything else when printing */
-        body * {
+        :global(body *) {
             visibility: hidden;
         }
 

@@ -35,7 +35,7 @@
         validation: {
             zod: schema,
         },
-        onSubmit: async (data) => {
+        onSubmit: async (data: z.infer<typeof schema>) => {
             showToast(`Submitted: ${JSON.stringify(data)}`, { variant: "success" });
             closeDialog();
         },

@@ -19,6 +19,8 @@
         onOpenChange?: (open: boolean) => void;
     } = $props();
 
+    let dialogRef: HTMLDivElement | undefined = $state();
+
     function close() {
         open = false;
         onOpenChange?.(false);
@@ -29,12 +31,26 @@
             close();
         }
     }
+
+    function handleKeyDown(e: KeyboardEvent) {
+        if (e.key === 'Escape') {
+            close();
+        }
+    }
+
+    $effect(() => {
+        if (open && dialogRef) {
+            dialogRef.focus();
+        }
+    });
 </script>
 
 {#if open}
     <div
+        bind:this={dialogRef}
         class="modal modal-open"
         onclick={handleBackdropClick}
+        onkeydown={handleKeyDown}
         role="dialog"
         tabindex="-1"
     >
