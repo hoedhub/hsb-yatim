@@ -1,9 +1,9 @@
 # ✅ Detailed Development Todo List: Aplikasi Tiket Jahit
 
-Current Phase: Phase 2: Database Schema & Setup
-Current Day: Day 4
-Last Completed Task: 1.5.6 Add .env to .gitignore
-Next Priority: 2.1.1 Create src/lib/server/db/schema.ts
+Current Phase: Phase 3: Authentication Setup
+Current Day: Day 8
+Last Completed Task: 2.5.6 Run seed script and verify data
+Next Priority: 3.1.1 Create src/lib/server/auth.ts
 
 ## 🚀 Phase 1: Foundation Setup
 **Timeline: Week 1 (Days 1-7)**
@@ -87,8 +87,8 @@ Next Priority: 2.1.1 Create src/lib/server/db/schema.ts
 **Timeline: Week 1-2 (Days 4-10)**
 
 ### Day 4-5: Database Schema Definition
-- [ ] **2.1.1** Create `src/lib/server/db/schema.ts`
-- [ ] **2.1.2** Define `customer` table:
+- [x] **2.1.1** Create `src/lib/server/db/schema.ts`
+- [x] **2.1.2** Define `customer` table:
   ```typescript
   export const customer = sqliteTable('customer', {
     id: integer('id').primaryKey({ autoIncrement: true }),
@@ -100,29 +100,29 @@ Next Priority: 2.1.1 Create src/lib/server/db/schema.ts
     created_at: integer('created_at', { mode: 'timestamp' }).default(sql`CURRENT_TIMESTAMP`)
   });
   ```
-- [ ] **2.1.3** Define `measurementLabel` table dengan `is_active` field
-- [ ] **2.1.4** Define `measurementTemplate` table dengan `is_active` field
-- [ ] **2.1.5** Define `measurementTemplateLabel` junction table dengan `order_index`
-- [ ] **2.1.6** Define `order` table dengan `tracking_code` dan progress fields
-- [ ] **2.1.7** Define `orderTemplate` junction table dengan `display_order`
-- [ ] **2.1.8** Define `measurement` table linked ke `order_template_id`
-- [ ] **2.1.9** Define `user` table dengan `password_hash` dan `last_login`
-- [ ] **2.1.10** Define `settings` table dengan `category` dan `data_type`
+- [x] **2.1.3** Define `measurementLabel` table dengan `is_active` field
+- [x] **2.1.4** Define `measurementTemplate` table dengan `is_active` field
+- [x] **2.1.5** Define `measurementTemplateLabel` junction table dengan `order_index`
+- [x] **2.1.6** Define `order` table dengan `tracking_code` dan progress fields
+- [x] **2.1.7** Define `orderTemplate` junction table dengan `display_order`
+- [x] **2.1.8** Define `measurement` table linked ke `order_template_id`
+- [x] **2.1.9** Define `user` table dengan `password_hash` dan `last_login`
+- [x] **2.1.10** Define `settings` table dengan `category` dan `data_type`
 
 ### Day 5: Database Relations
-- [ ] **2.2.1** Add foreign key relations dengan `references()`
-- [ ] **2.2.2** Add indexes untuk performance:
+- [x] **2.2.1** Add foreign key relations dengan `references()`
+- [x] **2.2.2** Add indexes untuk performance:
   ```typescript
   export const customerNameIdx = index('customer_name_idx').on(customer.name);
   export const orderStatusIdx = index('order_status_idx').on(order.status);
   export const orderCreatedIdx = index('order_created_idx').on(order.created_at);
   ```
-- [ ] **2.2.3** Export semua tables dari schema file
-- [ ] **2.2.4** Create type definitions dari schema: `export type Customer = typeof customer.$inferSelect;`
+- [x] **2.2.3** Export semua tables dari schema file
+- [x] **2.2.4** Create type definitions dari schema: `export type Customer = typeof customer.$inferSelect;`
 
 ### Day 5-6: Database Connection
-- [ ] **2.3.1** Create `src/lib/server/db/index.ts`
-- [ ] **2.3.2** Setup Turso client:
+- [x] **2.3.1** Create `src/lib/server/db/index.ts`
+- [x] **2.3.2** Setup Turso client:
   ```typescript
   import { drizzle } from 'drizzle-orm/libsql';
   import { createClient } from '@libsql/client';
@@ -134,24 +134,24 @@ Next Priority: 2.1.1 Create src/lib/server/db/schema.ts
 
   export const db = drizzle(client);
   ```
-- [ ] **2.3.3** Test database connection
-- [ ] **2.3.4** Create `drizzle.config.ts` untuk migrations
+- [x] **2.3.3** Test database connection
+- [x] **2.3.4** Create `drizzle.config.ts` untuk migrations
 
 ### Day 6: Database Migrations
-- [ ] **2.4.1** Generate initial migration: `pnpm drizzle-kit generate:sqlite`
-- [ ] **2.4.2** Review generated SQL migration file
-- [ ] **2.4.3** Run migration: `pnpm drizzle-kit push:sqlite`
-- [ ] **2.4.4** Verify tables created di Turso dashboard
-- [ ] **2.4.5** Create seed script `src/lib/server/db/seed.ts`:
+- [x] **2.4.1** Generate initial migration: `pnpm drizzle-kit generate:sqlite`
+- [x] **2.4.2** Review generated SQL migration file
+- [x] **2.4.3** Run migration: `pnpm drizzle-kit push:sqlite`
+- [x] **2.4.4** Verify tables created di Turso dashboard
+- [x] **2.4.5** Create seed script `src/lib/server/db/seed.ts`:
   - Default admin user dengan bcrypt hash
   - Default measurement labels (Lingkar Dada, Panjang Lengan, dll)
   - Sample measurement template (Baju, Celana)
   - Default settings (order format, print settings)
 
 ### Day 7: Seed Data Implementation
-- [ ] **2.5.1** Implement `hashPassword` utility function
-- [ ] **2.5.2** Create initial admin user seed
-- [ ] **2.5.3** Create basic measurement labels seed:
+- [x] **2.5.1** Implement `hashPassword` utility function
+- [x] **2.5.2** Create initial admin user seed
+- [x] **2.5.3** Create basic measurement labels seed:
   ```typescript
   const defaultLabels = [
     { name: 'Lingkar Dada', default_unit: 'cm' },
@@ -160,8 +160,8 @@ Next Priority: 2.1.1 Create src/lib/server/db/schema.ts
     // ... more labels
   ];
   ```
-- [ ] **2.5.4** Create sample templates dengan template-label relationships
-- [ ] **2.5.5** Create default settings seed:
+- [x] **2.5.4** Create sample templates dengan template-label relationships
+- [x] **2.5.5** Create default settings seed:
   ```typescript
   const defaultSettings = [
     { key: 'order_number_format', value: 'ORD-{YYYY}{MM}{DD}-{XXX}', category: 'order' },
@@ -169,7 +169,7 @@ Next Priority: 2.1.1 Create src/lib/server/db/schema.ts
     // ... more settings
   ];
   ```
-- [ ] **2.5.6** Run seed script dan verify data
+- [x] **2.5.6** Run seed script dan verify data
 
 ## 🔐 Phase 3: Authentication Setup
 **Timeline: Week 2 (Days 8-14)**
