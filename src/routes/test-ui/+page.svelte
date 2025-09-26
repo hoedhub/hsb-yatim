@@ -16,7 +16,9 @@
         Textarea,
         SearchInput,
     } from "$lib/components/ui";
+    import { FormControl, FormLabel, FormMessage } from "$lib/components/ui/form";
     import { showToast } from "$lib/stores/toast";
+    import type { ToastPosition } from "$lib/stores/toast";
 
     const schema = z.object({
         name: z.string().min(2),
@@ -24,7 +26,7 @@
         message: z.string().min(10),
     });
 
-    const { form, errors, handleSubmit } = useForm({
+    const { form } = useForm<z.infer<typeof schema>>({
         initialValues: {
             name: "",
             email: "",
@@ -46,7 +48,7 @@
     let textareaValue = $state("");
     let dialogOpen = $state(false);
     let searchValue = $state("");
-    let toastPosition = $state("bottom-right");
+    let toastPosition: ToastPosition = $state("bottom-right");
 
     let selectOptions = [
         { value: "option1", label: "Option 1" },
@@ -55,7 +57,7 @@
     ];
 
     // Sample data for DataTable
-    let tableData = [
+    let tableData = $state([
         {
             id: 1,
             name: "John Doe",
@@ -84,7 +86,7 @@
             role: "Moderator",
             status: "pending",
         },
-    ];
+    ]);
 
     let tableColumns = [
         { key: "id", label: "ID" },
@@ -111,7 +113,7 @@
         console.log("Search value:", value);
     }
 
-    function handleSort(key: string, direction: "asc" | "desc") {
+    function handleSort(key: string | number | symbol, direction: "asc" | "desc") {
         tableData = [...tableData].sort((a, b) => {
             const aValue = a[key as keyof typeof a];
             const bValue = b[key as keyof typeof b];
@@ -344,6 +346,31 @@
     <Separator />
 
     <div class="space-y-4">
+        <h2 class="text-xl font-semibold">Form Controls</h2>
+        <div class="max-w-xs space-y-4">
+            <h3 class="text-lg font-medium">Example with Validation</h3>
+            <p class="text-sm">
+                This example is connected to the form in the dialog. Try to submit an invalid email in
+                the dialog to see the error state reflected here.
+            </p>
+            <FormControl>
+                <FormLabel>Email Address</FormLabel>
+                <Input
+                    type="email"
+                    placeholder="email@example.com"
+                    bind:value={form.data.email}
+                    error={!!form.errors.email}
+                />
+                {#if form.errors.email}
+                    <FormMessage error>{form.errors.email[0]}</FormMessage>
+                {/if}
+            </FormControl>
+        </div>
+    </div>
+
+    <Separator />
+
+    <div class="space-y-4">
         <h2 class="text-xl font-semibold">Dialogs</h2>
         <div class="flex flex-wrap gap-2">
             <Button onclick={openDialog}>Open Dialog</Button>
@@ -359,16 +386,29 @@
         <form use:form.handler>
             <div class="space-y-4">
                 <Label for="name-input">Name</Label>
-                <Input id="name-input" name="name" bind:value={form.data.name} />
-                {#if form.errors.name}<span class="text-red-500">{form.errors.name[0]}</span>{/if}
+                <Input id="name-input" name="name" bind:value={form.data.name} error={!!form.errors.name} />
+                {#if form.errors.name}<span class="text-sm text-red-500">{form.errors.name[0]}</span>{/if}
 
                 <Label for="email-input">Email</Label>
-                <Input id="email-input" name="email" type="email" bind:value={form.data.email} />
-                {#if form.errors.email}<span class="text-red-500">{form.errors.email[0]}</span>{/if}
+                <Input
+                    id="email-input"
+                    name="email"
+                    type="email"
+                    bind:value={form.data.email}
+                    error={!!form.errors.email}
+                />
+                {#if form.errors.email}<span class="text-sm text-red-500">{form.errors.email[0]}</span>{/if}
 
                 <Label for="message-input">Message</Label>
-                <Textarea id="message-input" name="message" bind:value={form.data.message} />
-                {#if form.errors.message}<span class="text-red-500">{form.errors.message[0]}</span>{/if}
+                <Textarea
+                    id="message-input"
+                    name="message"
+                    bind:value={form.data.message}
+                    error={!!form.errors.message}
+                />
+                {#if form.errors.message}<span class="text-sm text-red-500"
+                    >{form.errors.message[0]}</span
+                >{/if}
 
                 <Button type="submit" disabled={form.isSubmitting}>
                     {form.isSubmitting ? 'Submitting...' : 'Submit'}

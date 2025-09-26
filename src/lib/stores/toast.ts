@@ -11,7 +11,7 @@ type ToastVariant =
     | 'warning'
     | 'error';
 
-type ToastPosition =
+export type ToastPosition =
     | 'top-left'
     | 'top-center'
     | 'top-right'
