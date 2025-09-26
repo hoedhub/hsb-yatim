@@ -8,3 +8,4 @@
 *   **Troubleshooting**: Check the `TROUBLESHOOTING.md` guide before suggesting fixes.
 *   **Pull Requests**: Ensure PR requirements are met for any substantial changes.
 *   **Svelte 5**: Be aware of the new features in Svelte 5, including Runes for reactivity, derived values, effects, props, slots, and event handling.
+*   **Phase Transitions**: Always seek explicit user confirmation before transitioning between major phases or sections of the `TODO.md` checklist.
