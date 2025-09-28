@@ -8,7 +8,7 @@ import { env } from "$env/dynamic/private";
 import { redirect, type Handle } from "@sveltejs/kit";
 import { sequence } from "@sveltejs/kit/hooks";
 
-const { handle: authHandle, signIn, signOut } = SvelteKitAuth({
+export const { handle: authHandle, signIn, signOut } = SvelteKitAuth({
     trustHost: true,
     providers: [
         Credentials({

@@ -57,23 +57,21 @@ pnpm dev
 
 ### First Run
 
-1. Buka http://localhost:5173
-2. Login dengan credentials default:
-   - **Username**: `admin`
-   - **Password**: `admin123` (sesuai .env)
-3. Mulai setup master data (measurement labels & templates)
+1. Buka http://localhost:5173/login
+2. Jika belum punya akun, daftar dulu di http://localhost:5173/auth/register (hanya di lingkungan pengembangan).
+3. Login dengan username dan password yang sudah didaftarkan.
+4. Mulai setup master data (measurement labels & templates)
 
 ## ✨ Features (Private Admin Access)
 
-### 🔐 Authentication & Authorization (Private Access)
+### 🔐 Authentication & Authorization
 - Secure login system dengan Auth.js
-- Session management
-- **Full application protection** - Hanya admin yang dapat mengakses aplikasi
-- Password change functionality
-- Secure login system dengan Auth.js
+- Custom login page di `/login`
+- Custom registration page di `/auth/register` (hanya di lingkungan pengembangan)
 - Session management
 - Protected routes
 - Password change functionality
+- Full application protection - Hanya admin yang dapat mengakses aplikasi
 
 ### 👥 Customer Management
 - Customer registration (Individual & Institution)
@@ -169,7 +167,8 @@ src/routes/
 │   ├── measurements/      # Labels & templates
 │   ├── settings/          # Configuration
 │   ├── print/             # Print layouts
-│   ├── auth/                # Authentication pages
+│   ├── login/               # Custom Login page
+│   ├── auth/                # Auth.js internal routes & custom registration page
 │   └── api/                 # API endpoints
 ├── app.html                 # HTML template
 └── hooks.server.ts          # SvelteKit hooks
@@ -373,8 +372,8 @@ Komponen UI diadopsi dari [daisyUI](https://daisyui.com/components/), sebuah kol
 ### Authentication
 
 ```typescript
-// Login
-POST /auth/signin
+// Login (via custom page)
+POST /login
 Body: { username: string, password: string }
 
 // Logout

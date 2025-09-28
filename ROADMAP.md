@@ -24,16 +24,16 @@ Full-stack web application private untuk mengelola order pakaian dengan fitur uk
 - Project initialization dengan SvelteKit
 - Dependencies installation (pnpm)
 - Database schema design
-- Authentication setup
+- Authentication setup (Auth.js dengan custom login/registration pages)
 - Basic project structure
 
 ### Phase 2: Core Infrastructure (Week 1-2)
 **Goal**: Database dan authentication siap digunakan
 - Database schema implementation
 - Turso connection setup
-- Auth.js configuration
-- Protected routes setup
-- Initial user seeding
+- Auth.js configuration (termasuk custom login/registration flow)
+- Protected routes setup (menggunakan SvelteKit hooks)
+- Initial user seeding (via registration page di dev mode)
 
 ### Phase 3: Master Data Management (Week 2-3)
 **Goal**: Admin bisa manage master data (labels, templates, customers)
@@ -74,7 +74,7 @@ Full-stack web application private untuk mengelola order pakaian dengan fitur uk
 
 ### Week 3 Milestone
 - ✅ Master data management complete
-- ✅ Basic authentication working
+- ✅ Authentication working (dengan custom login dan registrasi)
 - ✅ Database operations stable
 
 ### Week 5 Milestone

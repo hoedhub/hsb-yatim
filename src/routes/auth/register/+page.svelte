@@ -3,7 +3,12 @@
     import { goto } from "$app/navigation";
     import { Lock, User, Eye, EyeOff } from "lucide-svelte";
 
-    export let form;
+    interface FormProps {
+        username?: string;
+        error?: string;
+    }
+
+    export let form: FormProps;
 
     let username = form?.username || "";
     let password = "";

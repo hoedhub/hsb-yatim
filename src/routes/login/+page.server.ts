@@ -1,6 +1,6 @@
 import { AuthError } from "@auth/sveltekit";
 import { signIn } from "../../hooks.server";
-import { redirect } from "@sveltejs/kit";
+import { redirect, fail } from "@sveltejs/kit";
 import type { Actions } from "./$types";
 
 export const actions: Actions = {

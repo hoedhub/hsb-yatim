@@ -1,9 +1,9 @@
 # ✅ Detailed Development Todo List: Aplikasi Tiket Jahit
 
 Current Phase: Phase 3: Authentication Setup
-Current Day: Day 8
-Last Completed Task: 2.5.6 Run seed script and verify data
-Next Priority: 3.1.1 Create src/lib/server/auth.ts
+Current Day: Day 10
+Last Completed Task: 3.4.6 Add loading states dan error handling (Login Page)
+Next Priority: 3.4.7 Test complete login/logout flow
 
 ## 🚀 Phase 1: Foundation Setup
 **Timeline: Week 1 (Days 1-7)**
@@ -61,7 +61,8 @@ Next Priority: 3.1.1 Create src/lib/server/auth.ts
   ├── measurements/templates/
   ├── settings/
   ├── print/
-  ├── auth/signin/
+  ├── login/                 # Custom Login page
+  ├── auth/                  # Auth.js internal routes & custom registration page
   └── api/
   ```
 - [x] **1.4.3** Setup TypeScript path mapping dalam `tsconfig.json`
@@ -190,7 +191,7 @@ Next Priority: 3.1.1 Create src/lib/server/auth.ts
   ```
 - [x] **3.1.4** Implement database user lookup dengan bcrypt verification
 - [x] **3.1.5** Add JWT callbacks untuk role information
-- [x] **3.1.6** Configure custom signin page: `/auth/signin`
+- [x] **3.1.6** Configure custom signin page: `/login` (previously `/auth/signin`)
 
 ### Day 8: Auth Integration
 - [x] **3.2.1** Update `src/hooks.server.ts` dengan auth handle
@@ -212,7 +213,7 @@ Next Priority: 3.1.1 Create src/lib/server/auth.ts
   export async function load({ locals }) {
     const session = await locals.auth();
     if (!session?.user) {
-      throw redirect(303, '/auth/signin');
+      throw redirect(303, '/login');
     }
     return { session };
   }
@@ -225,13 +226,23 @@ Next Priority: 3.1.1 Create src/lib/server/auth.ts
 - [x] **3.3.4** Add responsive navigation (mobile hamburger menu)
 
 ### Day 9-10: Login Page
-- [x] **3.4.1** Create `src/routes/auth/signin/+page.svelte`
+- [x] **3.4.1** Create `src/routes/login/+page.svelte` (previously `src/routes/auth/signin/+page.svelte`)
 - [x] **3.4.2** Create login form menggunakan Svelte Simple Forms + daisyUI
 - [x] **3.4.3** Implement form validation dengan Zod schema
 - [x] **3.4.4** Add login form submission logic
 - [x] **3.4.5** Style login page (centered form, responsive)
 - [x] **3.4.6** Add loading states dan error handling
-- [ ] **3.4.7** Test complete login/logout flow
+- [x] **3.4.7** Test complete login/logout flow
+
+### Day 10: Registration Page (Dev Only)
+- [x] **3.4.8** Create `src/routes/auth/register/+page.svelte`
+- [x] **3.4.9** Create `src/routes/auth/register/+page.server.ts`
+- [x] **3.4.10** Implement registration logic (password hashing, DB insert)
+- [x] **3.4.11** Add confirm password field dan validation
+- [x] **3.4.12** Add show/hide password toggles
+- [x] **3.4.13** Conditionally display registration button di login page (dev only)
+- [x] **3.4.14** Implement environment check untuk registration action (dev only)
+- [x] **3.4.15** Test complete registration flow
 
 ### Day 10: Session Management
 - [ ] **3.5.1** Create logout functionality di navigation
@@ -816,11 +827,11 @@ Next Priority: 3.1.1 Create src/lib/server/auth.ts
 ## 🎯 Current State Tracking
 
 **Phase**: 3 - Authentication Setup
-**Current Day**: 9
-**Last Completed Task**: 3.3 - Protected Routes Layout
-**Next Priority Task**: 3.5 - Session Management
+**Current Day**: 10
+Last Completed Task: 3.4.15 Test complete registration flow
+Next Priority Task: 3.5.1 Create logout functionality di navigation
 **Blockers**: None
-**Notes**: Auth.js configuration is complete and working. The login page has been fully implemented with form validation and submission. The protected routes layout with navigation has been completed. The entire application is now private and only accessible to authenticated admins.
+**Notes**: Auth.js configuration is complete and working. The custom login page (`/login`) and registration page (`/auth/register`) have been fully implemented with form validation, submission, password toggles, and environment-based access control. The protected routes layout with navigation has been completed. The entire application is now private and only accessible to authenticated admins.
 
 ---
 

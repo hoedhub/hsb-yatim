@@ -167,6 +167,26 @@ if (existingUser.length === 0) {
 
 ## 🔐 Authentication Problems
 
+### Problem: Infinite redirect loop with custom sign-in page
+```bash
+Browser gets stuck in a loop redirecting to /login or /auth/signin
+```
+
+**Diagnosis:**
+- This often happens when Auth.js's internal routing conflicts with a custom sign-in page configured via `pages.signIn`.
+- Auth.js might try to intercept the custom sign-in route and redirect to its own default page, or back to the custom page, creating a loop.
+- The issue is often silent in server logs as it occurs at a low level within Auth.js's internal handling.
+
+**Solutions:**
+1. **Move custom sign-in page to a non-Auth.js intercepted route**: 
+   - Rename `src/routes/auth/signin/*` to `src/routes/login/*`.
+   - Update all references (e.g., in `hooks.server.ts` `authorization` handle, `+page.svelte` links).
+   - Ensure `pages.signIn` is *not* set in `SvelteKitAuth` config in `hooks.server.ts`.
+2. **Ensure `authorization` handle correctly passes control**: 
+   - In `hooks.server.ts`, the `authorization` handle should `return resolve(event);` for the custom login page (`/login`) when no session exists, allowing SvelteKit to render your page.
+3. **Verify `AUTH_SECRET`**: Ensure it's a long, random string (min 32 chars).
+4. **Clear browser cache/cookies**: Always clear browser data for the site when debugging redirects.
+
 ### Problem: Login always fails
 ```bash
 Error: Invalid credentials
@@ -237,13 +257,14 @@ src/routes/(protected)/+layout.server.ts should exist
 export async function load({ locals }) {
   const session = await locals.auth();
   if (!session?.user) {
-    throw redirect(303, '/auth/signin');
+    throw redirect(303, '/login');
   }
   return { session };
 }
 
 # 3. Check hooks.server.ts:
-export { handle } from './lib/server/auth';
+# Ensure the authorization handle is correctly configured in the sequence
+export const handle = sequence(authHandle, authorization);
 ```
 
 ---
