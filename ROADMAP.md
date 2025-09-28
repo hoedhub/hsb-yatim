@@ -1,13 +1,14 @@
 # 🗺️ High Level Roadmap: Aplikasi Tiket Jahit
 
 ## 📋 Project Overview
-Full-stack web application untuk mengelola order pakaian dengan fitur ukur, potong, jahit menggunakan SvelteKit + Turso + Auth.js.
+Full-stack web application private untuk mengelola order pakaian dengan fitur ukur, potong, jahit menggunakan SvelteKit + Turso + Auth.js. Aplikasi ini hanya dapat diakses oleh admin yang terautentikasi.
 
 ## 🎯 Business Goals
 - Digitalisasi proses order management jahit
 - Centralized database yang accessible online
 - Print system dengan tracking code
 - Admin-friendly interface untuk non-technical users
+- **Full application protection** - Hanya admin yang dapat mengakses aplikasi
 
 ## 🏗️ Technical Architecture
 - **Frontend & Backend**: SvelteKit (Svelte 5)
@@ -16,7 +17,7 @@ Full-stack web application untuk mengelola order pakaian dengan fitur ukur, poto
 - **UI**: TailwindCSS + daisyUI
 - **Deployment**: Vercel
 
-## 📅 Development Phases (7 Weeks)
+## 📅 Development Phases (7 Weeks) - Private Admin Access
 
 ### Phase 1: Foundation (Week 1)
 **Goal**: Setup project structure dan development environment

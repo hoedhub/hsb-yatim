@@ -7,13 +7,14 @@
             <h1 class="text-3xl font-extrabold sm:text-5xl">
                 Aplikasi Tiket Jahit
                 <strong class="font-extrabold text-primary-700 sm:block">
-                    Kelola Usaha Anda.
+                    (Private Admin Only)
                 </strong>
             </h1>
 
             <p class="mt-4 sm:text-xl/relaxed">
                 Solusi modern untuk mengelola pesanan, pelanggan, dan pengukuran
-                jahitan Anda. Tingkatkan efisiensi dan berikan layanan terbaik.
+                jahitan Anda. Aplikasi ini hanya dapat diakses oleh admin yang
+                terautentikasi.
             </p>
 
             <div class="mt-8 flex flex-wrap justify-center gap-4">
@@ -21,14 +22,7 @@
                     class="block w-full rounded bg-primary-600 px-12 py-3 text-sm font-medium text-white shadow hover:bg-primary-700 focus:outline-none focus:ring active:bg-primary-500 sm:w-auto"
                     href="/auth/signin"
                 >
-                    Mulai Sekarang
-                </a>
-
-                <a
-                    class="block w-full rounded px-12 py-3 text-sm font-medium text-primary-600 shadow hover:text-primary-700 focus:outline-none focus:ring active:text-primary-500 sm:w-auto"
-                    href="#features"
-                >
-                    Pelajari Lebih Lanjut
+                    Akses Admin
                 </a>
             </div>
         </div>
@@ -41,11 +35,12 @@
         class="mx-auto max-w-screen-xl px-4 py-8 sm:px-6 sm:py-12 lg:px-8 lg:py-16"
     >
         <div class="mx-auto max-w-lg text-center">
-            <h2 class="text-3xl font-bold sm:text-4xl">Fitur Unggulan</h2>
+            <h2 class="text-3xl font-bold sm:text-4xl">
+                Fitur Unggulan (Private Admin Access)
+            </h2>
 
             <p class="mt-4 text-gray-500 dark:text-gray-400">
-                Semua yang Anda butuhkan untuk membawa bisnis jahit Anda ke
-                level berikutnya.
+                Semua fitur hanya dapat diakses oleh admin yang terautentikasi.
             </p>
         </div>
 
@@ -71,12 +66,13 @@
                 <h2
                     class="mt-4 text-xl font-bold text-gray-900 dark:text-white"
                 >
-                    Manajemen Pesanan
+                    Manajemen Pesanan (Private)
                 </h2>
 
                 <p class="mt-1 text-sm text-gray-600 dark:text-gray-300">
                     Catat dan lacak status setiap pesanan dengan mudah, dari
-                    pengukuran hingga pengambilan.
+                    pengukuran hingga pengambilan. Hanya admin yang dapat
+                    mengakses.
                 </p>
             </div>
 
@@ -101,12 +97,13 @@
                 <h2
                     class="mt-4 text-xl font-bold text-gray-900 dark:text-white"
                 >
-                    Database Pelanggan
+                    Database Pelanggan (Private)
                 </h2>
 
                 <p class="mt-1 text-sm text-gray-600 dark:text-gray-300">
                     Simpan data pelanggan dan riwayat ukuran mereka di satu
-                    tempat yang aman dan terorganisir.
+                    tempat yang aman dan terorganisir. Hanya admin yang dapat
+                    mengakses.
                 </p>
             </div>
 
@@ -131,12 +128,13 @@
                 <h2
                     class="mt-4 text-xl font-bold text-gray-900 dark:text-white"
                 >
-                    Notifikasi Otomatis
+                    Notifikasi Otomatis (Private)
                 </h2>
 
                 <p class="mt-1 text-sm text-gray-600 dark:text-gray-300">
                     Kirim notifikasi kepada pelanggan saat pesanan mereka siap
-                    diambil, mengurangi waktu tunggu.
+                    diambil, mengurangi waktu tunggu. Hanya admin yang dapat
+                    mengakses.
                 </p>
             </div>
         </div>
@@ -160,7 +158,8 @@
                 <p
                     class="mx-auto mt-6 max-w-md text-center leading-relaxed text-gray-500 lg:text-left dark:text-gray-400"
                 >
-                    Modernisasi cara Anda mengelola bisnis jahit.
+                    Modernisasi cara Anda mengelola bisnis jahit - Akses
+                    Terbatas untuk Admin.
                 </p>
             </div>
 

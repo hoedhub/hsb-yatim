@@ -1,6 +1,6 @@
-# 🔧 Troubleshooting Guide - Aplikasi Tiket Jahit
+# 🔧 Troubleshooting Guide - Aplikasi Tiket Jahit (Private Admin Only)
 
-## 🎯 Quick Problem Finder
+## 🎯 Quick Problem Finder (Private Admin Access)
 
 **Common Issues:**
 - [Environment & Setup Problems](#-environment--setup-problems)

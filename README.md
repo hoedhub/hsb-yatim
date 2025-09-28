@@ -1,6 +1,6 @@
-# 🧵 Aplikasi Tiket Jahit
+# 🧵 Aplikasi Tiket Jahit (Private Admin Only)
 
-**Full-Stack Web Application untuk Manajemen Order Pakaian (Ukur, Potong, Jahit)**
+**Full-Stack Web Application untuk Manajemen Order Pakaian (Ukur, Potong, Jahit) - Akses Terbatas untuk Admin**
 
 [![SvelteKit](https://img.shields.io/badge/SvelteKit-FF3E00?style=flat&logo=svelte&logoColor=white)](https://kit.svelte.dev/)
 [![TypeScript](https://img.shields.io/badge/TypeScript-007ACC?style=flat&logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
@@ -25,7 +25,7 @@
 - [📚 Documentation Links](#-documentation-links)
 - [🤝 Contributing](#-contributing)
 
-## 🚀 Quick Start
+## 🚀 Quick Start (Admin Only)
 
 ### Prerequisites
 
@@ -63,9 +63,13 @@ pnpm dev
    - **Password**: `admin123` (sesuai .env)
 3. Mulai setup master data (measurement labels & templates)
 
-## ✨ Features
+## ✨ Features (Private Admin Access)
 
-### 🔐 Authentication & Authorization
+### 🔐 Authentication & Authorization (Private Access)
+- Secure login system dengan Auth.js
+- Session management
+- **Full application protection** - Hanya admin yang dapat mengakses aplikasi
+- Password change functionality
 - Secure login system dengan Auth.js
 - Session management
 - Protected routes
@@ -109,7 +113,7 @@ pnpm dev
 - Quick action buttons
 - Visual progress indicators
 
-## 🏗️ Architecture
+## 🏗️ Architecture (Private Admin Only)
 
 ### Tech Stack
 
@@ -124,17 +128,18 @@ pnpm dev
 | **Forms** | Svelte Simple Forms + Zod | Form handling & validation |
 | **Deployment** | Vercel | Edge deployment |
 
-### Application Flow
+### Application Flow (Private Access)
 
 ```mermaid
 graph TD
-    A[Admin Login] --> B[Dashboard]
-    B --> C[Master Data Setup]
-    C --> D[Customer Registration]
-    D --> E[Order Creation]
-    E --> F[Print Ticket]
-    F --> G[Progress Tracking]
-    G --> H[Order Completion]
+    A[Public Access to Login Only] --> B[Admin Login]
+    B --> C[Dashboard]
+    C --> D[Master Data Setup]
+    D --> E[Customer Registration]
+    E --> F[Order Creation]
+    F --> G[Print Ticket]
+    G --> H[Progress Tracking]
+    H --> I[Order Completion]
 ```
 
 ## 📁 Project Structure
@@ -157,14 +162,13 @@ src/
 │   ├── utils/               # Utility functions
 │   ├── types/               # TypeScript types
 │   └── schemas/             # Zod validation schemas
-├── routes/
-│   ├── (protected)/         # Protected routes
-│   │   ├── dashboard/       # Dashboard pages
-│   │   ├── customers/       # Customer management
-│   │   ├── orders/          # Order management
-│   │   ├── measurements/    # Labels & templates
-│   │   ├── settings/        # Configuration
-│   │   └── print/           # Print layouts
+src/routes/
+│   ├── dashboard/         # Dashboard pages
+│   ├── customers/         # Customer management
+│   ├── orders/            # Order management
+│   ├── measurements/      # Labels & templates
+│   ├── settings/          # Configuration
+│   ├── print/             # Print layouts
 │   ├── auth/                # Authentication pages
 │   └── api/                 # API endpoints
 ├── app.html                 # HTML template

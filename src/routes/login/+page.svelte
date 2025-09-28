@@ -1,38 +1,29 @@
 <script lang="ts">
-    import { onMount } from "svelte";
-    import { page } from "$app/stores";
-    import { enhance } from "$app/forms";
-    import { Lock, User } from "lucide-svelte";
-    import { redirect } from "@sveltejs/kit";
-    import type { Page } from "@sveltejs/kit";
+    import { Lock, User, Eye, EyeOff } from "lucide-svelte";
+    import { signIn } from "@auth/sveltekit/client";
 
     let username = "";
     let password = "";
     let error = "";
     let loading = false;
+    let showPassword = false;
 
-    // Cek jika pengguna sudah login
-    onMount(async () => {
-        const currentPage = $page as Page;
-        const url = new URL(currentPage.url);
-        const callbackUrl = url.searchParams.get("callbackUrl");
+    function toggleShowPassword() {
+        showPassword = !showPassword;
+    }
 
-        // Jika sudah ada callbackUrl, arahkan ke halaman yang diminta
-        if (callbackUrl) {
-            // Logic untuk redirect akan ditangani oleh Auth.js
-        }
-    });
-
-    async function handleSubmit() {
+    async function handleSubmit(event: Event) {
+        event.preventDefault(); // Manually prevent default for Svelte 5
         loading = true;
         error = "";
-
         try {
-            // Form submission akan ditangani oleh Auth.js
-            // Kita hanya perlu memastikan form memiliki struktur yang benar
-        } catch (err) {
-            error = "Terjadi kesalahan saat login. Silakan coba lagi.";
-            console.error(err);
+            await signIn("credentials", {
+                username,
+                password,
+                redirectTo: "/",
+            });
+        } catch (e: any) {
+            error = e.message || "Username atau password salah. Silakan coba lagi.";
         } finally {
             loading = false;
         }
@@ -84,17 +75,7 @@
 
         <form
             class="mt-8 space-y-6"
-            method="POST"
-            use:enhance={() => {
-                return async ({ result }) => {
-                    if (result.type === "success") {
-                        // Redirect akan ditangani oleh Auth.js
-                    } else {
-                        error =
-                            "Username atau password salah. Silakan coba lagi.";
-                    }
-                };
-            }}
+            onsubmit={handleSubmit}
         >
             <input type="hidden" name="remember" value="true" />
             <div class="rounded-md shadow-sm -space-y-px">
@@ -128,12 +109,24 @@
                         <input
                             id="password"
                             name="password"
-                            type="password"
+                            type={showPassword ? 'text' : 'password'}
                             required
-                            class="appearance-none rounded-b-md relative block w-full px-3 py-3 pl-10 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-primary-500 focus:border-primary-500 focus:z-10 sm:text-sm dark:bg-gray-800 dark:border-gray-700 dark:text-white dark:placeholder-gray-400"
+                            class="appearance-none rounded-b-md relative block w-full px-3 py-3 pl-10 pr-12 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-primary-500 focus:border-primary-500 focus:z-10 sm:text-sm dark:bg-gray-800 dark:border-gray-700 dark:text-white dark:placeholder-gray-400"
                             placeholder="Password"
                             bind:value={password}
                         />
+                        <button
+                            type="button"
+                            onclick={toggleShowPassword}
+                            class="absolute inset-y-0 right-0 pr-3 flex items-center focus:outline-none z-10"
+                            tabindex="-1"
+                        >
+                            {#if showPassword}
+                                <EyeOff class="h-5 w-5 text-gray-400" />
+                            {:else}
+                                <Eye class="h-5 w-5 text-gray-400" />
+                            {/if}
+                        </button>
                     </div>
                 </div>
             </div>
@@ -156,9 +149,12 @@
 
                 <div class="text-sm">
                     <a
-                        href="#"
-                        on:click|preventDefault={() => {}}
-                        class="font-medium text-primary-600 hover:text-primary-500 dark:text-primary-400 dark:hover:text-primary-300"
+                        href="/auth/forgot-password"
+                        onclick={(e) => {
+                            e.preventDefault();
+                            alert('Fitur ini belum tersedia.');
+                        }}
+                        class="font-medium text-primary-600/50 cursor-not-allowed"
                     >
                         Lupa password?
                     </a>
@@ -168,7 +164,7 @@
             <div>
                 <button
                     type="submit"
-                    class="group relative w-full flex justify-center py-3 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-primary-600 hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 dark:focus:ring-offset-gray-800"
+                    class="btn btn-primary btn-block {loading ? 'btn-disabled' : ''}"
                     disabled={loading}
                 >
                     {#if loading}
@@ -198,6 +194,14 @@
                     {/if}
                 </button>
             </div>
+
+            {#if import.meta.env.DEV}
+                <div class="mt-6 text-center text-sm">
+                    <a href="/auth/register" class="font-medium text-primary-600 hover:text-primary-500">
+                        Belum punya akun? Daftar di sini.
+                    </a>
+                </div>
+            {/if}
         </form>
 
         <div class="mt-6">

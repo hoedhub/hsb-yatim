@@ -1,6 +1,6 @@
 ---
 
-### **📑 Spesifikasi Aplikasi Tiket Jahit – Full-Stack Web App**
+### **📑 Spesifikasi Aplikasi Tiket Jahit – Full-Stack Web App (Private Admin Only)**
 
 **Versi: 1.0**
 
@@ -8,7 +8,7 @@
 
 #### **1. Tujuan**
 
-Menyediakan aplikasi web full-stack untuk admin dalam mengelola order pakaian (ukur, potong, jahit), mencetak tiket, dan menyimpan histori order secara online agar dapat diakses dari mana saja melalui browser.
+Menyediakan aplikasi web full-stack private untuk admin dalam mengelola order pakaian (ukur, potong, jahit), mencetak tiket, dan menyimpan histori order secara online. Aplikasi ini hanya dapat diakses oleh admin yang terautentikasi.
 
 ---
 
@@ -30,18 +30,21 @@ Menyediakan aplikasi web full-stack untuk admin dalam mengelola order pakaian (u
 
 *   **Autentikasi:** **Auth.js (SvelteKit Adapter)**
     *   Menangani proses login dan manajemen sesi admin secara aman dan terstandarisasi.
+    *   **Full application protection** - Seluruh aplikasi dilindungi dan hanya dapat diakses oleh admin terautentikasi.
 
 ---
 
 #### **3. Fitur Utama**
 
-1.  **Dashboard Admin**
+1.  **Dashboard Admin (Private Access)**
     *   Halaman utama setelah login yang menampilkan ringkasan data penting secara visual.
     *   Contoh metrik: Jumlah order baru, order dalam proses, total customer, dan order yang selesai bulan ini.
+    *   Hanya dapat diakses setelah autentikasi admin.
 
-2.  **Login Admin**
+2.  **Login Admin (Single Access Point)**
     *   Hanya satu user admin (credential diset di awal via environment variables).
     *   Sesi login dikelola dengan aman oleh Auth.js.
+    *   **Satu-satunya halaman yang dapat diakses tanpa autentikasi**.
 
 3.  **Manajemen Measurement Label**
     *   Tambah, edit, hapus (soft delete via `is_active`).
@@ -89,16 +92,18 @@ Struktur inti tetap sama, sangat cocok untuk fitur yang ada. Auth.js mungkin aka
 
 ---
 
-#### **5. Alur Aplikasi**
+#### **5. Alur Aplikasi (Private Access)**
 
-1.  Admin membuka URL aplikasi di browser dan melakukan **login**.
-2.  Admin diarahkan ke **Dashboard** dan melihat ringkasan status bisnis.
-3.  Admin mengelola *master data*: `measurement_label` & `measurement_template`.
-4.  Admin mendaftarkan `customer` baru.
-5.  Admin membuat `order` baru → memilih customer & template → mengisi detail ukuran.
-6.  Admin **mencetak tiket** order untuk diberikan kepada tukang. Status order otomatis/manual berubah menjadi `printed`.
-7.  Selama proses, admin **memperbarui status order** dan melacak progres pengerjaan tukang.
-8.  Semua data tersimpan secara real-time di database online (Turso).
+1.  Siapa pun yang mengakses URL aplikasi akan secara otomatis dialihkan ke halaman **login**.
+2.  Admin melakukan **login** dengan kredensial yang valid.
+3.  Admin diarahkan ke **Dashboard** dan melihat ringkasan status bisnis.
+4.  Admin mengelola *master data*: `measurement_label` & `measurement_template`.
+5.  Admin mendaftarkan `customer` baru.
+6.  Admin membuat `order` baru → memilih customer & template → mengisi detail ukuran.
+7.  Admin **mencetak tiket** order untuk diberikan kepada tukang. Status order otomatis/manual berubah menjadi `printed`.
+8.  Selama proses, admin **memperbarui status order** dan melacak progres pengerjaan tukang.
+9.  Semua data tersimpan secara real-time di database online (Turso).
+10. Jika admin logout atau sesi berakhir, akses ke halaman apa pun akan dialihkan kembali ke login.
 
 ---
 
