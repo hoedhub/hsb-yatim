@@ -302,6 +302,27 @@ const handleSubmit = () => { // 6. Event handlers
 };
 ```
 
+### Svelte 5 Component Rendering
+
+In Svelte 5 runes mode, components are dynamic by default. When passing a Svelte component (like a `lucide-svelte` icon) as a prop to another component:
+
+1.  **Passing the Component (Parent Component):** Pass the component constructor directly as a prop.
+    ```svelte
+    <ChildComponent icon={MyIconComponent} />
+    ```
+2.  **Receiving and Rendering (Child Component):** Receive the component via `$props()` and render it directly using its capitalized prop name.
+    ```svelte
+    <script lang="ts">
+        import type { SvelteComponent } from 'svelte';
+        let { icon: IconComponent }: { icon: typeof SvelteComponent } = $props();
+    </script>
+
+    <IconComponent />
+    ```
+
+*   **Avoid `<svelte:component>`:** This directive is deprecated in runes mode.
+*   **Snippets (`{@render}`):** Use snippets for passing blocks of markup or parameterized content, not for rendering entire Svelte components directly.
+
 ### TypeScript Best Practices
 
 ```typescript

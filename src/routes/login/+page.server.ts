@@ -14,7 +14,7 @@ export const actions: Actions = {
         }
 
         try {
-            await signIn("credentials", {
+            await (signIn as any)({
                 username,
                 password,
                 redirectTo: "/", // Redirect to home page on successful login

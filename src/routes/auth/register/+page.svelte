@@ -80,7 +80,7 @@
                         return;
                     }
                     if (result.type === 'failure' && result.data?.error) {
-                        form = { ...form, error: result.data.error };
+                        form = { ...form, error: result.data.error ? String(result.data.error) : undefined };
                     }
                     // Optionally clear form fields on success if no redirect
                     if (result.type === 'success') {

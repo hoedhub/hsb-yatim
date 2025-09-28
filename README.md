@@ -140,6 +140,8 @@ graph TD
     H --> I[Order Completion]
 ```
 
+Navigation is handled by dedicated `Navbar.svelte` and `Sidebar.svelte` components for modularity and maintainability.
+
 ## 📁 Project Structure
 
 ```
@@ -148,7 +150,7 @@ src/
 │   ├── components/
 │   │   ├── ui/              # UI components (e.g., from daisyUI)
 │   │   ├── forms/           # Form components
-│   │   ├── layout/          # Layout components
+│   │   ├── layout/          # Layout components (Navbar, Sidebar)
 │   │   └── print/           # Print-specific components
 │   ├── server/
 │   │   ├── db/
@@ -338,6 +340,8 @@ Komponen UI diadopsi dari [daisyUI](https://daisyui.com/components/), sebuah kol
 
 | Component | Path | Purpose |
 |-----------|------|---------|
+| `Navbar` | `$lib/components/layout/Navbar.svelte` | Top navigation bar |
+| `Sidebar` | `$lib/components/layout/Sidebar.svelte` | Side navigation menu |
 | `DataTable` | `$lib/components/ui/DataTable.svelte` | Reusable data table dengan sort/filter |
 | `FormDialog` | `$lib/components/ui/FormDialog.svelte` | Modal form wrapper |
 | `StatusBadge` | `$lib/components/ui/StatusBadge.svelte` | Status indicator |

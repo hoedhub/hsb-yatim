@@ -339,6 +339,39 @@ export type NewCustomer = typeof customer.$inferInsert;
 import type { Customer } from '$lib/server/db/schema';
 ```
 
+### Problem: Svelte 5 Component Rendering Issues (`<svelte:component>` deprecated, `TypeError` with `Snippet`s)
+
+**Diagnosis:** Errors related to `svelte:component` deprecation, `TypeError: Cannot destructure property 'children'`, or `Unexpected token` when passing Svelte components (especially `lucide-svelte` icons) as props in Svelte 5 runes mode. This often stems from misunderstanding the distinction between passing components as props and using snippets, or how `lucide-svelte` components handle children.
+
+**Solutions:**
+1.  **Pass Component Constructor Directly:** When passing a Svelte component (e.g., `lucide-svelte` icon) as a prop, pass its constructor directly from the parent.
+    ```svelte
+    <!-- Parent Component -->
+    <ChildComponent icon={MyIconComponent} />
+    ```
+2.  **Render Directly with Capitalized Prop Name:** In the child component, receive the component via `$props()` and render it directly using its capitalized prop name.
+    ```svelte
+    <!-- Child Component -->
+    <script lang="ts">
+        import type { SvelteComponent } from 'svelte';
+        let { icon: IconComponent }: { icon: typeof SvelteComponent } = $props();
+    </script>
+
+    <IconComponent />
+    ```
+3.  **`lucide-svelte` and Children:** `lucide-svelte` components do not expect children. Ensure no content is placed between their tags (e.g., `<Home />` not `<Home>...</Home>`).
+4.  **Avoid `<svelte:component>`:** This directive is deprecated in Svelte 5 runes mode.
+
+### Problem: `noninteractive element cannot have nonnegative tabIndex value` warning
+
+**Diagnosis:** This accessibility warning appears when a non-interactive HTML element (like `ul`) has `tabindex="0"`. In DaisyUI dropdowns, this is often an intentional part of their accessibility implementation for keyboard navigation.
+
+**Solution:** If the warning is from a well-maintained UI library like DaisyUI and doesn't indicate a functional accessibility issue, it can be safely suppressed using a Svelte ignore comment.
+    ```html
+    <!-- svelte-ignore a11y_no_noninteractive_tabindex -->
+    <ul tabindex="0" ...>
+    ```
+
 ---
 
 ## 🖨️ Print System Issues
