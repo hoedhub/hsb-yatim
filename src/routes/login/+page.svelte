@@ -1,12 +1,22 @@
 <script lang="ts">
     import { Lock, User, Eye, EyeOff } from "lucide-svelte";
     import { signIn } from "@auth/sveltekit/client";
+    import { page } from "$app/stores";
 
     let username = "";
     let password = "";
     let error = "";
     let loading = false;
     let showPassword = false;
+
+    $: if ($page.url.searchParams.has("error")) {
+        const errorCode = $page.url.searchParams.get("error");
+        if (errorCode === "CredentialsSignin") {
+            error = "Username atau password salah. Silakan coba lagi.";
+        } else {
+            error = "Terjadi kesalahan. Silakan coba lagi.";
+        }
+    }
 
     function toggleShowPassword() {
         showPassword = !showPassword;
@@ -15,13 +25,15 @@
     async function handleSubmit(event: Event) {
         event.preventDefault(); // Manually prevent default for Svelte 5
         loading = true;
-        error = "";
+        error = ""; // Clear previous errors
         try {
             await signIn("credentials", {
                 username,
                 password,
                 redirectTo: "/",
             });
+            username = ""; // Clear username on successful login
+            password = ""; // Clear password on successful login
         } catch (e: any) {
             error = e.message || "Username atau password salah. Silakan coba lagi.";
         } finally {

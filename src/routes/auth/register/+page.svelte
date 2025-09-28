@@ -1,5 +1,6 @@
 <script lang="ts">
     import { enhance } from "$app/forms";
+    import { goto } from "$app/navigation";
     import { Lock, User, Eye, EyeOff } from "lucide-svelte";
 
     export let form;
@@ -66,8 +67,21 @@
                 form = { ...form, error: undefined }; // Clear previous errors
                 return async ({ result }) => {
                     loading = false;
+                    if (result.type === 'redirect') {
+                        username = '';
+                        password = '';
+                        confirmPassword = '';
+                        goto(result.location);
+                        return;
+                    }
                     if (result.type === 'failure' && result.data?.error) {
                         form = { ...form, error: result.data.error };
+                    }
+                    // Optionally clear form fields on success if no redirect
+                    if (result.type === 'success') {
+                        username = '';
+                        password = '';
+                        confirmPassword = '';
                     }
                 };
             }}

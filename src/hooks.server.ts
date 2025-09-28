@@ -31,6 +31,9 @@ const { handle: authHandle, signIn, signOut } = SvelteKitAuth({
         }),
     ],
     secret: env.AUTH_SECRET,
+    pages: {
+        signIn: "/login",
+    },
     callbacks: {
         async session({ session, token }) {
             if (session.user && token) {
@@ -50,20 +53,26 @@ const { handle: authHandle, signIn, signOut } = SvelteKitAuth({
 });
 
 const authorization: Handle = async ({ event, resolve }) => {
-    const isAuthRoute = event.url.pathname.startsWith("/auth") || event.url.pathname.startsWith("/login");
+    const isLoginPage = event.url.pathname === "/login";
+    const isAuthRoute = event.url.pathname.startsWith("/auth");
     const session = await event.locals.auth();
 
-    // If it's an auth route and there's no session, let it pass to Auth.js
+    // If it's the login page and there's no session, let it pass to Auth.js
+    if (isLoginPage && !session) {
+        return resolve(event);
+    }
+
+    // If it's an auth route (not login) and there's no session, let it pass to Auth.js
     if (isAuthRoute && !session) {
         return resolve(event);
     }
 
-    // If it's an auth route and there IS a session, redirect to home
-    if (isAuthRoute && session) {
+    // If it's the login page or an auth route and there IS a session, redirect to home
+    if ((isLoginPage || isAuthRoute) && session) {
         throw redirect(303, "/");
     }
 
-    // If it's a protected route (not an auth route) and there's no session, redirect to sign-in.
+    // If it's a protected route (not login or auth) and there's no session, redirect to login.
     if (!session) {
         throw redirect(303, "/login");
     }
@@ -71,6 +80,5 @@ const authorization: Handle = async ({ event, resolve }) => {
     // Otherwise, proceed with the request (authenticated user on a protected route).
     return resolve(event);
 };
-
 // Export the handle as a sequence of the auth handler and the authorization handler
 export const handle = sequence(authHandle, authorization);

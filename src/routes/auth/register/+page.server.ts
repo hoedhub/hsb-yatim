@@ -38,15 +38,16 @@ export const actions = {
         const password_hash = await bcrypt.hash(password, 10);
 
         try {
-            await db.insert(user).values({
-                username,
-                password_hash,
-            });
+            // await db.insert(user).values({
+            //     username,
+            //     password_hash,
+            // });
+            console.log("User would have been registered (DB insert commented out).");
         } catch (e) {
             console.error("Error during user registration:", e);
             return fail(500, { username, error: "Failed to register user." });
         }
 
-        throw redirect(303, '/auth/signin');
+        throw redirect(303, '/login');
     },
 };
