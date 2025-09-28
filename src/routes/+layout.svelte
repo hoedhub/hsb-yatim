@@ -7,6 +7,8 @@
     import { LayoutDashboard, ShoppingBag, Users, Ruler, Tag, Settings } from "lucide-svelte";
     import Navbar from "$lib/components/layout/Navbar.svelte";
     import Sidebar from "$lib/components/layout/Sidebar.svelte";
+    import { onMount } from "svelte";
+    import { signOut } from "@auth/sveltekit/client";
 
     let { data, children }: { data: PageData, children: Snippet } = $props();
 
@@ -24,6 +26,16 @@
     function onToggleSidebar() {
         sidebarOpen = !sidebarOpen;
     }
+
+    onMount(() => {
+        const interval = setInterval(() => {
+            if (data.session && new Date(data.session.expires) < new Date()) {
+                signOut();
+            }
+        }, 1000 * 60); // Check every minute
+
+        return () => clearInterval(interval);
+    });
 </script>
 
 {#if data.session}
@@ -32,6 +44,12 @@
         <div class="drawer-content flex flex-col items-start justify-start">
             <Navbar session={data.session} onToggleSidebar={onToggleSidebar} />
             <main class="p-4 w-full">
+                {#if data.session && import.meta.env.DEV}
+                    <div class="bg-yellow-200 text-black p-2 rounded-md mb-4">
+                        <p class="font-bold">Session Debug (Dev Only):</p>
+                        <p>Expires: {new Date(data.session.expires).toLocaleString()}</p>
+                    </div>
+                {/if}
                 {@render children()}
             </main>
         </div>

@@ -15,6 +15,7 @@ export const { handle: authHandle, signIn, signOut } = SvelteKitAuth({
             credentials: {
                 username: { label: "Username", type: "text" },
                 password: { label: "Password", type: "password" },
+                remember: { label: "Remember Me", type: "checkbox" },
             },
             async authorize(credentials) {
                 if (!credentials?.username || !credentials?.password) return null;
@@ -24,7 +25,13 @@ export const { handle: authHandle, signIn, signOut } = SvelteKitAuth({
 
                 const passwordMatch = await bcrypt.compare(credentials.password as string, foundUser.password_hash);
                 if (passwordMatch) {
-                    return { id: foundUser.id.toString(), name: foundUser.username, email: foundUser.username, role: "admin" };
+                    return { 
+                        id: foundUser.id.toString(), 
+                        name: foundUser.username, 
+                        email: foundUser.username, 
+                        role: "admin",
+                        rememberMe: credentials.remember === 'true'
+                    };
                 }
                 return null;
             },
@@ -46,6 +53,10 @@ export const { handle: authHandle, signIn, signOut } = SvelteKitAuth({
             if (user) {
                 token.id = user.id;
                 token.role = user.role;
+                const rememberMe = (user as any).rememberMe;
+                const defaultMaxAge = 30 * 24 * 60 * 60; // 30 days
+                const shortMaxAge = 60 * 60; // 1 hour
+                token.exp = Math.floor(Date.now() / 1000) + (rememberMe ? defaultMaxAge : shortMaxAge);
             }
             return token;
         },

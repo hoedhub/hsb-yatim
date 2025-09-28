@@ -255,8 +255,8 @@ Next Priority: 3.4.7 Test complete login/logout flow
 **Timeline: Week 2-3 (Days 11-21)**
 
 ### Day 11-12: Validation Schemas
-- [ ] **4.1.1** Create `src/lib/schemas/index.ts`
-- [ ] **4.1.2** Define customer validation schema:
+- [x] **4.1.1** Create `src/lib/schemas/index.ts`
+- [x] **4.1.2** Define customer validation schema:
   ```typescript
   export const customerSchema = z.object({
     name: z.string().min(2, "Nama minimal 2 karakter"),
@@ -266,11 +266,11 @@ Next Priority: 3.4.7 Test complete login/logout flow
     address: z.string().optional()
   });
   ```
-- [ ] **4.1.3** Define measurement label schema
-- [ ] **4.1.4** Define measurement template schema
-- [ ] **4.1.5** Define complex order schema dengan nested templates
-- [ ] **4.1.6** Define settings schema per category
-- [ ] **4.1.7** Export TypeScript types dari schemas
+- [x] **4.1.3** Define measurement label schema
+- [x] **4.1.4** Define measurement template schema
+- [x] **4.1.5** Define complex order schema dengan nested templates
+- [x] **4.1.6** Define settings schema per category
+- [x] **4.1.7** Export TypeScript types dari schemas
 
 ### Day 12-13: Reusable Components
 - [ ] **4.2.1** Create `src/lib/components/ui/DataTable.svelte`:
@@ -826,12 +826,12 @@ Next Priority: 3.4.7 Test complete login/logout flow
 
 ## 🎯 Current State Tracking
 
-**Phase**: 3 - Authentication Setup
-**Current Day**: 10
-Last Completed Task: 3.4.15 Test complete registration flow
-Next Priority Task: 3.5.1 Create logout functionality di navigation
+**Phase**: 4 - Core Components Development
+**Current Day**: 11
+Last Completed Task: 4.1.7 Export TypeScript types dari schemas
+Next Priority Task: 4.2.1 Create src/lib/components/ui/DataTable.svelte
 **Blockers**: None
-**Notes**: Auth.js configuration is complete and working. The custom login page (`/login`) and registration page (`/auth/register`) have been fully implemented with form validation, submission, password toggles, and environment-based access control. The protected routes layout with navigation has been completed. The entire application is now private and only accessible to authenticated admins.
+**Notes**: Validation schemas for all major data models have been created and are in sync with the database schema. The project is now entering the core component development phase.
 
 ---
 

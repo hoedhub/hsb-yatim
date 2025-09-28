@@ -18,6 +18,7 @@ declare module "@auth/sveltekit" {
     interface User {
         id: string;
         role: string;
+        rememberMe?: boolean;
     }
     interface Session extends AuthSession {
         user: User;

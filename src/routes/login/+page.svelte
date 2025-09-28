@@ -27,13 +27,13 @@
         loading = true;
         error = ""; // Clear previous errors
         try {
+            const rememberMe = (event.target as HTMLFormElement)['remember-me'].checked;
             await signIn("credentials", {
                 username,
                 password,
+                rememberMe,
                 redirectTo: "/",
             });
-            username = ""; // Clear username on successful login
-            password = ""; // Clear password on successful login
         } catch (e: any) {
             error = e.message || "Username atau password salah. Silakan coba lagi.";
         } finally {
