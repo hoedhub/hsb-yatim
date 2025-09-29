@@ -13,4 +13,5 @@ export { default as DataTable } from "./table/DataTable.svelte";
 export { default as Textarea } from "./textarea/Textarea.svelte";
 export { default as Toast } from "./sonner/Toast.svelte";
 export { default as SearchInput } from "./SearchInput.svelte";
+export { default as ConfirmDialog } from "./ConfirmDialog.svelte";
 export { default as PrintLayout } from "../print/PrintLayout.svelte";

@@ -290,7 +290,7 @@ Next Priority: 3.4.7 Test complete login/logout flow
   - Debounced search
   - Clear button
   - Loading indicator
-- [ ] **4.2.5** Create `src/lib/components/ui/ConfirmDialog.svelte`:
+- [x] **4.2.5** Create `src/lib/components/ui/ConfirmDialog.svelte`:
   - Reusable confirmation modal
   - Dangerous action styling
   - Customizable messages

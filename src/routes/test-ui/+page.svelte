@@ -15,6 +15,7 @@
         DataTable,
         Textarea,
         SearchInput,
+        ConfirmDialog,
     } from "$lib/components/ui";
     import { FormControl, FormLabel, FormMessage } from "$lib/components/ui/form";
     import { showToast } from "$lib/stores/toast";
@@ -49,6 +50,7 @@
     let dialogOpen = $state(false);
     let searchValue = $state("");
     let toastPosition: ToastPosition = $state("bottom-right");
+    let confirmDialogOpen = $state(false);
 
     let selectOptions = [
         { value: "option1", label: "Option 1" },
@@ -130,6 +132,18 @@
             }
             return 0;
         });
+    }
+
+    function openConfirmDialog() {
+        confirmDialogOpen = true;
+    }
+
+    function handleConfirm() {
+        showToast("Action confirmed!", { variant: "success" });
+    }
+
+    function handleCancel() {
+        showToast("Action canceled!", { variant: "info" });
     }
 </script>
 
@@ -467,6 +481,25 @@
             </div>
         </div>
     </div>
+
+    <Separator />
+
+    <div class="space-y-4">
+        <h2 class="text-xl font-semibold">Confirm Dialog</h2>
+        <div class="flex flex-wrap gap-2">
+            <Button onclick={openConfirmDialog}>Open Confirm Dialog</Button>
+        </div>
+    </div>
+
+    <ConfirmDialog
+        bind:open={confirmDialogOpen}
+        title="Delete Item"
+        message="This action cannot be undone. Are you sure you want to delete this item?"
+        confirmText="Delete"
+        dangerous={true}
+        onConfirm={handleConfirm}
+        onCancel={handleCancel}
+    />
 
     <Separator />
 
