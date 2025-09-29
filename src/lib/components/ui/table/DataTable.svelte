@@ -1,12 +1,12 @@
 <script lang="ts">
-    import type { Snippet } from "svelte";
+    import type { Snippet, SvelteComponent } from "svelte";
     import SearchInput from "$lib/components/ui/SearchInput.svelte";
 
     type Column<T> = {
         key: keyof T;
         label: string;
         sortable?: boolean;
-        render?: (value: any, item: T) => string;
+        component?: any;
     };
 
     type DataTableProps<T> = {
@@ -135,8 +135,8 @@
                         <tr>
                             {#each columns as column}
                                 <td>
-                                    {#if column.render}
-                                        {@html column.render(item[column.key], item)}
+                                    {#if column.component}
+                                        <column.component value={item[column.key]} item={item} />
                                     {:else}
                                         {item[column.key]}
                                     {/if}

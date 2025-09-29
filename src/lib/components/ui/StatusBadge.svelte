@@ -1,36 +1,32 @@
 <script lang="ts">
-    import type { Snippet } from "svelte";
-
     type StatusType = "default" | "primary" | "secondary" | "accent" | "ghost" | "info" | "success" | "warning" | "error" | "outline";
 
     let {
-        status = "default" as StatusType,
-        children,
+        value = "default" as StatusType,
     }: {
-        status?: StatusType;
-        children: Snippet;
+        value?: StatusType;
     } = $props();
 
     let baseClasses = "badge";
 
     let statusClasses = $derived(
-        status === "primary"
+        value === "primary"
             ? "badge-primary"
-            : status === "secondary"
+            : value === "secondary"
               ? "badge-secondary"
-              : status === "accent"
+              : value === "accent"
                 ? "badge-accent"
-                : status === "ghost"
+                : value === "ghost"
                   ? "badge-ghost"
-                  : status === "info"
+                  : value === "info"
                     ? "badge-info"
-                    : status === "success"
+                    : value === "success"
                       ? "badge-success"
-                      : status === "warning"
+                      : value === "warning"
                         ? "badge-warning"
-                        : status === "error"
+                        : value === "error"
                           ? "badge-error"
-                          : status === "outline"
+                          : value === "outline"
                             ? "badge-outline"
                             : "badge-neutral",
     );
@@ -39,5 +35,5 @@
 </script>
 
 <span class={classes}>
-    {@render children()}
+    {value}
 </span>

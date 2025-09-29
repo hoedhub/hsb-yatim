@@ -96,7 +96,7 @@
         {
             key: "status",
             label: "Status",
-            render: (value: any) => `<span class="badge badge-${value === 'active' ? 'success' : 'error'}">${value}</span>`,
+            component: StatusBadge,
         },
     ];
 
@@ -254,16 +254,16 @@
     <div class="space-y-4">
         <h2 class="text-xl font-semibold">Status Badges</h2>
         <div class="flex flex-wrap gap-2">
-            <StatusBadge status="default">Default</StatusBadge>
-            <StatusBadge status="primary">Primary</StatusBadge>
-            <StatusBadge status="secondary">Secondary</StatusBadge>
-            <StatusBadge status="accent">Accent</StatusBadge>
-            <StatusBadge status="ghost">Ghost</StatusBadge>
-            <StatusBadge status="info">Info</StatusBadge>
-            <StatusBadge status="success">Success</StatusBadge>
-            <StatusBadge status="warning">Warning</StatusBadge>
-            <StatusBadge status="error">Error</StatusBadge>
-            <StatusBadge status="outline">Outline</StatusBadge>
+            <StatusBadge value="default" />
+            <StatusBadge value="primary" />
+            <StatusBadge value="secondary" />
+            <StatusBadge value="accent" />
+            <StatusBadge value="ghost" />
+            <StatusBadge value="info" />
+            <StatusBadge value="success" />
+            <StatusBadge value="warning" />
+            <StatusBadge value="error" />
+            <StatusBadge value="outline" />
         </div>
     </div>
 
