@@ -1,21 +1,46 @@
 <script lang="ts">
     import type { Snippet } from "svelte";
 
+    type Path<T> = any; // Using any for Path<T> for now
+
+    type Form<T = any> = {
+        initialValues: T;
+        data: T;
+        errors: Record<Path<T>, string[] | undefined> & { _errors?: string[] };
+        isValid: boolean;
+        isSubmitting: boolean;
+        isDirty: boolean;
+        touched: Record<Path<T>, boolean | undefined>;
+        setInitialValues(values: T, options?: { reset?: boolean }): void;
+        setIsDirty(dirty?: boolean): void;
+        setIsSubmitting(submitting?: boolean): void;
+        reset(): void;
+        resetField(field: Path<T>): void;
+        setError(field: Path<T>, error: string | string[]): void;
+        validate(field?: Path<T> | Path<T>[]): boolean;
+        submit(callback?: (data: T) => any): Promise<void>;
+        handler(node: HTMLFormElement): void;
+    };
+
     let {
         open = $bindable(false),
         title = "",
         description = "",
         closable = true,
+        form = null as Form | null,
         children,
         footer,
+        error,
         onOpenChange,
     }: {
         open?: boolean;
         title?: string;
         description?: string;
         closable?: boolean;
+        form?: Form | null;
         children: Snippet;
         footer?: Snippet;
+        error?: Snippet<[{ errors: string[] }]>;
         onOpenChange?: (open: boolean) => void;
     } = $props();
 
@@ -76,15 +101,22 @@
                 {/if}
             </div>
 
-            <div class="py-4">
-                {@render children()}
-            </div>
-
-            {#if footer}
-                <div class="modal-action">
-                    {@render footer()}
+            <form use:form?.handler>
+                {#if form?.errors?._errors && error}
+                    <div class="py-2">
+                        {@render error({ errors: form.errors._errors })}
+                    </div>
+                {/if}
+                <div class="py-4">
+                    {@render children()}
                 </div>
-            {/if}
+
+                {#if footer}
+                    <div class="modal-action">
+                        {@render footer()}
+                    </div>
+                {/if}
+            </form>
         </div>
     </div>
 {/if}

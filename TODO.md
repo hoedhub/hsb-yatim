@@ -273,12 +273,12 @@ Next Priority: 3.4.7 Test complete login/logout flow
 - [x] **4.1.7** Export TypeScript types dari schemas
 
 ### Day 12-13: Reusable Components
-- [ ] **4.2.1** Create `src/lib/components/ui/DataTable.svelte`:
+- [x] **4.2.1** Create `src/lib/components/ui/DataTable.svelte`:
   - Props: data, columns, sortable, filterable
   - Pagination support
   - Loading states
   - Empty states
-- [ ] **4.2.2** Create `src/lib/components/ui/FormDialog.svelte`:
+- [x] **4.2.2** Create `src/lib/components/ui/FormDialog.svelte`:
   - Generic modal form wrapper
   - Integration dengan Svelte Simple Forms
   - Error handling
@@ -286,7 +286,7 @@ Next Priority: 3.4.7 Test complete login/logout flow
 - [ ] **4.2.3** Create `src/lib/components/ui/StatusBadge.svelte`:
   - Dynamic styling berdasarkan status
   - Support order status dan boolean states
-- [ ] **4.2.4** Create `src/lib/components/ui/SearchInput.svelte`:
+- [x] **4.2.4** Create `src/lib/components/ui/SearchInput.svelte`:
   - Debounced search
   - Clear button
   - Loading indicator

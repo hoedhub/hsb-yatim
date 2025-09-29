@@ -93,7 +93,11 @@
         { key: "name", label: "Name", sortable: true },
         { key: "email", label: "Email", sortable: true },
         { key: "role", label: "Role" },
-        { key: "status", label: "Status" },
+        {
+            key: "status",
+            label: "Status",
+            render: (value: any) => `<span class="badge badge-${value === 'active' ? 'success' : 'error'}">${value}</span>`,
+        },
     ];
 
     function handleClick() {
