@@ -6,6 +6,7 @@
     import type { PageData } from "./$types";
     import { LayoutDashboard, ShoppingBag, Users, Ruler, Tag, Settings } from "lucide-svelte";
     import Navigation from "$lib/components/layout/Navigation.svelte";
+    import Header from "$lib/components/layout/Header.svelte";
     import { onMount } from "svelte";
     import { signOut } from "@auth/sveltekit/client";
 
@@ -33,6 +34,7 @@
 
 {#if data.session}
     <Navigation links={navItems} session={data.session}>
+        <Header session={data.session} breadcrumbs={[]} actions={[]} />
         <main class="p-4 w-full">
             {#if data.session && import.meta.env.DEV}
                 <div class="bg-yellow-200 text-black p-2 rounded-md mb-4">

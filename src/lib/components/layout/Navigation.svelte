@@ -37,30 +37,6 @@
 <div class="drawer lg:drawer-open">
     <input id="my-drawer-2" type="checkbox" class="drawer-toggle" bind:checked={isMobileMenuOpen} />
     <div class="drawer-content flex flex-col">
-        <!-- Navbar for mobile -->
-        <div class="w-full navbar bg-base-300 lg:hidden">
-            <div class="flex-none">
-                <label for="my-drawer-2" class="btn btn-square btn-ghost">
-                    <Menu class="h-5 w-5" />
-                </label>
-            </div>
-            <div class="flex-1 px-2 mx-2">Aplikasi Tiket Jahit</div>
-            <div class="flex-none">
-                {#if session?.user}
-                    <div class="dropdown dropdown-end">
-                        <button tabindex="0" class="btn btn-ghost rounded-btn">
-                            {session.user.name || session.user.email}
-                        </button>
-                        <!-- svelte-ignore a11y_no_noninteractive_tabindex -->
-                        <ul tabindex="0" class="menu dropdown-content z-[1] p-2 shadow bg-base-100 rounded-box w-52 mt-4">
-                            <li><a href="/profile">Profile</a></li>
-                            <li><button onclick={handleSignOut}>Logout</button></li>
-                        </ul>
-                    </div>
-                {/if}
-            </div>
-        </div>
-        <!-- Main content here -->
         {@render children()}
     </div>
     <div class="drawer-side">
@@ -72,7 +48,6 @@
                 </button>
             </div>
             <!-- Sidebar content here -->
-            <li class="menu-title">Aplikasi Tiket Jahit</li>
             {#each links as link}
                 <li>
                     <a href={link.href} class:active={isActive(link.href)}>

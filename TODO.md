@@ -300,7 +300,7 @@ Next Priority: 3.4.7 Test complete login/logout flow
   - Sidebar navigation dengan active states
   - Icons dari Lucide
   - Collapsible mobile menu
-- [ ] **4.3.2** Create `src/lib/components/layout/Header.svelte`:
+- [x] **4.3.2** Create `src/lib/components/layout/Header.svelte`:
   - User profile dropdown
   - Breadcrumb navigation
   - Quick action buttons
@@ -828,8 +828,8 @@ Next Priority: 3.4.7 Test complete login/logout flow
 
 **Phase**: 4 - Core Components Development
 **Current Day**: 11
-Last Completed Task: 4.1.7 Export TypeScript types dari schemas
-Next Priority Task: 4.2.1 Create src/lib/components/ui/DataTable.svelte
+Last Completed Task: 4.3.1 Create src/lib/components/layout/Navigation.svelte
+Next Priority Task: 4.3.2 Create src/lib/components/layout/Header.svelte
 **Blockers**: None
 **Notes**: Validation schemas for all major data models have been created and are in sync with the database schema. The project is now entering the core component development phase.
 
