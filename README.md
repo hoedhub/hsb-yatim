@@ -340,8 +340,7 @@ Komponen UI diadopsi dari [daisyUI](https://daisyui.com/components/), sebuah kol
 
 | Component | Path | Purpose |
 |-----------|------|---------|
-| `Navbar` | `$lib/components/layout/Navbar.svelte` | Top navigation bar |
-| `Sidebar` | `$lib/components/layout/Sidebar.svelte` | Side navigation menu |
+| `Navigation` | `$lib/components/layout/Navigation.svelte` | Sidebar navigation with active states and collapsible mobile menu |
 | `DataTable` | `$lib/components/ui/DataTable.svelte` | Reusable data table dengan sort/filter |
 | `FormDialog` | `$lib/components/ui/FormDialog.svelte` | Modal form wrapper |
 | `StatusBadge` | `$lib/components/ui/StatusBadge.svelte` | Status indicator |

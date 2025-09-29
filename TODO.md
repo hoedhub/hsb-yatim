@@ -296,7 +296,7 @@ Next Priority: 3.4.7 Test complete login/logout flow
   - Customizable messages
 
 ### Day 13-14: Layout Components
-- [ ] **4.3.1** Create `src/lib/components/layout/Navigation.svelte`:
+- [x] **4.3.1** Create `src/lib/components/layout/Navigation.svelte`:
   - Sidebar navigation dengan active states
   - Icons dari Lucide
   - Collapsible mobile menu
