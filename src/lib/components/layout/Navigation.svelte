@@ -48,6 +48,7 @@
                 </button>
             </div>
             <!-- Sidebar content here -->
+            <li class="menu-title">Aplikasi Tiket Jahit</li>
             {#each links as link}
                 <li>
                     <a href={link.href} class:active={isActive(link.href)}>

@@ -38,9 +38,6 @@
         </label>
     </div>
     <div class="flex-1 flex items-center">
-        <div class="text-xl font-bold flex-1 text-nowrap overflow-hidden text-ellipsis">
-            Aplikasi Tiket Jahit
-        </div>
         <div class="text-sm breadcrumbs">
             <ul>
                 {#each breadcrumbs as breadcrumb}
