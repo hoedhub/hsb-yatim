@@ -346,6 +346,7 @@ Komponen UI diadopsi dari [daisyUI](https://daisyui.com/components/), sebuah kol
 | `StatusBadge` | `$lib/components/ui/StatusBadge.svelte` | Status indicator |
 | `SearchInput` | `$lib/components/ui/SearchInput.svelte` | Debounced search input |
 | `PrintLayout` | `$lib/components/print/PrintLayout.svelte` | Print-optimized layout |
+| `CustomerForm` | `$lib/components/forms/CustomerForm.svelte` | Form for creating and editing customers |
 
 ### Usage Examples
 

@@ -339,6 +339,46 @@ export type NewCustomer = typeof customer.$inferInsert;
 import type { Customer } from '$lib/server/db/schema';
 ```
 
+### Problem: `svelte-simple-form` usage with Svelte 5 Runes
+```bash
+Error: Property 'handler' does not exist on type...
+Error: Object literal may only specify known properties, and 'schema' does not exist in type 'FormProps<...>'
+Error: Cannot use 'form' as a store...
+```
+
+**Diagnosis:**
+- The API for `svelte-simple-form` (v0.2.5) with Svelte 5 runes is different from previous versions or other form libraries.
+- The `useForm` hook returns a single `form` object which contains all the state and methods.
+- Direct destructuring of `errors`, `state`, `handler` is incorrect.
+- The schema needs to be passed inside a `validation` object.
+- The returned `form` object's properties are reactive, and should be accessed directly in the template, not with the `$` prefix.
+
+**Solutions:**
+1.  **Correct `useForm` usage**:
+    ```typescript
+    const { form } = useForm({
+        initialValues: { ... },
+        validation: { zod: yourSchema },
+        onSubmit: async (values) => { ... }
+    });
+    ```
+2.  **Apply the handler**:
+    ```html
+    <form use:form.handler>
+    ```
+3.  **Bind values**:
+    ```html
+    <input bind:value={form.data.name} />
+    ```
+4.  **Display errors**:
+    ```html
+    <p>{form.errors.name?.[0]}</p>
+    ```
+5.  **Disable button during submission**:
+    ```html
+    <button type="submit" disabled={form.isSubmitting}>Submit</button>
+    ```
+
 ### Problem: Svelte 5 Component Rendering Issues (`<svelte:component>` deprecated, `TypeError` with `Snippet`s)
 
 **Diagnosis:** Errors related to `svelte:component` deprecation, `TypeError: Cannot destructure property 'children'`, or `Unexpected token` when passing Svelte components (especially `lucide-svelte` icons) as props in Svelte 5 runes mode. This often stems from misunderstanding the distinction between passing components as props and using snippets, or how `lucide-svelte` components handle children.
