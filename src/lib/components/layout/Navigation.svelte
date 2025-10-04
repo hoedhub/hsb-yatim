@@ -51,7 +51,7 @@
             <li class="menu-title">Aplikasi Tiket Jahit</li>
             {#each links as link}
                 <li>
-                    <a href={link.href} class:active={isActive(link.href)}>
+                    <a href={link.href} class:active={isActive(link.href)} onclick={() => isMobileMenuOpen = false}>
                         <link.icon class="h-5 w-5" />
                         {link.label}
                     </a>
