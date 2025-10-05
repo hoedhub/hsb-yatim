@@ -209,10 +209,7 @@ Next Priority: 3.4.7 Test complete login/logout flow
 
 ### Day 9: Protected Routes
 - [x] **3.3.1** Implement global route protection via `src/hooks.server.ts` and use `src/routes/(protected)` for shared UI layout for authenticated users. (Note: The `+layout.server.ts` file for authentication redirection is no longer needed as global protection is handled in `hooks.server.ts`).
-- [x] **3.3.2** Create `src/routes/(protected)/+layout.svelte` dengan:
-  - Navigation sidebar
-  - Header dengan user info dan logout
-  - Main content area
+- [ ] **3.3.2** Create `src/routes/(protected)/+layout.svelte` for semantic grouping and potential nested layouts (Note: Main conditional UI is handled in `src/routes/+layout.svelte`).
 - [x] **3.3.3** Style navigation menggunakan daisyUI components
 - [x] **3.3.4** Add responsive navigation (mobile hamburger menu)
 
