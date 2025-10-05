@@ -445,8 +445,8 @@ tests/
 ### Running Tests
 
 ```bash
-# Unit tests (Vitest)
-pnpm test                  # Run all tests
+# Unit/Component tests (Vitest Browser Mode)
+pnpm test                  # Run all tests in browser mode
 pnpm test:watch           # Watch mode
 pnpm test:coverage        # Coverage report
 
@@ -459,13 +459,16 @@ pnpm test:e2e --debug     # Debug mode
 ### Writing Tests
 
 ```typescript
-// Component test example
-import { render, screen } from '@testing-library/svelte';
-import StatusBadge from '$lib/components/ui/StatusBadge.svelte';
+// Component test example (using vitest-browser-svelte)
+import { render } from 'vitest-browser-svelte';
+import { describe, it, expect } from 'vitest';
+import CustomerForm from '$lib/components/forms/CustomerForm.svelte';
 
-test('renders status badge correctly', () => {
-  render(StatusBadge, { props: { status: 'new' } });
-  expect(screen.getByText('New')).toBeInTheDocument();
+test('renders CustomerForm correctly', async () => {
+  const { getByText, getByRole } = render(CustomerForm);
+  await expect(getByText('Nama')).toBeInTheDocument();
+  await expect(getByText('Tipe')).toBeInTheDocument();
+  await expect(getByRole('button', { name: 'Simpan' })).toBeInTheDocument();
 });
 
 // E2E test example

@@ -373,7 +373,13 @@ describe('OrderService', () => {
   });
 });
 
-// E2E tests  
+// Component test example (using vitest-browser-svelte)
+test('renders status badge correctly', async () => {
+  const { getByText } = render(StatusBadge, { props: { status: 'new' } });
+  await expect(getByText('New')).toBeInTheDocument();
+});
+
+// E2E test example  
 test('complete order creation flow', async ({ page }) => {
   // test implementation
 });
@@ -383,7 +389,7 @@ test('complete order creation flow', async ({ page }) => {
 
 ```bash
 # Required before pushing
-pnpm test           # Unit tests must pass
+pnpm test           # Unit/Component tests must pass (browser mode)
 pnpm test:e2e       # Critical E2E tests
 pnpm lint           # No linting errors
 pnpm check          # TypeScript compilation
