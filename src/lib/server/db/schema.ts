@@ -1,4 +1,4 @@
-import { sql } from 'drizzle-orm';
+import { relations, sql } from 'drizzle-orm';
 import { integer, sqliteTable, text, index } from 'drizzle-orm/sqlite-core';
 
 export const customer = sqliteTable(
@@ -16,6 +16,10 @@ export const customer = sqliteTable(
 		nameIdx: index('customer_name_idx').on(table.name)
 	})
 );
+
+export const customerRelations = relations(customer, ({ many }) => ({
+  orders: many(order),
+}));
 
 export const measurementLabel = sqliteTable('measurement_label', {
 	id: integer('id').primaryKey({ autoIncrement: true }),
@@ -57,6 +61,13 @@ export const order = sqliteTable(
 		createdIdx: index('order_created_idx').on(table.created_at)
 	})
 );
+
+export const orderRelations = relations(order, ({ one }) => ({
+  customer: one(customer, {
+    fields: [order.customer_id],
+    references: [customer.id],
+  }),
+}));
 
 export const orderTemplate = sqliteTable('order_template', {
 	id: integer('id').primaryKey({ autoIncrement: true }),

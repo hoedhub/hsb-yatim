@@ -21,7 +21,7 @@ export default defineConfig({
 		setupFiles: ['src/setupTests.ts'],
 		globals: true,
 		// Add this to ensure Svelte components are transformed correctly
-		transformMode: {
+		testTransformMode: {
 			web: ['\.svelte$']
 		}
 	}
