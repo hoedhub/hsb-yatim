@@ -346,7 +346,7 @@ Next Priority Task: 5.2.1 Create `src/routes/(protected)/settings/+page.server.t
   - Paper size selection
   - Preview toggle
   - Default visibility settings
-- [ ] **5.2.5** Implement settings save functionality dengan optimistic updates
+- \[x\] \*\*5\.2\.5\*\* Implement settings save functionality dengan optimistic updates
 
 ### Day 17-18: User Profile Management
 - [ ] **5.3.1** Create `src/routes/(protected)/profile/+page.svelte`:
@@ -816,8 +816,8 @@ Next Priority Task: 5.2.1 Create `src/routes/(protected)/settings/+page.server.t
 
 **Phase**: 5 - Feature Implementation - Master Data
 **Current Day**: 16
-Last Completed Task: 5.2.4 Create Print Settings panel:
-Next Priority Task: 5.2.5 Implement settings save functionality dengan optimistic updates
+Last Completed Task: 5.2.5 Implement settings save functionality dengan optimistic updates
+Next Priority Task: 5.3.1 Create `src/routes/(protected)/profile/+page.svelte`:
 **Blockers**: None
 **Notes**: All authentication tasks are complete except for the 'remember me' feature. The project is now ready to proceed with Phase 5: Feature Implementation - Master Data.
 

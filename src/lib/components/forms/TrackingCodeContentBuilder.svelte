@@ -25,12 +25,12 @@
   ];
 
   $effect(() => {
-    generateQrCode(generatedContent as unknown as string);
+    generateQrCode(generatedContent());
   });
 
   $effect(() => {
     // Regenerate QR code when test variables change
-    generateQrCode(generatedContent as unknown as string);
+    generateQrCode(generatedContent());
   });
 
   const generatedContent = $derived(() => {
@@ -43,6 +43,7 @@
   });
 
   async function generateQrCode(text: string) {
+    console.log('Generating QR code for:', text);
     try {
       qrCodeDataUrl = await QRCode.toDataURL(text, { errorCorrectionLevel: 'H', width: 256 });
     } catch (err) {
