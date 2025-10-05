@@ -165,8 +165,8 @@
                 <Button variant="ghost" onclick={handleClick}>Ghost</Button>
                 <Button variant="link" onclick={handleClick}>Link</Button>
                 <Button variant="outline" onclick={handleClick}>Outline</Button>
-                <Button variant="active" onclick={handleClick}>Active</Button>
-                <Button variant="disabled" onclick={handleClick} disabled>Disabled</Button>
+                <Button onclick={handleClick}>Active</Button>
+                <Button onclick={handleClick} disabled>Disabled</Button>
             </div>
             <h3 class="text-lg font-medium">Sizes</h3>
             <div class="flex flex-wrap gap-2 items-center">
