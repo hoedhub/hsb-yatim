@@ -342,7 +342,7 @@ Next Priority Task: 5.2.1 Create `src/routes/(protected)/settings/+page.server.t
   - Template builder dengan variables
   - QR code preview
   - Test content generator
-- [ ] **5.2.4** Create Print Settings panel:
+- \[x\] \*\*5\.2\.4\*\* Create Print Settings panel:
   - Paper size selection
   - Preview toggle
   - Default visibility settings
@@ -816,11 +816,11 @@ Next Priority Task: 5.2.1 Create `src/routes/(protected)/settings/+page.server.t
 
 **Phase**: 5 - Feature Implementation - Master Data
 **Current Day**: 16
-Last Completed Task: 5.2.3 Create Tracking Code Content Builder:
-Next Priority Task: 5.2.4 Create Print Settings panel:
+Last Completed Task: 5.2.4 Create Print Settings panel:
+Next Priority Task: 5.2.5 Implement settings save functionality dengan optimistic updates
 **Blockers**: None
 **Notes**: All authentication tasks are complete except for the 'remember me' feature. The project is now ready to proceed with Phase 5: Feature Implementation - Master Data.
 
 ---
 
-*This detailed checklist ensures no task is forgotten and provides clear progress trackin
+*This detailed checklist ensures no task is forgotten and provides clear progress
