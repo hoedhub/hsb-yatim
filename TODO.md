@@ -208,16 +208,7 @@ Next Priority: 3.4.7 Test complete login/logout flow
 - [x] **3.2.3** Test auth configuration doesn't break dev server
 
 ### Day 9: Protected Routes
-- [x] **3.3.1** Create `src/routes/(protected)/+layout.server.ts`:
-  ```typescript
-  export async function load({ locals }) {
-    const session = await locals.auth();
-    if (!session?.user) {
-      throw redirect(303, '/login');
-    }
-    return { session };
-  }
-  ```
+- [x] **3.3.1** Implement global route protection via `src/hooks.server.ts` and use `src/routes/(protected)` for shared UI layout for authenticated users. (Note: The `+layout.server.ts` file for authentication redirection is no longer needed as global protection is handled in `hooks.server.ts`).
 - [x] **3.3.2** Create `src/routes/(protected)/+layout.svelte` dengan:
   - Navigation sidebar
   - Header dengan user info dan logout
@@ -329,7 +320,7 @@ Next Priority: 3.4.7 Test complete login/logout flow
 **Timeline: Week 3-4 (Days 15-28)**
 
 ### Day 15-16: Dashboard Implementation
-- [ ] **5.1.1** Create `src/routes/(protected)/dashboard/+page.server.ts`:
+- [x] **5.1.1** Create `src/routes/(protected)/dashboard/+page.server.ts`:
   - Load dashboard statistics
   - Recent orders query
   - Performance optimizations
@@ -829,7 +820,7 @@ Next Priority: 3.4.7 Test complete login/logout flow
 **Phase**: 4 - Core Components Development
 **Current Day**: 14
 Last Completed Task: 4.4.4 Test all form components dengan validation
-Next Priority Task: 5.1.1 Create `src/routes/(protected)/dashboard/+page.server.ts`
+Next Priority Task: 5.1.2 Create `src/routes/(protected)/dashboard/+page.svelte`
 **Blockers**: None
 **Notes**: All form components have been successfully created and their basic rendering and label accessibility have been validated with Vitest Browser Mode. The project is now ready to proceed with Phase 5: Feature Implementation - Master Data.
 
