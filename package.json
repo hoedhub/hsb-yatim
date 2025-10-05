@@ -15,7 +15,8 @@
 		"db:push": "drizzle-kit push",
 		"db:seed": "tsx src/lib/server/db/seed.ts",
 		"db:studio": "drizzle-kit studio",
-		"drizzle": "drizzle-kit"
+		"drizzle": "drizzle-kit",
+		"test": "vitest"
 	},
 	"devDependencies": {
 		"@libsql/client": "^0.14.0",
@@ -25,16 +26,20 @@
 		"@tailwindcss/vite": "^4.0.0",
 		"@types/node": "^22",
 		"@types/qrcode": "^1.5.5",
+		"@vitest/browser": "^3.2.4",
 		"daisyui": "^5.1.14",
 		"dotenv": "^17.2.2",
 		"drizzle-kit": "^0.31.5",
 		"drizzle-orm": "^0.40.0",
+		"playwright": "^1.55.1",
 		"svelte": "^5.0.0",
 		"svelte-check": "^4.0.0",
 		"tailwindcss": "^4.0.0",
 		"tsx": "^4.20.6",
 		"typescript": "^5.0.0",
-		"vite": "^7.0.4"
+		"vite": "^7.0.4",
+		"vitest": "^3.2.4",
+		"vitest-browser-svelte": "^1.1.0"
 	},
 	"pnpm": {
 		"onlyBuiltDependencies": [
