@@ -26,6 +26,9 @@ importers:
       qrcode:
         specifier: ^1.5.4
         version: 1.5.4
+      svelte-dnd-action:
+        specifier: ^0.9.65
+        version: 0.9.65(svelte@5.39.3)
       svelte-simple-form:
         specifier: ^0.2.5
         version: 0.2.5(svelte@5.39.3)
@@ -1456,6 +1459,11 @@ packages:
       svelte: ^4.0.0 || ^5.0.0-next.0
       typescript: '>=5.0.0'
 
+  svelte-dnd-action@0.9.65:
+    resolution: {integrity: sha512-GKFtrAtYAjcm27aMELoXOhkLtKA1AEoj2njjCReCer6jh1hnRtTHdEO4Kjfpayz+ZAvE0MMwIvLISW3tsiO9Qg==}
+    peerDependencies:
+      svelte: '>=3.23.0 || ^5.0.0-next.0'
+
   svelte-simple-form@0.2.5:
     resolution: {integrity: sha512-IHS1stB8chKE8HJx4azB9mvpiqodTylhuypuH6zzSHBqX3NkUDAwp2BB31AW5Iog8J6D+/P57+et2wyHXzZ3Mg==}
     peerDependencies:
@@ -2700,6 +2708,10 @@ snapshots:
       typescript: 5.9.2
     transitivePeerDependencies:
       - picomatch
+
+  svelte-dnd-action@0.9.65(svelte@5.39.3):
+    dependencies:
+      svelte: 5.39.3
 
   svelte-simple-form@0.2.5(svelte@5.39.3):
     dependencies:
