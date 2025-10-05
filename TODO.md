@@ -333,7 +333,7 @@ Next Priority Task: 5.2.1 Create `src/routes/(protected)/settings/+page.server.t
 - \[x\] \*\*5\.2\.1\*\* Create `src/routes/\(protected\)/settings/\+page.server.ts`:
   - Load all settings by category
   - Settings update actions
-- [ ] **5.2.2** Create Order Number Format Builder component:
+- \[x\] \*\*5\.2\.2\*\* Create Order Number Format Builder component:
   - Drag & drop interface untuk format components
   - Live preview
   - Validation logic
@@ -816,11 +816,11 @@ Next Priority Task: 5.2.1 Create `src/routes/(protected)/settings/+page.server.t
 
 **Phase**: 5 - Feature Implementation - Master Data
 **Current Day**: 16
-Last Completed Task: 5.2.1 Create `src/routes/(protected)/settings/+page.server.ts`
-Next Priority Task: 5.2.2 Create Order Number Format Builder component
+Last Completed Task: 5.2.2 Create Order Number Format Builder component
+Next Priority Task: 5.2.3 Create Tracking Code Content Builder:
 **Blockers**: None
 **Notes**: All authentication tasks are complete except for the 'remember me' feature. The project is now ready to proceed with Phase 5: Feature Implementation - Master Data.
 
 ---
 
-*This detailed checklist ensures no task is forgotten and provides clear progress tracking for the entire
+*This detailed checklist ensures no task is forgotten and provides clear progress tracking for th
