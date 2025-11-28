@@ -48,6 +48,7 @@
         warning = false,
         error = false,
         size = "md",
+        class: className = "",
         ...restProps
     }: InputProps = $props();
 
@@ -73,8 +74,15 @@
     );
 
     let classes = $derived(
-        `${baseClasses} ${borderedClass} ${ghostClass} ${primaryClass} ${secondaryClass} ${accentClass} ${infoClass} ${successClass} ${warningClass} ${errorClass} ${sizeClass}`,
+        `${baseClasses} ${borderedClass} ${ghostClass} ${primaryClass} ${secondaryClass} ${accentClass} ${infoClass} ${successClass} ${warningClass} ${errorClass} ${sizeClass} ${className}`,
     );
 </script>
 
-<input class={classes} {type} {placeholder} {value} {disabled} {...restProps} />
+<input
+    class={classes}
+    {type}
+    {placeholder}
+    bind:value
+    {disabled}
+    {...restProps}
+/>
