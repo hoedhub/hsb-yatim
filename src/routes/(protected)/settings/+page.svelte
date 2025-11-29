@@ -2,6 +2,7 @@
   import { invalidateAll } from "$app/navigation";
   import PageHeader from "$lib/components/layout/PageHeader.svelte";
   import OrderNumberFormatBuilder from "$lib/components/forms/OrderNumberFormatBuilder.svelte";
+  import TrackingCodeFormatBuilder from "$lib/components/forms/TrackingCodeFormatBuilder.svelte";
   import PrintSettingsPanel from "$lib/components/forms/PrintSettingsPanel.svelte";
   import { Settings as SettingsIcon, Save, AlertCircle } from "lucide-svelte";
   import type { Settings } from "$lib/server/db/schema";
@@ -35,6 +36,10 @@
   let initialOrderNumberFormat =
     orderSettings.find((s: Settings) => s.key === "order_number_format")
       ?.value || "ORD-{YYYY}{MM}{DD}-{XXX}";
+
+  let initialTrackingCodeFormat =
+    orderSettings.find((s: Settings) => s.key === "tracking_code_format")
+      ?.value || "TRK-{YYYY}{MM}{DD}-{XXX}";
   let initialPrintSettings = {
     print_paper_size:
       printSettings.find((s: Settings) => s.key === "print_paper_size")
@@ -48,6 +53,8 @@
   };
 
   let isSaving = $state(false);
+  let currentPreviewOrderNumber = $state("");
+  let currentPreviewTrackingCode = $state("");
 
   async function handleOrderNumberFormatSave(format: string) {
     const setting = orderSettings.find(
@@ -77,6 +84,65 @@
         }
       } catch (error) {
         setting.value = originalValue;
+        showToast("Terjadi kesalahan saat menyimpan", "error");
+      } finally {
+        isSaving = false;
+      }
+    }
+  }
+
+  async function handleTrackingCodeFormatSave(format: string) {
+    const setting = orderSettings.find(
+      (s: Settings) => s.key === "tracking_code_format",
+    );
+    if (setting) {
+      isSaving = true;
+      const originalValue = setting.value;
+      setting.value = format;
+
+      const formData = new FormData();
+      formData.append("key", setting.key);
+      formData.append("value", format);
+
+      try {
+        const response = await fetch("?/update", {
+          method: "POST",
+          body: formData,
+        });
+
+        if (!response.ok) {
+          setting.value = originalValue;
+          showToast("Gagal memperbarui format tracking code", "error");
+        } else {
+          await invalidateAll();
+          showToast("Format tracking code berhasil diperbarui!", "success");
+        }
+      } catch (error) {
+        setting.value = originalValue;
+        showToast("Terjadi kesalahan saat menyimpan", "error");
+      } finally {
+        isSaving = false;
+      }
+    } else {
+      // Create new setting if it doesn't exist
+      isSaving = true;
+      const formData = new FormData();
+      formData.append("key", "tracking_code_format");
+      formData.append("value", format);
+
+      try {
+        const response = await fetch("?/update", {
+          method: "POST",
+          body: formData,
+        });
+
+        if (!response.ok) {
+          showToast("Gagal membuat format tracking code", "error");
+        } else {
+          await invalidateAll();
+          showToast("Format tracking code berhasil dibuat!", "success");
+        }
+      } catch (error) {
         showToast("Terjadi kesalahan saat menyimpan", "error");
       } finally {
         isSaving = false;
@@ -151,7 +217,6 @@
       }
     }
   }
-  let currentPreviewOrderNumber = $state("");
 </script>
 
 <div class="min-h-screen bg-base-200/30">
@@ -208,6 +273,19 @@
         />
       </div>
 
+      <!-- Tracking Code Format Section -->
+      <div class="settings-card settings-section">
+        <TrackingCodeFormatBuilder
+          initialFormat={initialTrackingCodeFormat}
+          onSave={handleTrackingCodeFormatSave}
+          onCancel={() => {
+            /* Optional cancel logic */
+          }}
+          {isSaving}
+          bind:currentPreviewTrackingCode
+        />
+      </div>
+
       <!-- Print Settings Section -->
       <div class="settings-card settings-section">
         <PrintSettingsPanel
@@ -215,6 +293,7 @@
           onSave={handlePrintSettingsSave}
           {isSaving}
           previewOrderNumber={currentPreviewOrderNumber}
+          previewTrackingCode={currentPreviewTrackingCode}
         />
       </div>
     </div>

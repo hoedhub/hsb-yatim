@@ -11,6 +11,7 @@
     onSave,
     isSaving = false,
     previewOrderNumber = "ORD-20251005-001",
+    previewTrackingCode = "TRK-20251005-001",
   } = $props<{
     initialSettings: {
       print_paper_size: string;
@@ -20,6 +21,7 @@
     onSave: (settings: typeof initialSettings) => void;
     isSaving?: boolean;
     previewOrderNumber?: string;
+    previewTrackingCode?: string;
   }>();
 
   let paperSize = $state(initialSettings.print_paper_size);
@@ -169,6 +171,7 @@
             /* No-op for now */
           }}
           {previewOrderNumber}
+          {previewTrackingCode}
         />
       </div>
 

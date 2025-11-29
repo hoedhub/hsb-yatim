@@ -11,11 +11,13 @@
     onSave,
     onCancel,
     previewOrderNumber = "ORD-20251005-001",
+    previewTrackingCode = "TRK-20251005-001",
   } = $props<{
     initialContent?: string;
     onSave: (content: string) => void;
     onCancel: () => void;
     previewOrderNumber?: string;
+    previewTrackingCode?: string;
   }>();
 
   let content = $state(initialContent);
@@ -37,7 +39,7 @@
 
   const generatedContent = $derived(
     content
-      .replace(/{tracking_code}/g, "TRK-123456789")
+      .replace(/{tracking_code}/g, previewTrackingCode)
       .replace(/{order_number}/g, previewOrderNumber)
       .replace(/{customer_name}/g, testCustomerName)
       .replace(/{order_status}/g, "in_progress"),
