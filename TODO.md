@@ -349,16 +349,16 @@ Next Priority Task: 5.2.1 Create `src/routes/(protected)/settings/+page.server.t
 - \[x\] \*\*5\.2\.5\*\* Implement settings save functionality dengan optimistic updates
 
 ### Day 17-18: User Profile Management
-- [ ] **5.3.1** Create `src/routes/(protected)/profile/+page.svelte`:
+- [x] **5.3.1** Create `src/routes/(protected)/profile/+page.svelte`:
   - User info display dan edit
   - Password change form
   - Activity log (last login)
-- [ ] **5.3.2** Implement password change logic:
+- [x] **5.3.2** Implement password change logic:
   - Current password validation
   - New password confirmation
   - Secure password hashing
 - [ ] **5.3.3** Add profile picture upload (optional, future enhancement)
-- [ ] **5.3.4** Test user profile functionality
+- [x] **5.3.4** Test user profile functionality
 
 ### Day 18-20: Measurement Labels Management
 - [ ] **5.4.1** Create `src/routes/(protected)/measurements/labels/+page.server.ts`:

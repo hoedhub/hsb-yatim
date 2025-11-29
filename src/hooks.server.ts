@@ -25,10 +25,15 @@ export const { handle: authHandle, signIn, signOut } = SvelteKitAuth({
 
                 const passwordMatch = await bcrypt.compare(credentials.password as string, foundUser.password_hash);
                 if (passwordMatch) {
-                    return { 
-                        id: foundUser.id.toString(), 
-                        name: foundUser.username, 
-                        email: foundUser.username, 
+                    // Update last_login
+                    await db.update(user)
+                        .set({ last_login: new Date() })
+                        .where(eq(user.id, foundUser.id));
+
+                    return {
+                        id: foundUser.id.toString(),
+                        name: foundUser.username,
+                        email: foundUser.username,
                         role: "admin",
                         rememberMe: credentials.remember === 'true'
                     };
