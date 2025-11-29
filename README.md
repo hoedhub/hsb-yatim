@@ -533,26 +533,19 @@ turso db dump tiket-jahit-prod > backup.sql
 
 ### Development Resources
 
-- **[High Level Roadmap](./docs/high-level-roadmap.md)**: Project overview & business goals
-- **[Detailed Todo List](./docs/detailed-todo-checklist.md)**: Day-by-day development tasks
-- **[API Reference](./docs/api.md)**: Complete API documentation
-- **[Database Guide](./docs/database.md)**: Schema & migration guide
-- **[Component Library](./docs/components.md)**: UI component documentation
+### Development Resources
 
-### External Documentation
-
-- [SvelteKit Docs](https://kit.svelte.dev/docs) - Framework documentation
-- [Drizzle ORM](https://orm.drizzle.team/) - Database ORM
-- [Turso Docs](https://docs.turso.tech/) - Database provider
-- [daisyUI](https://daisyui.com/components/) - UI components
-- [Auth.js](https://authjs.dev/) - Authentication
+- **[High Level Roadmap](./ROADMAP.md)**: Project overview & business goals
+- **[Detailed Todo List](./TODO.md)**: Day-by-day development tasks
+- **[Project Specification](./SPECIFICATION.md)**: Technical specifications
+- **[Contributing Guide](./CONTRIBUTING.md)**: Development workflow & standards
+- **[Troubleshooting Guide](./TROUBLESHOOTING.md)**: Common issues & solutions
 
 ### Tutorials & Guides
 
-- [First Time Setup](./docs/setup-guide.md)
-- [Creating Your First Order](./docs/user-guide.md)
-- [Customizing Print Templates](./docs/print-guide.md)
-- [Troubleshooting Guide](./docs/troubleshooting.md)
+- [First Time Setup](./README.md#%EF%B8%8F-development-guide)
+- [Creating Your First Order](./README.md#%F0%9F%93%9D-order-management)
+- [Customizing Print Templates](./README.md#%F0%9F%96%A8%EF%B8%8F-print-system)
 
 ## 🤝 Contributing
 

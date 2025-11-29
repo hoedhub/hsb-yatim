@@ -321,13 +321,13 @@ Next Priority Task: 5.2.1 Create `src/routes/(protected)/settings/+page.server.t
   - Load dashboard statistics
   - Recent orders query
   - Performance optimizations
-- [ ] **5.1.2** Create `src/routes/(protected)/dashboard/+page.svelte`:
+- [x] **5.1.2** Create `src/routes/(protected)/dashboard/+page.svelte`:
   - Statistics cards layout
   - Recent orders table
   - Quick action buttons
-- [ ] **5.1.3** Style dashboard dengan responsive grid
-- [ ] **5.1.4** Add loading states dan error handling
-- [ ] **5.1.5** Test dashboard performance dengan sample data
+- [x] **5.1.3** Style dashboard dengan responsive grid
+- [x] **5.1.4** Add loading states dan error handling
+- [x] **5.1.5** Test dashboard performance dengan sample data
 
 ### Day 16-17: Settings Management
 - \[x\] \*\*5\.2\.1\*\* Create `src/routes/\(protected\)/settings/\+page.server.ts`:
