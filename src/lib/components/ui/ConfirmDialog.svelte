@@ -7,7 +7,10 @@
         message = "Are you sure you want to proceed?",
         confirmText = "Confirm",
         cancelText = "Cancel",
+        confirmLabel = "Confirm",
+        cancelLabel = "Cancel",
         dangerous = false,
+        variant = "primary",
         onConfirm,
         onCancel,
     }: {
@@ -16,10 +19,17 @@
         message?: string;
         confirmText?: string;
         cancelText?: string;
+        confirmLabel?: string;
+        cancelLabel?: string;
         dangerous?: boolean;
+        variant?: "primary" | "error";
         onConfirm?: () => void;
         onCancel?: () => void;
     } = $props();
+
+    // Support both confirmText/cancelText and confirmLabel/cancelLabel
+    const confirmButtonText = confirmLabel || confirmText;
+    const cancelButtonText = cancelLabel || cancelText;
 
     let dialogRef: HTMLDivElement | undefined = $state();
 
@@ -44,7 +54,7 @@
     }
 
     function handleKeyDown(e: KeyboardEvent) {
-        if (e.key === 'Escape') {
+        if (e.key === "Escape") {
             close();
         }
     }
@@ -70,10 +80,15 @@
             <p class="py-4">{message}</p>
             <div class="modal-action">
                 <Button onclick={handleCancel} variant="ghost">
-                    {cancelText}
+                    {cancelButtonText}
                 </Button>
-                <Button onclick={handleConfirm} variant={dangerous ? "error" : "primary"}>
-                    {confirmText}
+                <Button
+                    onclick={handleConfirm}
+                    variant={variant === "error" || dangerous
+                        ? "error"
+                        : "primary"}
+                >
+                    {confirmButtonText}
                 </Button>
             </div>
         </div>

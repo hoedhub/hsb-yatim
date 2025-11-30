@@ -27,18 +27,23 @@
 	let name = $state(data?.name ?? "");
 	let description = $state(data?.description ?? "");
 	let selectedLabels = $state<MeasurementLabel[]>(
-		data?.templateLabels?.map((tl) => tl.label) ?? [],
+		data?.templateLabels?.map((tl: any) => tl.label) ?? [],
 	);
 	let selectedLabelId = $state<string>("");
 
 	// Filter available labels (exclude already selected)
 	let availableLabels = $derived(
-		labels.filter((l) => !selectedLabels.find((sl) => sl.id === l.id)),
+		labels.filter(
+			(l: MeasurementLabel) =>
+				!selectedLabels.find((sl) => sl.id === l.id),
+		),
 	);
 
 	function addLabel() {
 		if (!selectedLabelId) return;
-		const label = labels.find((l) => l.id.toString() === selectedLabelId);
+		const label = labels.find(
+			(l: MeasurementLabel) => l.id.toString() === selectedLabelId,
+		);
 		if (label) {
 			selectedLabels = [...selectedLabels, label];
 			selectedLabelId = "";

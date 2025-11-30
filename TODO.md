@@ -1,9 +1,9 @@
 # ✅ Detailed Development Todo List: Aplikasi Tiket Jahit
 
 Current Phase: Phase 5: Feature Implementation - Master Data
-Current Day: Day 18-20
-Last Completed Task: 5.4.6 Test complete CRUD operations (Measurement Labels Management)
-Next Priority Task: 5.5.1 Create `src/routes/(protected)/measurements/templates/+page.server.ts`
+Current Day: Day 22-24
+Last Completed Task: 5.6.5 Test customer management completely
+Next Priority Task: 6.1.1 Create `src/routes/(protected)/orders/new/+page.server.ts`
 
 ## 🚀 Phase 1: Foundation Setup
 **Timeline: Week 1 (Days 1-7)**
@@ -378,45 +378,45 @@ Next Priority Task: 5.5.1 Create `src/routes/(protected)/measurements/templates/
 - [x] **5.4.6** Test complete CRUD operations
 
 ### Day 20-22: Measurement Templates Management
-- [ ] **5.5.1** Create `src/routes/(protected)/measurements/templates/+page.server.ts`:
+- [x] **5.5.1** Create `src/routes/(protected)/measurements/templates/+page.server.ts`:
   - Load templates dengan relations ke labels
   - Template CRUD actions
   - Clone template functionality
-- [ ] **5.5.2** Create template list page:
+- [x] **5.5.2** Create template list page:
   - Template cards atau table view
   - Search dan filter functionality
   - Add/Edit/Clone/Delete actions
-- [ ] **5.5.3** Implement drag-drop template builder:
+- [x] **5.5.3** Implement drag-drop template builder:
   - Available labels panel
   - Selected labels panel dengan ordering
   - Real-time preview
   - Save/cancel functionality
-- [ ] **5.5.4** Implement template cloning:
+- [x] **5.5.4** Implement template cloning:
   - Clone template structure only
   - Auto-generate new name
   - Preserve label ordering
-- [ ] **5.5.5** Test template operations thoroughly
+- [x] **5.5.5** Test template operations thoroughly
 
 ### Day 22-24: Customer Management
-- [ ] **5.6.1** Create `src/routes/(protected)/customers/+page.server.ts`:
+- [x] **5.6.1** Create `src/routes/(protected)/customers/+page.server.ts`:
   - Load customers dengan pagination
   - Customer search functionality
   - Customer CRUD actions
-- [ ] **5.6.2** Create customers list page:
+- [x] **5.6.2** Create customers list page:
   - DataTable dengan search
   - Customer type badges
   - Contact info display
   - Add/Edit/Delete actions
-- [ ] **5.6.3** Create customer detail page:
+- [x] **5.6.3** Create customer detail page:
   - Customer information display
   - Order history table
   - Edit customer functionality
-- [ ] **5.6.4** Implement customer form dengan:
+- [x] **5.6.4** Implement customer form dengan:
   - Type selection (individual/institution)
   - Conditional fields
   - Contact information
   - Validation dan error handling
-- [ ] **5.6.5** Test customer management completely
+- [x] **5.6.5** Test customer management completely
 
 ## 📝 Phase 6: Order Management System
 **Timeline: Week 4-5 (Days 25-35)**

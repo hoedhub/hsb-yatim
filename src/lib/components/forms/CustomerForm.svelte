@@ -1,74 +1,118 @@
 <script lang="ts">
-	import { useForm } from 'svelte-simple-form';
-	import { customerSchema } from '$lib/schemas';
-	import Button from '$lib/components/ui/button/Button.svelte';
-	import Input from '$lib/components/ui/input/Input.svelte';
-	import Select from '$lib/components/ui/select/Select.svelte';
-	import Textarea from '$lib/components/ui/textarea/Textarea.svelte';
-	import FormControl from '$lib/components/ui/form/FormControl.svelte';
-	import FormLabel from '$lib/components/ui/form/FormLabel.svelte';
-	import FormMessage from '$lib/components/ui/form/FormMessage.svelte';
+	import { enhance } from "$app/forms";
+	import type { Customer } from "$lib/server/db/schema";
 
-	const { form } = useForm({
-		initialValues: {
-			name: '',
-			type: 'individual',
-			institution_name: '',
-			phone: '',
-			address: ''
-		},
-		validation: { zod: customerSchema },
-		onSubmit: async (values) => {
-			// TODO: Implement actual form submission
-			console.log('Form submitted:', values);
-			alert('Form submitted! Check console.');
-		}
-	});
+	let {
+		data = null,
+		action = "?/create",
+		onClose,
+	} = $props<{
+		data?: Customer | null;
+		action?: string;
+		onClose: () => void;
+	}>();
+
+	let name = $state(data?.name ?? "");
+	let type = $state<"individual" | "institution">(data?.type ?? "individual");
+	let institution_name = $state(data?.institution_name ?? "");
+	let phone = $state(data?.phone ?? "");
+	let address = $state(data?.address ?? "");
 </script>
 
-<form use:form.handler>
-	<div class="grid gap-4">
-		<FormControl>
-			<FormLabel>Nama</FormLabel>
-			<Input id="name" name="name" bind:value={form.data.name} />
-			<FormMessage>{form.errors.name?.[0]}</FormMessage>
-		</FormControl>
+<form
+	method="POST"
+	{action}
+	use:enhance={() => {
+		return async ({ result, update }) => {
+			if (result.type === "success") {
+				onClose();
+				await update();
+			}
+		};
+	}}
+	class="space-y-4"
+>
+	{#if data?.id}
+		<input type="hidden" name="id" value={data.id} />
+	{/if}
 
-		<FormControl>
-			<FormLabel>Tipe</FormLabel>
-			<Select id="type" name="type" bind:value={form.data.type}>
-				<option value="individual">Perorangan</option>
-				<option value="institution">Institusi</option>
-			</Select>
-			<FormMessage>{form.errors.type?.[0]}</FormMessage>
-		</FormControl>
-
-		{#if form.data.type === 'institution'}
-			<FormControl>
-				<FormLabel>Nama Institusi</FormLabel>
-				<Input
-					id="institution_name"
-					name="institution_name"
-					bind:value={form.data.institution_name}
-				/>
-				<FormMessage>{form.errors.institution_name?.[0]}</FormMessage>
-			</FormControl>
-		{/if}
-
-		<FormControl>
-			<FormLabel>Telepon</FormLabel>
-			<Input id="phone" name="phone" bind:value={form.data.phone} />
-			<FormMessage>{form.errors.phone?.[0]}</FormMessage>
-		</FormControl>
-
-		<FormControl>
-			<FormLabel>Alamat</FormLabel>
-			<Textarea id="address" name="address" bind:value={form.data.address} />
-			<FormMessage>{form.errors.address?.[0]}</FormMessage>
-		</FormControl>
+	<div class="form-control w-full">
+		<label class="label" for="name">
+			<span class="label-text">Nama</span>
+		</label>
+		<input
+			type="text"
+			id="name"
+			name="name"
+			bind:value={name}
+			placeholder="Nama customer"
+			class="input input-bordered w-full"
+			required
+			minlength="2"
+		/>
 	</div>
 
-	<div class="mt-6 flex justify-end">
-		<Button type="submit" disabled={form.isSubmitting}>Simpan</Button>
+	<div class="form-control w-full">
+		<label class="label" for="type">
+			<span class="label-text">Tipe</span>
+		</label>
+		<select
+			id="type"
+			name="type"
+			bind:value={type}
+			class="select select-bordered w-full"
+		>
+			<option value="individual">Perorangan</option>
+			<option value="institution">Institusi</option>
+		</select>
+	</div>
+
+	{#if type === "institution"}
+		<div class="form-control w-full">
+			<label class="label" for="institution_name">
+				<span class="label-text">Nama Institusi</span>
+			</label>
+			<input
+				type="text"
+				id="institution_name"
+				name="institution_name"
+				bind:value={institution_name}
+				placeholder="Nama institusi"
+				class="input input-bordered w-full"
+				required
+			/>
+		</div>
+	{/if}
+
+	<div class="form-control w-full">
+		<label class="label" for="phone">
+			<span class="label-text">Telepon (Opsional)</span>
+		</label>
+		<input
+			type="tel"
+			id="phone"
+			name="phone"
+			bind:value={phone}
+			placeholder="Nomor telepon"
+			class="input input-bordered w-full"
+		/>
+	</div>
+
+	<div class="form-control w-full">
+		<label class="label" for="address">
+			<span class="label-text">Alamat (Opsional)</span>
+		</label>
+		<textarea
+			id="address"
+			name="address"
+			bind:value={address}
+			placeholder="Alamat lengkap"
+			class="textarea textarea-bordered h-24"
+		></textarea>
+	</div>
+
+	<div class="modal-action">
+		<button type="button" class="btn" onclick={onClose}>Batal</button>
+		<button type="submit" class="btn btn-primary">Simpan</button>
 	</div>
 </form>

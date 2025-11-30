@@ -72,7 +72,7 @@
 </PageHeader>
 
 <div class="mt-6">
-    <DataTable data={data.templates} {columns} searchable pagination>
+    <DataTable data={data.templates} {columns} filterable paginated>
         {#snippet rowActions(item)}
             <div class="flex justify-end gap-2">
                 <form method="POST" action="?/clone" use:enhance>
@@ -119,6 +119,8 @@
             <h3 class="font-bold text-lg mb-4">Buat Template Baru</h3>
             <TemplateForm labels={data.labels} onClose={closeModals} />
         </div>
+        <!-- svelte-ignore a11y_click_events_have_key_events -->
+        <!-- svelte-ignore a11y_no_static_element_interactions -->
         <div class="modal-backdrop" onclick={closeModals}></div>
     </div>
 {/if}
@@ -135,6 +137,8 @@
                 onClose={closeModals}
             />
         </div>
+        <!-- svelte-ignore a11y_click_events_have_key_events -->
+        <!-- svelte-ignore a11y_no_static_element_interactions -->
         <div class="modal-backdrop" onclick={closeModals}></div>
     </div>
 {/if}
