@@ -540,6 +540,7 @@ turso db dump tiket-jahit-prod > backup.sql
 - **[Project Specification](./SPECIFICATION.md)**: Technical specifications
 - **[Contributing Guide](./CONTRIBUTING.md)**: Development workflow & standards
 - **[Troubleshooting Guide](./TROUBLESHOOTING.md)**: Common issues & solutions
+- **[Form Development Guidelines](./FORM_GUIDELINES.md)**: Best practices untuk form implementation
 
 ### Tutorials & Guides
 

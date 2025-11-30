@@ -27,7 +27,7 @@
         title = "",
         description = "",
         closable = true,
-        form = null as Form | null,
+        form = $bindable(null) as Form | null,
         children,
         footer,
         error,
@@ -58,7 +58,7 @@
     }
 
     function handleKeyDown(e: KeyboardEvent) {
-        if (e.key === 'Escape') {
+        if (e.key === "Escape") {
             close();
         }
     }
@@ -101,7 +101,7 @@
                 {/if}
             </div>
 
-            <form use:form?.handler>
+            <form use:form?.handler action="javascript:void(0)">
                 {#if form?.errors?._errors && error}
                     <div class="py-2">
                         {@render error({ errors: form.errors._errors })}
