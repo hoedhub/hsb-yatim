@@ -18,7 +18,7 @@ export const customer = sqliteTable(
 );
 
 export const customerRelations = relations(customer, ({ many }) => ({
-  orders: many(order),
+	orders: many(order),
 }));
 
 export const measurementLabel = sqliteTable('measurement_label', {
@@ -42,6 +42,21 @@ export const measurementTemplateLabel = sqliteTable('measurement_template_label'
 	order_index: integer('order_index').notNull()
 });
 
+export const measurementTemplateRelations = relations(measurementTemplate, ({ many }) => ({
+	templateLabels: many(measurementTemplateLabel)
+}));
+
+export const measurementTemplateLabelRelations = relations(measurementTemplateLabel, ({ one }) => ({
+	template: one(measurementTemplate, {
+		fields: [measurementTemplateLabel.template_id],
+		references: [measurementTemplate.id]
+	}),
+	label: one(measurementLabel, {
+		fields: [measurementTemplateLabel.label_id],
+		references: [measurementLabel.id]
+	})
+}));
+
 export const order = sqliteTable(
 	'order',
 	{
@@ -63,10 +78,10 @@ export const order = sqliteTable(
 );
 
 export const orderRelations = relations(order, ({ one }) => ({
-  customer: one(customer, {
-    fields: [order.customer_id],
-    references: [customer.id],
-  }),
+	customer: one(customer, {
+		fields: [order.customer_id],
+		references: [customer.id],
+	}),
 }));
 
 export const orderTemplate = sqliteTable('order_template', {

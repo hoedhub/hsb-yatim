@@ -1,138 +1,196 @@
 <script lang="ts">
-	import { useForm } from 'svelte-simple-form';
-	import { measurementTemplateSchema } from '$lib/schemas';
-	import { dndzone, type DndEvent } from 'svelte-dnd-action';
-	import Button from '$lib/components/ui/button/Button.svelte';
-	import Input from '$lib/components/ui/input/Input.svelte';
-	import Textarea from '$lib/components/ui/textarea/Textarea.svelte';
-	import FormControl from '$lib/components/ui/form/FormControl.svelte';
-	import FormLabel from '$lib/components/ui/form/FormLabel.svelte';
-	import FormMessage from '$lib/components/ui/form/FormMessage.svelte';
+	import { enhance } from "$app/forms";
+	import { dndzone, type DndEvent } from "svelte-dnd-action";
+	import { flip } from "svelte/animate";
+	import { Plus, X, GripVertical } from "lucide-svelte";
+	import type {
+		MeasurementLabel,
+		MeasurementTemplate,
+	} from "$lib/server/db/schema";
 
-	interface LabelItem {
-		id: number;
-		name: string;
-	}
+	let {
+		data = null,
+		labels = [],
+		action = "?/create",
+		onClose,
+	} = $props<{
+		data?:
+			| (MeasurementTemplate & {
+					templateLabels?: { label: MeasurementLabel }[];
+			  })
+			| null;
+		labels: MeasurementLabel[];
+		action?: string;
+		onClose: () => void;
+	}>();
 
-	// Mock data for available labels
-	let availableLabels = $state<LabelItem[]>([
-		{ id: 1, name: 'Lingkar Dada' },
-		{ id: 2, name: 'Panjang Lengan' },
-		{ id: 3, name: 'Lingkar Pinggang' },
-		{ id: 4, name: 'Panjang Celana' },
-		{ id: 5, name: 'Lebar Bahu' }
-	]);
+	let name = $state(data?.name ?? "");
+	let description = $state(data?.description ?? "");
+	let selectedLabels = $state<MeasurementLabel[]>(
+		data?.templateLabels?.map((tl) => tl.label) ?? [],
+	);
+	let selectedLabelId = $state<string>("");
 
-	let selectedLabels = $state<LabelItem[]>([]);
+	// Filter available labels (exclude already selected)
+	let availableLabels = $derived(
+		labels.filter((l) => !selectedLabels.find((sl) => sl.id === l.id)),
+	);
 
-	const { form } = useForm({
-		initialValues: {
-			name: '',
-			description: '',
-			labels: [] as number[]
-		},
-		validation: { zod: measurementTemplateSchema },
-		onSubmit: async (values) => {
-			// TODO: Implement actual form submission
-			console.log('Form submitted:', values);
-			alert('Form submitted! Check console.');
-		}
-	});
-
-	// Function to update form.data.labels whenever selectedLabels changes
-	$effect(() => {
-		form.data.labels = selectedLabels.map((item) => item.id);
-	});
-
-	function handleDndConsider(event: CustomEvent<DndEvent<LabelItem>>) {
-		const { items } = event.detail;
-		const currentTarget = event.currentTarget as HTMLElement;
-		if (currentTarget && currentTarget.id === 'available-zone') {
-			availableLabels = items;
-		} else if (currentTarget && currentTarget.id === 'selected-zone') {
-			selectedLabels = items;
+	function addLabel() {
+		if (!selectedLabelId) return;
+		const label = labels.find((l) => l.id.toString() === selectedLabelId);
+		if (label) {
+			selectedLabels = [...selectedLabels, label];
+			selectedLabelId = "";
 		}
 	}
 
-	function handleDndFinalize(event: CustomEvent<DndEvent<LabelItem>>) {
-		const { items } = event.detail;
-		const currentTarget = event.currentTarget as HTMLElement;
-		if (currentTarget && currentTarget.id === 'available-zone') {
-			availableLabels = items;
-		} else if (currentTarget && currentTarget.id === 'selected-zone') {
-			selectedLabels = items;
-		}
+	function removeLabel(id: number) {
+		selectedLabels = selectedLabels.filter((l) => l.id !== id);
+	}
+
+	const flipDurationMs = 300;
+	function handleDndConsider(e: CustomEvent<DndEvent<MeasurementLabel>>) {
+		selectedLabels = e.detail.items;
+	}
+	function handleDndFinalize(e: CustomEvent<DndEvent<MeasurementLabel>>) {
+		selectedLabels = e.detail.items;
 	}
 </script>
 
-<form use:form.handler>
-	<div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-		<div>
-			<FormControl>
-				<FormLabel>Nama Template</FormLabel>
-				<Input id="name" name="name" bind:value={form.data.name} />
-				<FormMessage>{form.errors.name?.[0]}</FormMessage>
-			</FormControl>
+<form
+	method="POST"
+	{action}
+	use:enhance={() => {
+		return async ({ result, update }) => {
+			if (result.type === "success") {
+				onClose();
+				await update();
+			}
+		};
+	}}
+	class="space-y-4"
+>
+	{#if data?.id}
+		<input type="hidden" name="id" value={data.id} />
+	{/if}
 
-			<div class="mt-4">
-				<FormControl>
-					<FormLabel>Deskripsi</FormLabel>
-					<Textarea id="description" name="description" bind:value={form.data.description} />
-					<FormMessage>{form.errors.description?.[0]}</FormMessage>
-				</FormControl>
-			</div>
+	<!-- Serialize selected labels IDs for submission -->
+	<input
+		type="hidden"
+		name="labels"
+		value={JSON.stringify(selectedLabels.map((l) => l.id))}
+	/>
 
-			<div class="mt-6">
-				<h3 class="font-semibold mb-2">Live Preview</h3>
-				<div class="p-4 border rounded-md bg-base-200 min-h-[100px]">
-					{#each selectedLabels as item (item.id)}
-						<div class="p-2 bg-base-100 rounded-md mb-2">{item.name}</div>
-					{/each}
-					{#if selectedLabels.length === 0}
-						<div class="text-center text-neutral-500">Drag labels here</div>
-					{/if}
-				</div>
-			</div>
-		</div>
+	<div class="form-control w-full">
+		<label class="label" for="name">
+			<span class="label-text">Nama Template</span>
+		</label>
+		<input
+			type="text"
+			id="name"
+			name="name"
+			bind:value={name}
+			placeholder="Contoh: Kemeja Pria"
+			class="input input-bordered w-full"
+			required
+			minlength="2"
+		/>
+	</div>
 
-		<div class="grid grid-cols-2 gap-4">
-			<div>
-				<h3 class="font-semibold mb-2 text-center">Label Tersedia</h3>
-				<div
-					id="available-zone"
-					class="p-4 border rounded-md min-h-[300px] bg-base-200"
-					use:dndzone={{ items: availableLabels, type: 'label' }}
-					onconsider={handleDndConsider}
-					onfinalize={handleDndFinalize}
+	<div class="form-control w-full">
+		<label class="label" for="description">
+			<span class="label-text">Deskripsi (Opsional)</span>
+		</label>
+		<textarea
+			id="description"
+			name="description"
+			bind:value={description}
+			placeholder="Deskripsi singkat template..."
+			class="textarea textarea-bordered h-24"
+		></textarea>
+	</div>
+
+	<div class="divider">Pengaturan Label Ukuran</div>
+
+	<div class="form-control w-full">
+		<label class="label" for="label-select">
+			<span class="label-text">Tambah Label</span>
+		</label>
+		<div class="flex gap-2">
+			<select
+				id="label-select"
+				bind:value={selectedLabelId}
+				class="select select-bordered flex-1"
+			>
+				<option value="" disabled selected
+					>Pilih label untuk ditambahkan...</option
 				>
-					{#each availableLabels as item (item.id)}
-						<div class="p-2 bg-base-100 rounded-md mb-2 cursor-grab">
-							{item.name}
-						</div>
-					{/each}
-				</div>
-			</div>
-			<div>
-				<h3 class="font-semibold mb-2 text-center">Label Dipilih</h3>
-				<div
-					id="selected-zone"
-					class="p-4 border rounded-md min-h-[300px] bg-base-200"
-					use:dndzone={{ items: selectedLabels, type: 'label' }}
-					onconsider={handleDndConsider}
-					onfinalize={handleDndFinalize}
-				>
-					{#each selectedLabels as item (item.id)}
-						<div class="p-2 bg-base-100 rounded-md mb-2 cursor-grab">
-							{item.name}
-						</div>
-					{/each}
-				</div>
-			</div>
+				{#each availableLabels as label}
+					<option value={label.id.toString()}
+						>{label.name} ({label.default_unit})</option
+					>
+				{/each}
+			</select>
+			<button
+				type="button"
+				class="btn btn-primary"
+				onclick={addLabel}
+				disabled={!selectedLabelId}
+			>
+				<Plus class="h-4 w-4" />
+				Tambah
+			</button>
 		</div>
 	</div>
 
-	<div class="mt-6 flex justify-end">
-		<Button type="submit" disabled={form.isSubmitting}>Simpan Template</Button>
-		<Button type="button" onclick={() => form.reset()} class="ml-2">Reset</Button>
+	<div class="mt-4">
+		<h4 class="mb-2 text-sm font-medium">
+			Label Terpilih (Drag untuk mengurutkan)
+		</h4>
+		{#if selectedLabels.length === 0}
+			<div class="alert alert-info text-sm">
+				Belum ada label yang dipilih. Tambahkan label di atas.
+			</div>
+		{:else}
+			<div
+				use:dndzone={{ items: selectedLabels, flipDurationMs }}
+				onconsider={handleDndConsider}
+				onfinalize={handleDndFinalize}
+				class="space-y-2 rounded-box bg-base-200 p-2"
+			>
+				{#each selectedLabels as label (label.id)}
+					<div
+						class="flex items-center justify-between rounded-lg bg-base-100 p-3 shadow-sm"
+						animate:flip={{ duration: flipDurationMs }}
+					>
+						<div class="flex items-center gap-3">
+							<GripVertical
+								class="h-5 w-5 cursor-move text-base-content/50"
+							/>
+							<div>
+								<span class="font-medium">{label.name}</span>
+								<span
+									class="ml-2 text-xs text-base-content/60 badge badge-ghost badge-sm"
+									>{label.default_unit}</span
+								>
+							</div>
+						</div>
+						<button
+							type="button"
+							class="btn btn-ghost btn-xs text-error"
+							onclick={() => removeLabel(label.id)}
+						>
+							<X class="h-4 w-4" />
+						</button>
+					</div>
+				{/each}
+			</div>
+		{/if}
+	</div>
+
+	<div class="modal-action">
+		<button type="button" class="btn" onclick={onClose}>Batal</button>
+		<button type="submit" class="btn btn-primary">Simpan</button>
 	</div>
 </form>
