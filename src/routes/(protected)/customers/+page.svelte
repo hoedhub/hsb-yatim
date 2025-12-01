@@ -32,7 +32,7 @@
         },
         {
             key: "institution_name",
-            label: "Institusi",
+            label: "Kontak Person",
             render: (val: string | null) => val || "-",
         },
         {

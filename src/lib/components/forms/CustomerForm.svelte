@@ -38,14 +38,18 @@
 
 	<div class="form-control w-full">
 		<label class="label" for="name">
-			<span class="label-text">Nama</span>
+			<span class="label-text"
+				>{type === "institution" ? "Nama Institusi" : "Nama"}</span
+			>
 		</label>
 		<input
 			type="text"
 			id="name"
 			name="name"
 			bind:value={name}
-			placeholder="Nama customer"
+			placeholder={type === "institution"
+				? "Nama institusi/perusahaan"
+				: "Nama customer"}
 			class="input input-bordered w-full"
 			required
 			minlength="2"
@@ -70,16 +74,15 @@
 	{#if type === "institution"}
 		<div class="form-control w-full">
 			<label class="label" for="institution_name">
-				<span class="label-text">Nama Institusi</span>
+				<span class="label-text">Nama Kontak Person (Opsional)</span>
 			</label>
 			<input
 				type="text"
 				id="institution_name"
 				name="institution_name"
 				bind:value={institution_name}
-				placeholder="Nama institusi"
+				placeholder="Nama orang yang dihubungi"
 				class="input input-bordered w-full"
-				required
 			/>
 		</div>
 	{/if}

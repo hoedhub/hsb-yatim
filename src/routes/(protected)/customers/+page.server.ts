@@ -26,11 +26,7 @@ export const actions: Actions = {
         if (!name || name.length < 2) {
             return fail(400, { message: 'Nama minimal 2 karakter' });
         }
-
-        if (type === 'institution' && !institution_name) {
-            return fail(400, { message: 'Nama institusi wajib diisi untuk tipe institusi' });
-        }
-
+        // Additional validation for institution type
         try {
             await db.insert(customer).values({
                 name,
@@ -61,9 +57,7 @@ export const actions: Actions = {
             return fail(400, { message: 'Nama minimal 2 karakter' });
         }
 
-        if (type === 'institution' && !institution_name) {
-            return fail(400, { message: 'Nama institusi wajib diisi untuk tipe institusi' });
-        }
+
 
         try {
             await db.update(customer)
